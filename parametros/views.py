@@ -4,4 +4,5 @@ from django.http import HttpResponse
 # Create your views here.
 
 def index(request):
-    return HttpResponse("<em>Hello Fuckers!</em>")
+    test = {'testkey':'Parametros Page'}
+    return render(request,'parametros/parametros.html',context=test)
