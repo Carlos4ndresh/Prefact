@@ -1,7 +1,6 @@
 from django.db import models
 
-# Create your models here.
-
+''' clases de parámetros de inmueble y lote  '''
 class ParametroInmueble(models.Model):
     nombreParametroInmueble = models.CharField(max_length=45, blank=False)
     valorParametroInmueble = models.CharField(max_length=45, blank=False)

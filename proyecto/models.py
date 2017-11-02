@@ -2,14 +2,7 @@ from django.db import models
 from inmueble import models as inmueble_models
 from parametros import models as parametros_models
 
-# Create your models here.
-
-# Venta
-# Incremento
-# Etapa
-# SubEtapa
-# ProyeccionIPC
-# TablaIPC
+''' Clases de Etapas de prefactibilidad '''
 
 class Macroproyecto(models.Model):
     nombreMacroproyecto = models.CharField(max_length=45, blank=False)
@@ -37,7 +30,7 @@ class Venta(models.Model):
     porcentajeTopeInicialVentas = models.DecimalField(max_digits=5,decimal_places=2)
     porcentajeVelocidadInicialVentas = models.DecimalField(max_digits=5,decimal_places=2)
     fechaInicioVentas = models.DateField(blank=False)
-    proyecto = models.ForeignKey(Proyecto, related_name='proyecto', on_delete=models.PROTECT)
+    proyecto = models.ForeignKey(Proyecto, related_name='proyectoVenta', on_delete=models.PROTECT)
     volumenTotalVenta = models.DecimalField(max_digits=13,decimal_places=4)
     reajusteVenta = models.DecimalField(max_digits=13,decimal_places=4)
     volumenInicialesVenta = models.DecimalField(max_digits=13,decimal_places=4)
@@ -56,6 +49,56 @@ class Etapa(models.Model):
     numeroTipoInmuebleEtapa = models.IntegerField()
     numeroTipoInmueble2Etapa = models.IntegerField()
     tipoProyecto = models.ForeignKey(parametros_models.TipoProyecto, related_name='tipoProyecto', 
+        on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.nombreEtapa
+
+    def __unicode__(self):
+        pass 
+
+class SubEtapa(models.Model):
+    nombreSubEtapa = models.CharField(max_length=45, blank=False)
+    descripcionSubEtapa = models.CharField(max_length=255, blank=True, null=True)
+    etapa = models.ForeignKey(Etapa, related_name='etapa', on_delete=models.PROTECT)
+
+    def __str__(self):
+        return "Subetapa {a} de etapa {b}".format(a=self.nombreSubEtapa,b=self.etapa.nombreEtapa) 
+
+    def __unicode__(self):
+        pass 
+
+class Incremento(models.Model):
+    numeroDeIncrementos = models.IntegerField(blank=False)
+    ''' # Porcentaje Reajuste FACTOR INCREMENTO '''
+    porcenReajusteIncremento = models.DecimalField(max_digits=5,decimal_places=2,blank=False)
+    tipoIncremento = models.ForeignKey(parametros_models.TipoIncremento, related_name='tipoIncrementoIncr', 
+        on_delete=models.PROTECT)
+    proyecto = models.ForeignKey(Proyecto, related_name='proyectoIncremento', on_delete=models.PROTECT) 
+    porcenTopeReajusteIncremento = models.DecimalField(max_digits=5,decimal_places=2,)
+
+    def __str__(self):
+        pass 
+
+    def __unicode__(self):
+        pass
+
+class ProyeccionIPC(models.Model):
+    anosProyeccionIPC = models.IntegerField(blank=False)
+    tasaBaseProyeccionIPC = models.DecimalField(max_digits=5,decimal_places=2,blank=False)
+    proyecto = models.ForeignKey(Proyecto, related_name='proyectoProyeccion', on_delete=models.PROTECT)
+
+    def __str__(self):
+        pass 
+
+    def __unicode__(self):
+        pass 
+
+class TablaIPC(models.Model):
+    anoTablaIPC = models.IntegerField()
+    ipcAnoTablaIPC = models.DecimalField(max_digits=5,decimal_places=2,blank=True, null=True)
+    numeroInmueblesEntregados = models.IntegerField()
+    proyeccionIPC = models.ForeignKey(ProyeccionIPC,related_name='proyeccionIPC',
         on_delete=models.PROTECT)
 
     def __str__(self):
