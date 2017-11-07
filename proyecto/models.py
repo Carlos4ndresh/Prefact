@@ -31,9 +31,9 @@ class Venta(models.Model):
     porcentajeVelocidadInicialVentas = models.DecimalField(max_digits=5,decimal_places=2)
     fechaInicioVentas = models.DateField(blank=False)
     proyecto = models.ForeignKey(Proyecto, related_name='proyectoVenta', on_delete=models.PROTECT)
-    volumenTotalVenta = models.DecimalField(max_digits=13,decimal_places=4)
-    reajusteVenta = models.DecimalField(max_digits=13,decimal_places=4)
-    volumenInicialesVenta = models.DecimalField(max_digits=13,decimal_places=4)
+    volumenTotalVenta = models.DecimalField(max_digits=20,decimal_places=4)
+    reajusteVenta = models.DecimalField(max_digits=20,decimal_places=4)
+    volumenInicialesVenta = models.DecimalField(max_digits=20,decimal_places=4)
 
 
     def __str__(self):
