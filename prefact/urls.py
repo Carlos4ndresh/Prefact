@@ -17,9 +17,11 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
 from parametros import views
+from inmueble import views
 
 urlpatterns = [
     # url(r'^$',views.index,name='index'),
     url(r'^parametros/',include('parametros.urls')),
+    url(r'^inmueble/',include('inmueble.urls')),
     url(r'^admin/', admin.site.urls),
 ]

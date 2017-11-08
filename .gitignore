@@ -102,3 +102,4 @@ ENV/
 *.sqlite3
 .vscode/settings.json
 templates/.DS_Store
+.DS_Store
