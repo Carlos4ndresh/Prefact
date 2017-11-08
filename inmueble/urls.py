@@ -5,4 +5,5 @@ from inmueble import views
 
 urlpatterns = [
     url(r'^$',views.index),
+    url(r'^lote.html',views.lote)
 ]
