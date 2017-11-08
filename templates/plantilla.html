@@ -21,8 +21,18 @@
     <title>Holy Shit</title>
 </head>
 <body>
-    {% block body_block %}
-      {# Inserte aqui  #}
-    {% endblock body_block %}
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <ul class="nav navbar-nav">          
+          <li><a class="navbar-link" href="{% url 'admin:index' %}">Admin</a></li>
+          <li><a class="navbar-link" href="{% url 'inmueble:lote' %}">Lote</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+            {% block body_block %}
+            {# Inserte aqui  #}
+          {% endblock body_block %}
+    </div>
 </body>
 </html>
