@@ -5,4 +5,5 @@ class NuevoLote(forms.ModelForm):
     class Meta:
         model = Lote
         fields = '__all__'
- 
+        # exclude = ()
+

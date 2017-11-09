@@ -103,3 +103,7 @@ ENV/
 .vscode/settings.json
 templates/.DS_Store
 .DS_Store
+.vscode/last.sql
+.vscode/last.sql
+.vscode/last.sql
+*.sql

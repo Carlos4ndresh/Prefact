@@ -16,6 +16,6 @@ def lote(request):
             formLote.save(commit=True)
             return index(request)
         else:
-            print("ERROR!")
+            print("ERROR! Valide la form")
     
     return render(request,'inmueble/lote.html',{'formLote':formLote})
