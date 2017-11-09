@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 {% extends 'plantilla.html' %}
-
-{% block block_body %}
-<div class="container">        
-        <form method="post">
-                {{ macroproyectoForm.as_p }}
-                {{ proyectoForm.as_p }}
-                {% csrf_token %}
-                <input type="Submit" class="btn btn-primary" value="Joder">
-        </form>
+{% block body_block %}
+    <div class="container">
+        <!-- <div class="jumbotron"> -->
+                <form method="post">
+                    {{ macroproyectoForm.as_p }}
+                    {{ proyectoForm.as_p }}
+                    {% csrf_token %}
+                    <input type="Submit" class="btn btn-primary" value="Joder">
+                </form>
+        <!-- </div> -->
     </div>
-{% endblock block_body %}
+{% endblock body_block %}

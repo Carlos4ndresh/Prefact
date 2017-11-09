@@ -2,8 +2,9 @@ from django.shortcuts import render
 from proyecto.forms import *
 
 # Create your views here.
-''' def index(request):
-    return render(request,'proyecto/proyecto.html') '''
+def index(request):
+    return render(request,'inmueble/inmueble.html')
+    # return render(request,'proyecto/index.html')
 
 def proyecto(request):
     formMacroProyecto = MacroproyectoForm()
@@ -13,7 +14,7 @@ def proyecto(request):
         formMacroProyecto = MacroproyectoForm(request.POST)
         formProyecto = ProyectoForm(request.POST)
 
-        if formLote.is_valid():
+        if formMacroProyecto.is_valid():
             formMacroProyecto.save(commit=True)
             formProyecto.save(commit=True)
             return index(request)
@@ -26,5 +27,5 @@ def proyecto(request):
         'proyectoForm' : formProyecto,
     } 
     
-    return render(request,'inmueble/proyecto.html',contexto)
+    return render(request,'proyecto/proyecto.html',contexto)
     
