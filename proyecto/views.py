@@ -3,8 +3,8 @@ from proyecto.forms import *
 
 # Create your views here.
 def index(request):
-    return render(request,'inmueble/inmueble.html')
-    # return render(request,'proyecto/index.html')
+   # return render(request,'inmueble/inmueble.html')
+    return render(request,'proyecto/index.html')
 
 def proyecto(request):
     formMacroProyecto = MacroproyectoForm()

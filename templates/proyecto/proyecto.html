@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 {% extends 'plantilla.html' %}
 {% block body_block %}
-    <div class="container">
-        <!-- <div class="jumbotron"> -->
-                <form method="post">
+    <div class="container-fluid">
+        <div>
+            <form method="post">
                     {{ macroproyectoForm.as_p }}
-                    {{ proyectoForm.as_p }}
+                    <input type="Submit" class="btn btn-primary" value="Guardar">
                     {% csrf_token %}
-                    <input type="Submit" class="btn btn-primary" value="Joder">
-                </form>
-        <!-- </div> -->
+            </form>
+        </div>
+        <div>
+            <form action="" method="post">
+                        {{ proyectoForm.as_p }}
+                        {% csrf_token %}
+                        <input type="Submit" class="btn btn-primary" value="Guardar y Continuar">
+            </form>              
+        </div>                              
     </div>
 {% endblock body_block %}

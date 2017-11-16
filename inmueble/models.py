@@ -13,6 +13,7 @@ class ParametroInmueble(models.Model):
 
 
 class Lote(models.Model):
+    nombreLote = models.CharField(max_length=50,unique=True)
     areaBrutaLote = models.DecimalField(max_digits=16,decimal_places=3,blank=False)
     areaCesionViasLote = models.DecimalField(max_digits=16,decimal_places=3,blank=True, null=True)
     porcentajeCesionVerdesLote = models.DecimalField(max_digits=5,decimal_places=2,blank=True, null=True)
