@@ -7,9 +7,8 @@ class ParametroInmueble(models.Model):
     descripcionParametro = models.CharField(max_length=255, blank=True, null=True)
     m2MinimoParametroInmueble = models.IntegerField()
 
-    ''' def __str__(self):
-        return self.
- '''
+    def __str__(self):
+        return "Lote {a}".format(a=self.nombreParametroInmueble)
 
 
 class Lote(models.Model):
@@ -28,14 +27,22 @@ class Lote(models.Model):
     valorTotalLote = models.DecimalField(max_digits=20,decimal_places=4)
     mesesDePagoLote = models.CharField(max_length=45, blank=False)
 
+    def __str__(self):
+        return "Lote {a}".format(a=self.nombreLote)
+
+
 
 class PagoLote(models.Model):
     mesPagoLote = models.IntegerField()
     porcentajeMesPagoLote = models.DecimalField(max_digits=5,decimal_places=2)
     lote = models.ForeignKey(Lote, related_name='pagosLote', on_delete=models.PROTECT)
 
+    def __str__(self):
+        return "Mes de Pago {a} y porcentaje {b}".format(a=self.mesPagoLote,b=self.porcentajeMesPagoLote)
+
 
 class TipoInmueble(models.Model):
+    nombreTipoInmueble = models.CharField(max_length=45, unique=True)
     areaTipoInmueble = models.IntegerField()
     noUnidadesTipoInmueble = models.IntegerField()
     valorM2TipoInmueble = models.DecimalField(max_digits=20,decimal_places=4)
@@ -43,3 +50,6 @@ class TipoInmueble(models.Model):
     paramInmueble = models.ForeignKey(ParametroInmueble, related_name='+', on_delete=models.PROTECT)
     valorSalariosMinTipoInmueble = models.DecimalField(max_digits=16,decimal_places=2)
     etapa = models.ForeignKey('proyecto.Etapa', related_name='+', on_delete=models.PROTECT)
+
+    def __str__(self):
+        return "Tipo Inmueble {a}".format(a=self.nombreTipoInmueble)

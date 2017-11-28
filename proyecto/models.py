@@ -37,10 +37,8 @@ class Venta(models.Model):
 
 
     def __str__(self):
-        pass 
-
-    def __unicode__(self):
-        pass 
+        return "Velocidad de ventas Proyecto {a}, {b} unidades".format(a=self.proyecto.nombreProyecto,
+        b=self.velocidadVentas) 
 
 class Etapa(models.Model):
     nombreEtapa = models.CharField(max_length=45, blank=False)
@@ -78,7 +76,8 @@ class Incremento(models.Model):
     porcenTopeReajusteIncremento = models.DecimalField(max_digits=5,decimal_places=2,)
 
     def __str__(self):
-        pass 
+        return "Incrementos para el proyecto {a}: {b}".format(a=self.proyecto.nombreProyecto,
+            b=self.numeroDeIncrementos) 
 
     def __unicode__(self):
         pass
@@ -89,7 +88,8 @@ class ProyeccionIPC(models.Model):
     proyecto = models.ForeignKey(Proyecto, related_name='proyectoProyeccion', on_delete=models.PROTECT)
 
     def __str__(self):
-        pass 
+        return "Proyeccion IPC Proyecto {a}:{b}".format(a=self.proyecto.nombreProyecto,
+            b=self.anosProyeccionIPC) 
 
     def __unicode__(self):
         pass 
