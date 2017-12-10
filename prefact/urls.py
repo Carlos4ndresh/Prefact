@@ -16,10 +16,20 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
-from parametros import views
+''' from parametros import views
+from inmueble import views
+from proyecto import views '''
+from parametros.views import IndexParametrosView
+import proyecto
+import inmueble
+from . import views
 
 urlpatterns = [
     # url(r'^$',views.index,name='index'),
-    url(r'^parametros/',include('parametros.urls')),
+    url(r"^$", views.InicioView.as_view(), name="home"),
+    # url(r'^parametros/',include('parametros.urls')),
+    url(r'^parametros/', IndexParametrosView.as_view(), name="parametros"),
+    # url(r'^inmueble/',include('inmueble.urls')),
+    # url(r'^proyecto/',include('proyecto.urls')),
     url(r'^admin/', admin.site.urls),
 ]

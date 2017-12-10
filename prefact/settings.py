@@ -15,6 +15,10 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Templates directory
+
+TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
+STATIC_DIR = os.path.join(BASE_DIR,'static')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -38,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'parametros',
+    'proyecto',
+    'inmueble',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +61,7 @@ ROOT_URLCONF = 'prefact.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR,],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,10 +80,22 @@ WSGI_APPLICATION = 'prefact.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
+
+''' DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+ '''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'immbodb',
+        'USER': 'factiUser',
+        'PASSWORD': 'prefact2017',
+        'HOST': '127.0.0.1',
+        'PORT': '33066',
     }
 }
 
@@ -119,3 +137,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    STATIC_DIR,
+]

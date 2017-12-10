@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% extends 'plantilla.html' %}
+{% block titulo  %}
+<title>Parámetros Generales</title>
+{% endblock titulo  %}
+
+{% block tituloPagina %}
+    <h1 class="page-header">Parámetros Generales</h1>
+{% endblock tituloPagina %}
+
+{% block body_block %}
+    <div class="container">
+        <div class="jumbotron">
+                <h1>Par&aacutemetros Generales</h1>
+        </div>
+    </div>
+    <!--div class="container">
+        <form method="post">
+            {{ formLote.as_p }}
+            {% csrf_token %}
+            <input type="Submit" class="btn btn-primary" value="Guardar y Continuar">
+            <input type="Submit" class="btn btn-danger" value="Cancelar">
+        </form> 
+    </div-->
+{% endblock body_block %}
