@@ -4,6 +4,6 @@ from proyecto import views
 app_name = 'proyecto'
 
 urlpatterns = [
-    url(r'^$',views.index),
-    url(r'^proyecto.html',views.proyecto,name='proyecto'),
+    url(r'^$',views.ProyectoIndexView.as_view(),name='indexProyecto'),
+    # url(r'^proyecto.html',views.proyecto,name='proyectos'),
 ]

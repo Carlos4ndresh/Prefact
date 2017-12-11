@@ -1,5 +1,6 @@
-from django import forms
-from proyecto.models import *
+from django import forms 
+from proyecto.models import (Proyecto, Macroproyecto, Venta, Etapa, 
+                            SubEtapa, Incremento, ProyeccionIPC, TablaIPC)
 
 class MacroproyectoForm(forms.ModelForm):
     """Form definition for Macroproyecto."""

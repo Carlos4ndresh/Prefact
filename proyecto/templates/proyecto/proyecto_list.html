@@ -1,0 +1,20 @@
+{% extends 'plantilla.html' %}
+
+{% block titulo %}
+  <title>Proyectos</title>
+{% endblock titulo %}
+  
+{% block body_block %}
+  <div class="jumbotron">
+
+    <h1>Listado de Proyectos</h1>
+      <ol>
+        {% for proyectos in proyectos_list %}
+          <h2><li><a href="{{proyecto.id}}/">{{proyecto.nombreProyecto}} </a></li></h2>
+        {% endfor %}
+      </ol>
+
+  </div>
+
+
+{% endblock %}

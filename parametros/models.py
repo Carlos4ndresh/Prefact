@@ -28,3 +28,7 @@ Clase de Parámetros de Incrementos
 class TipoIncremento(models.Model):
     tipoIncremento = models.IntegerField()
     valorIncrementoTipoIncremento = models.IntegerField()
+    descripcionTipoIncr = models.CharField(max_length=255, blank=True, null=True) 
+
+    def __str__(self):
+        return self.descripcionTipoIncr

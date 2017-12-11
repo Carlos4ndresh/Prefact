@@ -8,7 +8,7 @@ class Macroproyecto(models.Model):
     nombreMacroproyecto = models.CharField(max_length=45, blank=False)
     descripcionMacroproyecto = models.CharField(max_length=255, blank=True, null=True)
     m2Macroproyecto = models.IntegerField()
-    lote = models.OneToOneField(inmueble_models.Lote,on_delete=models.PROTECT,primary_key=True,)
+    lote = models.OneToOneField(inmueble_models.Lote,on_delete=models.PROTECT,primary_key=True)
 
     def __str__(self):
         return "Macroproyecto {a}".format(a=self.nombreMacroproyecto)
@@ -69,7 +69,7 @@ class SubEtapa(models.Model):
 class Incremento(models.Model):
     numeroDeIncrementos = models.IntegerField(blank=False)
     ''' # Porcentaje Reajuste FACTOR INCREMENTO '''
-    porcenReajusteIncremento = models.DecimalField(max_digits=5,decimal_places=2,blank=False)
+    porcenReajusteIncremento = models.DecimalField(max_digits=5,decimal_places=2,blank=False,null=True)
     tipoIncremento = models.ForeignKey(parametros_models.TipoIncremento, related_name='tipoIncrementoIncr', 
         on_delete=models.PROTECT)
     proyecto = models.ForeignKey(Proyecto, related_name='proyectoIncremento', on_delete=models.PROTECT) 

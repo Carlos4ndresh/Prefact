@@ -28,7 +28,7 @@ class Lote(models.Model):
     mesesDePagoLote = models.CharField(max_length=45, blank=False)
 
     def __str__(self):
-        return "Lote {a}".format(a=self.nombreLote)
+        return "Inmueble {a}".format(a=self.nombreLote)
 
 
 
