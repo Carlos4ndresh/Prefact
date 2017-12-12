@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from proyecto.forms import *
 from . import models
-from django.views.generic import ListView, TemplateView
+from django.views.generic import (TemplateView,ListView,
+                                  DetailView,CreateView,
+                                  UpdateView,DeleteView)
+
 
 
 # Create your views here.
@@ -41,3 +44,5 @@ class ProyectoIndexView(ListView):
     # template_name = 'proyecto/proyecto.html'
     model = models.Proyecto
 
+class CrearMacroProyectoCreateView(CreateView):
+    

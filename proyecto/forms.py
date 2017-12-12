@@ -9,8 +9,13 @@ class MacroproyectoForm(forms.ModelForm):
         """Meta definition for Macroproyectoform."""
 
         model = Macroproyecto
-        # fields = ('',)
-        fields = '__all__'
+        fields = ('nombreMacroproyecto','descripcionMacroproyecto','m2Macroproyecto')
+
+        widgets = {
+            'nombreMacroproyecto' : forms.TextInput(),
+            'descripcionMacroproyecto' : forms.Textarea(),
+            'm2Macroproyecto' : forms.NumberInput
+        }
 
 
 class ProyectoForm(forms.ModelForm):
