@@ -5,5 +5,5 @@ app_name = 'proyecto'
 
 urlpatterns = [
     url(r'^$',views.ProyectoIndexView.as_view(),name='indexProyecto'),
-    # url(r'^proyecto.html',views.proyecto,name='proyectos'),
+    url(r'^proyecto/nuevo/$',views.MacroproyectoCreateView.as_view(),name='nuevoMacro'),
 ]

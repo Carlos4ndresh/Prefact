@@ -22,6 +22,7 @@ class Lote(models.Model):
     valorLote = models.DecimalField(max_digits=20,decimal_places=4)
     valorPorcentajeLote = models.DecimalField(max_digits=5, decimal_places=2, blank=True, 
                                                 default=0, null=True)
+    valorEnPorcentaje = models.BooleanField(default=False)
     porcentajeFinanciarLote = models.DecimalField(max_digits=5,decimal_places=2)
     mesesGraciaInteresesLote = models.IntegerField(blank=True, default=0)
     tasaInteresMensualLote = models.DecimalField(max_digits=5,decimal_places=2)

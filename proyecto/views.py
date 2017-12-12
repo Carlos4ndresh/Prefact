@@ -1,5 +1,7 @@
 from django.shortcuts import render
-from proyecto.forms import *
+from proyecto.forms import MacroproyectoForm
+from inmueble.forms import CrearLoteForm
+from django.contrib.messages.views import SuccessMessageMixin
 from . import models
 from django.views.generic import (TemplateView,ListView,
                                   DetailView,CreateView,
@@ -44,5 +46,23 @@ class ProyectoIndexView(ListView):
     # template_name = 'proyecto/proyecto.html'
     model = models.Proyecto
 
-class CrearMacroProyectoCreateView(CreateView):
-    
+class MacroproyectoCreateView(SuccessMessageMixin, CreateView):
+    template_name = 'macroproyecto/macroproyecto_create.html'
+    form_class = MacroproyectoForm
+    model = models.Macroproyecto
+    second_form_class = CrearLoteForm
+    success_message = 'Proyecto Creado Exitosamente!'
+
+    def get_context_data(self, **kwargs):
+        context = super(MacroproyectoCreateView, self).get_context_data(**kwargs)
+        context['lote_form'] = self.second_form_class
+        return context
+
+    def form_valid(self, form):
+        lote_form = CrearLoteForm(self.request.POST)
+        if lote_form.is_valid():
+            lote = lote_form.save(commit=False)
+            macroproyecto = form.save()
+            macroproyecto.lote.id = lote.id
+            macroproyecto.save()
+        return HttpResponseRedirect(self.get_success_url())
