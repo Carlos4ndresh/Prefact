@@ -61,8 +61,11 @@ class MacroproyectoCreateView(SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         lote_form = CrearLoteForm(self.request.POST)
         if lote_form.is_valid():
-            lote = lote_form.save(commit=False)
-            macroproyecto = form.save()
-            macroproyecto.lote.id = lote.id
+            lote = lote_form.save()
+            macroproyecto = form.save(commit=False)
+            print(lote)
+            # macroproyecto.lote.id = lote.id
+            macroproyecto.lote = lote
+            print(macroproyecto.lote)
             macroproyecto.save()
         return HttpResponseRedirect(self.get_success_url())
