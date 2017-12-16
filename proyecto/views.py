@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 from proyecto.forms import MacroproyectoForm
 from inmueble.forms import CrearLoteForm
+from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from . import models
 from django.views.generic import (TemplateView,ListView,
@@ -43,8 +45,11 @@ def proyecto(request):
  '''
 
 class ProyectoIndexView(ListView):
-    # template_name = 'proyecto/proyecto.html'
     model = models.Proyecto
+
+class MacroproyectoListView(ListView):
+    template_name = 'macroproyecto/macroproyecto_list.html'
+    model = models.Macroproyecto    
 
 class MacroproyectoCreateView(SuccessMessageMixin, CreateView):
     template_name = 'macroproyecto/macroproyecto_create.html'
@@ -52,6 +57,8 @@ class MacroproyectoCreateView(SuccessMessageMixin, CreateView):
     model = models.Macroproyecto
     second_form_class = CrearLoteForm
     success_message = 'Proyecto Creado Exitosamente!'
+    # success_url = reverse_lazy('indexProyecto')
+    success_url = '/proyecto'
 
     def get_context_data(self, **kwargs):
         context = super(MacroproyectoCreateView, self).get_context_data(**kwargs)
@@ -63,9 +70,10 @@ class MacroproyectoCreateView(SuccessMessageMixin, CreateView):
         if lote_form.is_valid():
             lote = lote_form.save()
             macroproyecto = form.save(commit=False)
-            print(lote)
+            # print(lote)
             # macroproyecto.lote.id = lote.id
             macroproyecto.lote = lote
-            print(macroproyecto.lote)
+            # print(macroproyecto.lote)
             macroproyecto.save()
-        return HttpResponseRedirect(self.get_success_url())
+        # return HttpResponseRedirect(self.get_success_url())
+        return HttpResponseRedirect('/proyecto')

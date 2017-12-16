@@ -9,8 +9,8 @@
 
     <h2>Listado de Proyectos</h2>
       <ol>
-        {% for proyectos in proyectos_list %}
-          <h2><li><a href="{{proyecto.id}}/">{{proyecto.nombreProyecto}} </a></li></h2>
+        {% for proyecto in proyecto_list %}
+            <li>{{proyecto.nombreProyecto}}</li>
         {% endfor %}
       </ol>
 
