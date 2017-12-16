@@ -5,16 +5,29 @@
 {% endblock titulo %}
   
 {% block body_block %}
-  <div class="jumbotron">
-
-    <h2>Listado de Macroproyectos</h2>
-      <ol>
-        {% for macroproyecto in macroproyecto_list %}
-            <p>{{macroproyecto.nombreMacroproyecto}}</p>
-        {% endfor %}
-      </ol>
-
-  </div>
-
+<h1 class="page-header">Macroproyectos</h1>
+   <div class="container">
+      <h2>Listado de Macroproyectos</h2>
+      <div class="table-responsive">
+          <table class="table table-striped">
+              <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Metros Cuadrados</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for macroproyecto in macroproyecto_list %}
+                    <tr>
+                      <td>{{ macroproyecto.nombreMacroproyecto }}</td>
+                      <td>{{ macroproyecto.descripcionMacroproyecto }}</td>
+                      <td>{{ macroproyecto.m2Macroproyecto }}</td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+            </table> 
+      </div>                     
+   </div>
 
 {% endblock %}
