@@ -16,11 +16,13 @@
                 </div>
                 <div class="panel-body">
                     {{ form.as_p }}
-                    {{ lote_form.as_table }}
+                    <table>
+                            {{ lote_form.as_table }}
+                    </table>                    
                     <button class="btn btn-primary" type="submit">
                             <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
-                                    Guardar
-                        </button>
+                                    Guardar y Continuar
+                    </button>
                 </div>
             </div>
         </form>
