@@ -30,7 +30,7 @@ class ProyectoForm(forms.ModelForm):
 
         model = Proyecto
         # fields = ('',)
-        fields = '__all__'
+        # fields = '__all__'
         exclude = ('macroproyecto',)
 
 ''' class ProyectoFormSet(BaseFormSet):

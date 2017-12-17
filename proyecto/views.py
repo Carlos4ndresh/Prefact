@@ -48,16 +48,9 @@ class ProyectoIndexView(ListView):
 
 class ProyectoCreateView(CreateView):
     model = models.Proyecto
+    fields = '__all__'
     # template_name = "TEMPLATE_NAME"
     ProyectoFormSet = inlineformset_factory(models.Macroproyecto,model,exclude=('macroproyecto',))
-
-    ''' def get_macroproyecto(self):
-        macroPK = self.request.session['macroproyID']
-        macroproyecto = get_object_or_404(models.Macroproyecto, pk=macroPK)
-        return macroproyecto
-    
-    macroProyectoR = get_macroproyecto(ProyectoCreateView)
-    formset = ProyectoFormSet(macroProyectoR) '''
 
     def form_valid(self,form):
         macroproyecto = get_object_or_404(models.Macroproyecto, pk=self.request.session[macroproyID])
@@ -101,4 +94,4 @@ class MacroproyectoCreateView(SuccessMessageMixin, CreateView):
         return super(MacroproyectoCreateView, self).form_valid(form)
 
     def get_success_url(self):
-        return HttpResponseRedirect(reverse('nuevoProy'))
+        return reverse("proyecto:nuevoProy")
