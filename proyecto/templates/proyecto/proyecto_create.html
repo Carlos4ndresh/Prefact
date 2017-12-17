@@ -1,0 +1,56 @@
+{% extends "plantilla.html" %}
+
+{% block tituloPagina %}
+    <title>Nuevo Macroproyecto</title>
+{% endblock tituloPagina %}
+
+{% block body_block %}
+    <h2>Asociar Proyectos</h3>
+    <p>Proyectos para Macroproyecto: Pepito</p><!--ingresar aquí nombre macroproyecto de página anterior-->
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Proyectos</h3>                    
+                </div>
+                <div class="panel-body">
+                    <table class="table table-condensed">
+                       {{ form.management_form }} 
+                       <thead>
+                           <tr>
+                                {% for field in form.visible_fields %}
+                                    <th>{{ field.label | capfirst }}</th>
+                                {% endfor %}
+                           </tr>            
+                       </thead>
+                       <tbody>
+                           <tr class="formset_row">
+                                {% for field in form.visible_fields %}
+                                    <td>
+                                        {% if forloop.first %}
+                                            {% for hidden in form.hidden_fields %}
+                                                {{ hidden }}
+                                            {% endfor %}
+                                        {% endif %}
+                                        {{ field.errors.as_ul }}
+                                        {{ field }}
+                                    </td>
+                                {% endfor %}
+                           </tr>
+                       </tbody>
+                    </table>
+                    <input type="submit" value="Guardar"/> <a href="{% url 'indexProyecto' %}">De Vuelta a Macroproyectos/a>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock body_block %}
+
+<script src="{% static 'js/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+    $('.formset_row').formset({
+        addText: 'Añadir',
+        deleteText: 'Quitar',
+    });
+</script>

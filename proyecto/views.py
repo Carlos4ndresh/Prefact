@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
-from proyecto.forms import MacroproyectoForm
+from proyecto.forms import MacroproyectoForm, ProyectoForm
+# from django.forms.formsets import BaseFormSet, formset_factory
+from django.forms import BaseInlineFormSet, inlineformset_factory
 from inmueble.forms import CrearLoteForm
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from . import models
 from django.views.generic import (TemplateView,ListView,
@@ -40,12 +42,30 @@ def proyecto(request):
     return render(request,'proyecto/proyecto.html',contexto)
     
  '''
-''' class ProyectoIndexView(TemplateView):
-    template_name = 'proyecto/proyecto.html'
- '''
-
 class ProyectoIndexView(ListView):
     model = models.Proyecto
+
+
+class ProyectoCreateView(CreateView):
+    model = models.Proyecto
+    # template_name = "TEMPLATE_NAME"
+    ProyectoFormSet = inlineformset_factory(models.Macroproyecto,model,exclude=('macroproyecto',))
+
+    ''' def get_macroproyecto(self):
+        macroPK = self.request.session['macroproyID']
+        macroproyecto = get_object_or_404(models.Macroproyecto, pk=macroPK)
+        return macroproyecto
+    
+    macroProyectoR = get_macroproyecto(ProyectoCreateView)
+    formset = ProyectoFormSet(macroProyectoR) '''
+
+    def form_valid(self,form):
+        macroproyecto = get_object_or_404(models.Macroproyecto, pk=self.request.session[macroproyID])
+        formset = ProyectoFormSet(instance=macroproyecto)
+        if formset.is_valid():
+            formset.save()
+            return redirect('indexProyecto')
+
 
 class MacroproyectoListView(ListView):
     template_name = 'macroproyecto/macroproyecto_list.html'
@@ -58,7 +78,7 @@ class MacroproyectoCreateView(SuccessMessageMixin, CreateView):
     second_form_class = CrearLoteForm
     success_message = 'Proyecto Creado Exitosamente!'
     # success_url = reverse_lazy('indexProyecto')
-    success_url = '/proyecto'
+    # success_url = 'nuevoProy'
 
     def get_context_data(self, **kwargs):
         context = super(MacroproyectoCreateView, self).get_context_data(**kwargs)
@@ -75,5 +95,10 @@ class MacroproyectoCreateView(SuccessMessageMixin, CreateView):
             macroproyecto.lote = lote
             # print(macroproyecto.lote)
             macroproyecto.save()
+            self.request.session['macroproyID'] = macroproyecto.pk
         # return HttpResponseRedirect(self.get_success_url())
-        return HttpResponseRedirect('/proyecto')
+        # return HttpResponseRedirect('/proyecto')
+        return super(MacroproyectoCreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return HttpResponseRedirect(reverse('nuevoProy'))

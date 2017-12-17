@@ -15,7 +15,7 @@ class Macroproyecto(models.Model):
         return "Macroproyecto {a}".format(a=self.nombreMacroproyecto)
 
     def get_absolute_url(self):        
-        return reverse('', kwargs={'pk': self.pk})
+        return reverse('macro_detail', kwargs={'pk': self.pk})
 
 
 class Proyecto(models.Model):
