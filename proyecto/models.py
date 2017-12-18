@@ -19,7 +19,7 @@ class Macroproyecto(models.Model):
 
 
 class Proyecto(models.Model):
-    nombreProyecto = models.CharField(max_length=255, blank=False, unique=True) 
+    nombreProyecto = models.CharField(max_length=255, blank=False, unique=False) 
     descripcionProyecto = models.CharField(max_length=255, blank=True, null=True)
     m2PorProyecto = models.IntegerField()
     macroproyecto = models.ForeignKey(Macroproyecto, related_name='macroproyecto', on_delete=models.PROTECT)

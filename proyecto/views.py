@@ -126,6 +126,8 @@ class MacroproyectoCreateView(SuccessMessageMixin, CreateView):
             if lista_proyectos.is_valid():
                 lista_proyectos.instance = macroproyecto
                 lista_proyectos.save()
+            else:
+                return self.render_to_response(self.get_context_data(form=form,lista_proyectos=lista_proyectos))
             self.request.session['macroproyID'] = macroproyecto.pk
         return super(MacroproyectoCreateView, self).form_valid(form)
 
