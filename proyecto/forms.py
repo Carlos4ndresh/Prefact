@@ -22,8 +22,6 @@ class MacroproyectoForm(forms.ModelForm):
 
 class ProyectoForm(forms.ModelForm):
     """Form definition for Proyecto."""
-    # proyectoFormSet = inlineformset_factory(Macroproyecto,Proyecto,ProyectoForm)
-
 
     class Meta:
         """Meta definition for Proyectoform."""
@@ -32,6 +30,9 @@ class ProyectoForm(forms.ModelForm):
         # fields = ('',)
         # fields = '__all__'
         exclude = ('macroproyecto',)
+    
+
+ProyectoFormSet = inlineformset_factory(Macroproyecto,Proyecto,form=ProyectoForm, extra=3,exclude=('macroproyecto',))
 
 ''' class ProyectoFormSet(BaseFormSet):
 
