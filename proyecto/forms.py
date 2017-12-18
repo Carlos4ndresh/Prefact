@@ -32,7 +32,7 @@ class ProyectoForm(forms.ModelForm):
         exclude = ('macroproyecto',)
     
 
-ProyectoFormSet = inlineformset_factory(Macroproyecto,Proyecto,form=ProyectoForm, extra=3,exclude=('macroproyecto',))
+ProyectoFormSet = inlineformset_factory(Macroproyecto,Proyecto,form=ProyectoForm, extra=5,exclude=('macroproyecto',))
 
 ''' class ProyectoFormSet(BaseFormSet):
 
