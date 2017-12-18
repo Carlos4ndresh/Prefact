@@ -1,6 +1,7 @@
 from django.db import models
 from inmueble import models as inmueble_models
 from parametros import models as parametros_models
+from django.core.urlresolvers import reverse
 
 ''' Clases de Etapas de prefactibilidad '''
 
@@ -8,20 +9,25 @@ class Macroproyecto(models.Model):
     nombreMacroproyecto = models.CharField(max_length=45, blank=False)
     descripcionMacroproyecto = models.CharField(max_length=255, blank=True, null=True)
     m2Macroproyecto = models.IntegerField()
-    lote = models.OneToOneField(inmueble_models.Lote,on_delete=models.PROTECT,primary_key=True,)
+    lote = models.OneToOneField(inmueble_models.Lote,on_delete=models.PROTECT,primary_key=True,related_name='lote')
 
     def __str__(self):
         return "Macroproyecto {a}".format(a=self.nombreMacroproyecto)
 
+    def get_absolute_url(self):        
+        return reverse('macro_detail', kwargs={'pk': self.pk})
+
 
 class Proyecto(models.Model):
-    nombreProyecto = models.CharField(max_length=255, blank=False,) 
+    nombreProyecto = models.CharField(max_length=255, blank=False, unique=False) 
     descripcionProyecto = models.CharField(max_length=255, blank=True, null=True)
     m2PorProyecto = models.IntegerField()
-    macroproyecto = models.ForeignKey(Macroproyecto, related_name='+', on_delete=models.PROTECT)
+    macroproyecto = models.ForeignKey(Macroproyecto, related_name='macroproyecto', on_delete=models.PROTECT)
 
     def __str__(self):
         return "Proyecto: {a}".format(a=self.nombreProyecto) 
+
+    
 
 class Venta(models.Model):
     velocidadVentas = models.IntegerField(blank=False)
@@ -69,7 +75,7 @@ class SubEtapa(models.Model):
 class Incremento(models.Model):
     numeroDeIncrementos = models.IntegerField(blank=False)
     ''' # Porcentaje Reajuste FACTOR INCREMENTO '''
-    porcenReajusteIncremento = models.DecimalField(max_digits=5,decimal_places=2,blank=False)
+    porcenReajusteIncremento = models.DecimalField(max_digits=5,decimal_places=2,blank=False,null=True)
     tipoIncremento = models.ForeignKey(parametros_models.TipoIncremento, related_name='tipoIncrementoIncr', 
         on_delete=models.PROTECT)
     proyecto = models.ForeignKey(Proyecto, related_name='proyectoIncremento', on_delete=models.PROTECT) 

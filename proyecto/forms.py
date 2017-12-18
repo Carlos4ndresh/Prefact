@@ -1,5 +1,8 @@
-from django import forms
-from proyecto.models import *
+from django import forms 
+from proyecto.models import (Proyecto, Macroproyecto, Venta, Etapa, 
+                            SubEtapa, Incremento, ProyeccionIPC, TablaIPC)
+from django.forms import BaseInlineFormSet, inlineformset_factory
+                            
 
 class MacroproyectoForm(forms.ModelForm):
     """Form definition for Macroproyecto."""
@@ -8,8 +11,13 @@ class MacroproyectoForm(forms.ModelForm):
         """Meta definition for Macroproyectoform."""
 
         model = Macroproyecto
-        # fields = ('',)
-        fields = '__all__'
+        fields = ('nombreMacroproyecto','descripcionMacroproyecto','m2Macroproyecto')
+
+        widgets = {
+            'nombreMacroproyecto' : forms.TextInput(),
+            'descripcionMacroproyecto' : forms.Textarea(),
+            'm2Macroproyecto' : forms.NumberInput
+        }
 
 
 class ProyectoForm(forms.ModelForm):
@@ -20,8 +28,29 @@ class ProyectoForm(forms.ModelForm):
 
         model = Proyecto
         # fields = ('',)
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ('macroproyecto',)
+    
 
+ProyectoFormSet = inlineformset_factory(Macroproyecto,Proyecto,form=ProyectoForm, extra=5,exclude=('macroproyecto',))
+
+''' class ProyectoFormSet(BaseFormSet):
+
+    def clean(self):
+        """
+        Validación para impedir proyectos con nombres duplicados
+        """
+        if any(self.errors):
+            return
+
+        nombres = []
+        duplicados = False
+
+        for form in self.forms:
+            if form.cleaned_data:
+                nombre = form.cleaned_data['nombreProyecto']
+
+ '''
 
 class VentaForm(forms.ModelForm):
     """Form definition for Venta."""

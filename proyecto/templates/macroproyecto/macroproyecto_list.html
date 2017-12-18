@@ -1,0 +1,31 @@
+{% extends 'plantilla.html' %}
+
+{% block titulo %}
+  <title>Proyectos</title>
+{% endblock titulo %}
+  
+{% block body_block %}
+<h1 class="page-header">Macroproyectos</h1>
+      <h2>Listado de Macroproyectos</h2>
+      <div class="table-responsive">
+          <table class="table table-striped">
+              <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Metros Cuadrados</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for macroproyecto in macroproyecto_list %}
+                    <tr>
+                      <td>{{ macroproyecto.nombreMacroproyecto }}</td>
+                      <td>{{ macroproyecto.descripcionMacroproyecto }}</td>
+                      <td>{{ macroproyecto.m2Macroproyecto }}</td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+            </table> 
+      </div>                     
+
+{% endblock %}

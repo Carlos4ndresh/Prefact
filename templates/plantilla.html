@@ -31,11 +31,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">TatiPrefa</a>
+              <a class="navbar-brand" href="{% url 'home' %}">TatiPrefa</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a class="navbar-link" href="{% url 'parametros' %}">Parametros</a></li>       
+                <li><a class="navbar-link" href="{% url 'proyecto:indexProyecto' %}">Proyectos</a></li>  
                 <li><a class="navbar-link" href="{% url 'admin:index' %}">Admin</a></li>            
             </ul>
             <!-- <form class="navbar-form navbar-right">
@@ -84,5 +85,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
     integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
     crossorigin="anonymous"></script>
+    {% block js_script %}
+      
+    {% endblock js_script %}
 </body>
 </html>
