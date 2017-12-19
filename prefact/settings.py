@@ -80,14 +80,7 @@ WSGI_APPLICATION = 'prefact.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-
-''' DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
- '''
+''' 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -98,6 +91,32 @@ DATABASES = {
         'PORT': '33066',
     }
 }
+ '''
+
+if 'DB_NAME' in os.environ:
+    # Running the Docker image
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ['DB_NAME'],
+            'USER': os.environ['DB_USER'],
+            'PASSWORD': os.environ['DB_PASS'],
+            'HOST': os.environ['DB_SERVICE'],
+            'PORT': os.environ['DB_PORT']
+        }
+    }
+else:
+    # Building the Docker image
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'immbodb',
+            'USER': 'factiUser',
+            'PASSWORD': 'prefact2017',
+            'HOST': '127.0.0.1',
+            'PORT': '33066',
+        }
+    }
 
 
 # Password validation
