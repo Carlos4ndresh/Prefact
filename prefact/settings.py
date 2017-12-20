@@ -24,10 +24,17 @@ STATIC_DIR = os.path.join(BASE_DIR,'static')
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '!x2p(939u@8#xr9keb*kvdf^i9%5d7kh2%6b66f0t+lfl4wt$y'
+if 'SECRET_KEY' in os.environ:
+    SECRET_KEY = os.environ['SECRET_KEY']
+else:
+    SECRET_KEY = '!x2p(939u@8#xr9keb*kvdf^i9%5d7kh2%6b66f0t+lfl4wt$y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if 'PROD_MODE' in os.environ:
+    DEBUG = False
+else:
+    DEBUG = True
+
 
 ALLOWED_HOSTS = []
 
@@ -106,7 +113,7 @@ if 'DB_NAME' in os.environ:
         }
     }
 else:
-    # Building the Docker image
+    # local
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
