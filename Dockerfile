@@ -20,9 +20,9 @@ VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/"]
 # COPY $DOCKYARD_SRC $DOCKYARD_SRVPROJ
 
 WORKDIR $DOCKYARD_SRVPROJ
-# RUN git clone https://github.com/Carlos4ndresh/Prefact.git
+RUN git clone https://github.com/Carlos4ndresh/Prefact.git
 
-ADD . $DOCKYARD_SRVPROJ/Prefact/
+# ADD . $DOCKYARD_SRVPROJ/Prefact/
 
 # Install Python dependencies
 RUN pip install -r $DOCKYARD_SRVPROJ/Prefact/requirements.txt
