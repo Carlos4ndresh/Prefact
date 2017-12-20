@@ -14,7 +14,7 @@
         <div class="jumbotron">
             <h3>Por favor indique que necesita</h3>
             <p><a href="{% url 'proyecto:nuevoMacro' %}">Iniciar Nuevo Flujo de Factibilidad</a></p>
-            <p><a href="http://">Ver Proyectos Registrados</a></p>
+            <p><a href="{% url 'proyecto:indexProyecto' %}">Ver Proyectos Registrados</a></p>
         </div>
     </div>
 {% endblock body_block %}

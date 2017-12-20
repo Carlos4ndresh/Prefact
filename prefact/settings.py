@@ -32,11 +32,12 @@ else:
 # SECURITY WARNING: don't run with debug turned on in production!
 if 'PROD_MODE' in os.environ:
     DEBUG = False
+    ALLOWED_HOSTS = [prefactweb,'127.0.0.1']
 else:
     DEBUG = True
 
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
 
 
 # Application definition
