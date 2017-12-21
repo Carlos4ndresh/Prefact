@@ -37,6 +37,6 @@ RUN pip install -r $DOCKYARD_SRVPROJ/Prefact/requirements.txt
 EXPOSE 8000
 
 # Copy entrypoint script into the image
-WORKDIR $DOCKYARD_SRVPROJ
+WORKDIR $DOCKYARD_SRVPROJ/Prefact
 COPY ./docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
