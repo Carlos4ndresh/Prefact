@@ -14,11 +14,13 @@ ENV DOCKYARD_SRVPROJ=/srv/Prefact
 # Create application subdirectories
 WORKDIR $DOCKYARD_SRVHOME
 RUN mkdir media static logs
-VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/"]
+# VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/"]
 
 RUN mkdir web
 WORKDIR $DOCKYARD_SRVHOME/web
 RUN mkdir static
+
+VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/","$DOCKYARD_SRVHOME/web/static"]
 
 # Copy application source code to SRCDIR
 # COPY $DOCKYARD_SRC $DOCKYARD_SRVPROJ
