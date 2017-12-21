@@ -16,7 +16,9 @@ WORKDIR $DOCKYARD_SRVHOME
 RUN mkdir media static logs
 VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/"]
 
-RUN mkdir /srv/web/Prefact/static
+RUN mkdir web
+WORKDIR $DOCKYARD_SRVHOME/web
+RUN mkdir static
 
 # Copy application source code to SRCDIR
 # COPY $DOCKYARD_SRC $DOCKYARD_SRVPROJ

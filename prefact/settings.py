@@ -33,7 +33,7 @@ else:
 if 'PROD_MODE' in os.environ:
     DEBUG = False
     ALLOWED_HOSTS = ['127.0.0.1']
-    STATIC_ROOT = '/srv/Prefact/static'
+    STATIC_ROOT = '/srv/web/static'
 else:
     DEBUG = True
 
