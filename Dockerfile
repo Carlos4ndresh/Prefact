@@ -25,7 +25,7 @@ RUN git clone https://github.com/Carlos4ndresh/Prefact.git
 # ADD . $DOCKYARD_SRVPROJ/
 
 # Install Python dependencies
-RUN pip install -r $DOCKYARD_SRVPROJ/requirements.txt
+RUN pip install -r $DOCKYARD_SRVPROJ/Prefact/requirements.txt
 
 # Port to expose
 EXPOSE 8000
