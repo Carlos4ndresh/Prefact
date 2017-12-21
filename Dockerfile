@@ -1,7 +1,7 @@
 # FROM python:latest
 FROM alpine
 
-RUN apk add --update netcat python3 py3-pip gcc python3-dev py3-cffi file git curl autoconf automake py3-cryptography linux-headers musl-dev libffi-dev openssl-dev build-base
+RUN apk add --update python3 py3-pip gcc python3-dev py3-cffi file git curl autoconf automake py3-cryptography linux-headers musl-dev libffi-dev openssl-dev build-base
 
 # Set the file maintainer (your name - the file's author)
 MAINTAINER Carlos Herrera
