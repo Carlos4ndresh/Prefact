@@ -1,4 +1,7 @@
-FROM python:latest
+# FROM python:latest
+FROM alpine
+
+RUN apk add --update netcat python3 py3-pip gcc python3-dev py3-cffi file git curl autoconf automake py3-cryptography linux-headers musl-dev libffi-dev openssl-dev build-base
 
 # Set the file maintainer (your name - the file's author)
 MAINTAINER Carlos Herrera
@@ -10,8 +13,6 @@ ENV DOCKYARD_SRC=Prefact
 ENV DOCKYARD_SRVHOME=/srv
 # Directory in container for project source files
 ENV DOCKYARD_SRVPROJ=/srv/Prefact
-
-RUN apk add --update netcat 
 
 # Create application subdirectories
 WORKDIR $DOCKYARD_SRVHOME
