@@ -32,7 +32,7 @@ else:
 # SECURITY WARNING: don't run with debug turned on in production!
 if 'PROD_MODE' in os.environ:
     DEBUG = False
-    ALLOWED_HOSTS = ['127.0.0.1','localhost','nginxweb']
+    ALLOWED_HOSTS = ['127.0.0.1','localhost','nginxweb','prefactweb']
     STATIC_ROOT = '/srv/web/static'
 else:
     DEBUG = True

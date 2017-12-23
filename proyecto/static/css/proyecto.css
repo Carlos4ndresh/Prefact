@@ -1,0 +1,16 @@
+body { 
+    padding-top: 50px; 
+}
+
+jumbotron {
+    padding: 10px;
+}
+
+h3{
+    color: brown
+}
+
+p{
+    color: blue;
+    text-decoration: underline;    
+}
