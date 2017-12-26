@@ -19,7 +19,8 @@
               <tbody>
                   {% for macroproyecto in macroproyecto_list %}
                     <tr>
-                      <td>{{ macroproyecto.nombreMacroproyecto }}</td>
+                      {% comment %} <td>{{ macroproyecto.nombreMacroproyecto }}</td> {% endcomment %}
+                      <td><a href="{% url 'proyecto:macro_edit' pk=macroproyecto.pk %}">{{ macroproyecto.nombreMacroproyecto }}</a></td>
                       <td>{{ macroproyecto.descripcionMacroproyecto }}</td>
                       <td>{{ macroproyecto.m2Macroproyecto }}</td>
                     </tr>

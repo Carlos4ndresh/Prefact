@@ -149,3 +149,81 @@ class MacroproyectoCreateView(SuccessMessageMixin, CreateView):
     def get_success_url(self):
         # return reverse("proyecto:nuevoProy")
         return reverse("proyecto:indexProyecto")
+
+class MacroproyectoEditView(UpdateView):
+    template_name = 'macroproyecto/macroproyecto_detail.html'
+    success_url = reverse_lazy("proyecto:indexProyecto")
+    form_class = MacroproyectoForm
+    model = models.Macroproyecto
+    second_form_class = CrearLoteForm
+    # success_message = 'Proyecto Creado Exitosamente!'
+
+    def get_context_data(self, **kwargs):
+        context = super(MacroproyectoEditView, self).get_context_data(**kwargs)
+        print(context)
+        # context['lote_form'] = self.second_form_class
+        context['lote_form'] = CrearLoteForm(instance=context['macroproyecto'].lote)
+
+        if self.request.POST:
+
+            context['lista_proyectos'] = ProyectoFormSet(self.request.POST, instance=self.object)
+
+        else:
+            
+            context['lista_proyectos'] = ProyectoFormSet(instance=self.object)
+            
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()        
+        lista_proyectos = context['lista_proyectos']
+        # lote_form = context['lote_form']
+        
+        lote_form = CrearLoteForm(self.request.POST)
+        print(lote_form)
+
+        if lote_form.is_valid():
+            print("poraqui1")
+            self.object = form.save()
+            print(lote_form.instance)
+            lote_form.instance = self.get_object()
+            print(lote_form)
+            lote_form.save()
+            print(self.get_object())
+            # macroproyecto = form.save(commit=False)
+            # macroproyecto = form.save()
+            # print(lote)
+            # macroproyecto.lote = lote
+            # print(macroproyecto.lote)
+            # macroproyecto.save()
+
+            if lista_proyectos.is_valid():
+                print("poraqui3")
+                # lista_proyectos.instance = macroproyecto
+                # lista_proyectos.save()
+
+                lista_proyectos.instance = self.object
+                lista_proyectos.save()
+
+            else:
+                
+                print("poraqui2")
+                return self.render_to_response(self.get_context_data(form=form,lista_proyectos=lista_proyectos))
+
+            # self.request.session['macroproyID'] = macroproyecto.pk
+        return super(MacroproyectoEditView, self).form_valid(form)
+
+    def form_invalid(self, form, lista_proyectos):
+        """
+        Called if a form is invalid. Re-renders the context data with the
+        data-filled forms and errors.
+
+        Args:
+            form: Assignment Form
+            assignment_question_form: Assignment Question Form
+        """
+        return self.render_to_response(
+                 self.get_context_data(form=form,
+                                       lista_proyectos=lista_proyectos
+                                       )
+        )

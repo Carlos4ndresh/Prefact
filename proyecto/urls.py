@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^nuevomacro/$',views.MacroproyectoCreateView.as_view(),name='nuevoMacro'),
     url(r'^nuevoproyecto/$',views.ProyectoCreateView.as_view(),name='nuevoProy'),
     # url(r'^macroproydetalle/(?P<pk>\d+)$',views.MacroproyectoDetailView.as_view(),name='macro_detail'),
+    url(r'^macroproydetalle/(?P<pk>\d+)/edit/$',views.MacroproyectoEditView.as_view(),name='macro_edit'),
 ]

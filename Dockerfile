@@ -37,7 +37,7 @@ RUN git clone https://github.com/Carlos4ndresh/Prefact.git
 RUN pip install -r $DOCKYARD_SRVPROJ/Prefact/requirements.txt
 
 # Port to expose
-EXPOSE 8000
+# EXPOSE 8000
 
 # Copy entrypoint script into the image
 WORKDIR $DOCKYARD_SRVPROJ/Prefact
