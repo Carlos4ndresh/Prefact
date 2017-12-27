@@ -38,7 +38,7 @@ tail -n 0 -f /srv/logs/*.log &
 echo Starting Gunicorn.
 exec gunicorn prefact.wsgi:application \
     --name Defina \
-    --bind 0.0.0.0:8000 \
+    --bind 0.0.0.0:8008 \
     --workers 3 \
     --log-level=info \
     --log-file=/srv/logs/gunicorn.log \
