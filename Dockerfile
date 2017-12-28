@@ -1,5 +1,5 @@
-FROM python:latest
-# FROM alpine
+# FROM python:latest
+FROM python:alpine
 
 # RUN apk add --update netcat python3 py3-pip gcc python3-dev py3-cffi    file git curl autoconf automake py3-cryptography linux-headers musl-dev libffi-dev openssl-dev build-base
 
@@ -28,10 +28,15 @@ VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/","$DOCKYARD_SRVHOME
 # Copy application source code to SRCDIR
 # COPY $DOCKYARD_SRC $DOCKYARD_SRVPROJ
 
-WORKDIR $DOCKYARD_SRVPROJ
-RUN git clone https://github.com/Carlos4ndresh/Prefact.git
+# WORKDIR $DOCKYARD_SRVPROJ
+# RUN git clone https://github.com/Carlos4ndresh/Prefact.git
 
 # ADD . $DOCKYARD_SRVPROJ/
+
+RUN apk update && \
+	apk upgrade && \
+	apk --no-cache add tar curl tini \
+    && apk --no-cache add --virtual devs gcc make python wget unzip ca-certificates bash git \
 
 # Install Python dependencies
 RUN pip install -r $DOCKYARD_SRVPROJ/Prefact/requirements.txt

@@ -1,6 +1,8 @@
 #!/bin/bash
 sleep 20;
 
+git clone https://github.com/Carlos4ndresh/Prefact.git /srv/Prefact/Prefact
+
 python manage.py migrate                  # Apply database migrations
 python manage.py collectstatic --noinput  # Collect static files
 
