@@ -33,13 +33,12 @@ VOLUME ["$DOCKYARD_SRVHOME/media/", "$DOCKYARD_SRVHOME/logs/","$DOCKYARD_SRVHOME
 
 # ADD . $DOCKYARD_SRVPROJ/
 
-RUN apk update && \
-	apk upgrade && \
-	apk --no-cache add tar curl tini \
-    && apk --no-cache add --virtual devs gcc make python wget unzip ca-certificates bash git \
+RUN apk update
+RUN apk upgrade
+RUN	apk --no-cache add tar curl tini devs gcc make python wget unzip ca-certificates bash git \
 
 # Install Python dependencies
-RUN pip install -r $DOCKYARD_SRVPROJ/Prefact/requirements.txt
+# RUN pip install -r $DOCKYARD_SRVPROJ/Prefact/requirements.txt
 
 # Port to expose
 # EXPOSE 8000
