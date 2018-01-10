@@ -16,34 +16,7 @@ from django.db import transaction
 
 
 # Create your views here.
-''' def index(request):
-   # return render(request,'inmueble/inmueble.html')
-    return render(request,'proyecto/index.html')
 
-def proyecto(request):
-    formMacroProyecto = MacroproyectoForm()
-    formProyecto = ProyectoForm()
-
-    if request.method == 'POST':
-        formMacroProyecto = MacroproyectoForm(request.POST)
-        formProyecto = ProyectoForm(request.POST)
-
-        if formMacroProyecto.is_valid():
-            formMacroProyecto.save(commit=True)
-            formProyecto.save(commit=True)
-            return index(request)
-        else:
-            print("ERROR! Valide la form")
-        
-
-    contexto = {
-        'macroproyectoForm' : formMacroProyecto,
-        'proyectoForm' : formProyecto,
-    } 
-    
-    return render(request,'proyecto/proyecto.html',contexto)
-    
- '''
 class ProyectoIndexView(ListView):
     model = models.Proyecto
 
@@ -57,31 +30,6 @@ class ProyectoCreateView(CreateView):
     # ProyectoFormSet = inlineformset_factory(models.Macroproyecto,model, form=ProyectoForm, exclude=('macroproyecto',), min_num=1,extra=3)
     
     # formsetIn = ProyectoFormSet(instance=proy)
-
-'''     def get_context_data(self,**kwargs):
-        context = super().get_context_data(**kwargs)
-        context["macroproyecto"] = get_object_or_404(models.Macroproyecto, pk=self.request.session['macroproyID'])
-        print("joder")
-        if self.request.POST:
-            context['lista_proyectos'] = ProyectoFormSet(self.request.POST)
-        else:
-            context['lista_proyectos'] = ProyectoFormSet()
-        return context
-
-    def form_valid(self,form):
-        context = self.get_context_data(**kwargs)
-        macroproyecto = context["macroproyecto"]
-        print("pase por aquí {a}"+macroproyecto)
-        lista_proyectos = context['lista_proyectos']
-        if lista_proyectos.is_valid():
-            print(macroproyecto)
-            lista_proyectos.instance = macroproyecto
-            print(lista_proyectos)
-            lista_proyectos.save()
-        return super(ProyectoCreateView, self).form_valid(form)
-    
-    def get_success_url(self):
-        return reverse_lazy('proyecto:indexProyecto') '''
 
 class MacroproyectoListView(ListView):
     template_name = 'macroproyecto/macroproyecto_list.html'
@@ -107,15 +55,7 @@ class MacroproyectoCreateView(SuccessMessageMixin, CreateView):
         context = self.get_context_data()        
         lista_proyectos = context['lista_proyectos']
         lote_form = CrearLoteForm(self.request.POST)
-        '''         if lote_form.is_valid():
-            lote = lote_form.save()
-            macroproyecto = form.save(commit=False)
-            # print(lote)
-            macroproyecto.lote = lote
-            # print(macroproyecto.lote)
-            macroproyecto.save()
-            # self.request.session['macroproyID'] = macroproyecto.pk
-        return super(MacroproyectoCreateView, self).form_valid(form) '''
+
         if lote_form.is_valid():
             lote = lote_form.save()
             macroproyecto = form.save(commit=False)
@@ -160,8 +100,8 @@ class MacroproyectoEditView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(MacroproyectoEditView, self).get_context_data(**kwargs)
-        print(context)
-        # context['lote_form'] = self.second_form_class
+        # print(context)
+        context['lote_form'] = self.second_form_class
         context['lote_form'] = CrearLoteForm(instance=context['macroproyecto'].lote)
 
         if self.request.POST:
@@ -179,23 +119,17 @@ class MacroproyectoEditView(UpdateView):
         lista_proyectos = context['lista_proyectos']
         # lote_form = context['lote_form']
         
+        # print(self.request.POST)
+
         lote_form = CrearLoteForm(self.request.POST)
+
         print(lote_form)
 
-        if lote_form.is_valid():
+        if lote_form.is_valid() and form.is_valid():
             print("poraqui1")
-            self.object = form.save()
-            print(lote_form.instance)
-            lote_form.instance = self.get_object()
-            print(lote_form)
-            lote_form.save()
-            print(self.get_object())
-            # macroproyecto = form.save(commit=False)
-            # macroproyecto = form.save()
-            # print(lote)
-            # macroproyecto.lote = lote
-            # print(macroproyecto.lote)
-            # macroproyecto.save()
+            
+
+
 
             if lista_proyectos.is_valid():
                 print("poraqui3")
@@ -210,10 +144,13 @@ class MacroproyectoEditView(UpdateView):
                 print("poraqui2")
                 return self.render_to_response(self.get_context_data(form=form,lista_proyectos=lista_proyectos))
 
-            # self.request.session['macroproyID'] = macroproyecto.pk
-        return super(MacroproyectoEditView, self).form_valid(form)
+            return super(MacroproyectoEditView, self).form_valid(form)
 
-    def form_invalid(self, form, lista_proyectos):
+        else:
+            return self.render_to_response(self.get_context_data(form=form,lote_form=lote_form,lista_proyectos=lista_proyectos))
+        # return super(MacroproyectoEditView, self).form_valid(form)
+
+    def form_invalid(self, form, lote_form,lista_proyectos):
         """
         Called if a form is invalid. Re-renders the context data with the
         data-filled forms and errors.
@@ -222,8 +159,10 @@ class MacroproyectoEditView(UpdateView):
             form: Assignment Form
             assignment_question_form: Assignment Question Form
         """
+        print("aqui invalido")
         return self.render_to_response(
                  self.get_context_data(form=form,
+                                        lote_form=lote_form,
                                        lista_proyectos=lista_proyectos
                                        )
         )

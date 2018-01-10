@@ -32,25 +32,11 @@ class ProyectoForm(forms.ModelForm):
         exclude = ('macroproyecto',)
     
 
-ProyectoFormSet = inlineformset_factory(Macroproyecto,Proyecto,form=ProyectoForm, extra=5,exclude=('macroproyecto',))
-
-''' class ProyectoFormSet(BaseFormSet):
-
-    def clean(self):
-        """
-        Validación para impedir proyectos con nombres duplicados
-        """
-        if any(self.errors):
-            return
-
-        nombres = []
-        duplicados = False
-
-        for form in self.forms:
-            if form.cleaned_data:
-                nombre = form.cleaned_data['nombreProyecto']
-
- '''
+ProyectoFormSet = inlineformset_factory(Macroproyecto,Proyecto,form=ProyectoForm, extra=5,exclude=('macroproyecto',), labels={
+            'nombreProyecto': ("Nombre"),
+            'descripcionProyecto': ("Descripción"),
+            'm2PorProyecto': ("Metros Cuadrados"),
+            }, can_delete=True)
 
 class VentaForm(forms.ModelForm):
     """Form definition for Venta."""

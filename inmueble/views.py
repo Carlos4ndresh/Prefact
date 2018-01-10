@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from inmueble.forms import NuevoLote
+from models import Lote
 
 
-def index(request):
+''' def index(request):
     return render(request,'inmueble/inmueble.html')
 
 def lote(request):
@@ -19,3 +20,9 @@ def lote(request):
             print("ERROR! Valide la form")
     
     return render(request,'inmueble/lote.html',{'formLote':formLote})
+ '''
+ 
+ class LotesList(ListView):
+     model = Lote
+     context_object_name = 'lotes'
+     template_name=''
