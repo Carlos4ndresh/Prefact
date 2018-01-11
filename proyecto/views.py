@@ -101,35 +101,39 @@ class MacroproyectoEditView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(MacroproyectoEditView, self).get_context_data(**kwargs)
         # print(context)
-        context['lote_form'] = self.second_form_class
-        context['lote_form'] = CrearLoteForm(instance=context['macroproyecto'].lote)
+        # context['lote_form'] = self.second_form_class
+        # context['lote_form'] = CrearLoteForm(instance=context['macroproyecto'].lote)
 
         if self.request.POST:
 
             context['lista_proyectos'] = ProyectoFormSet(self.request.POST, instance=self.object)
+            context['lote_form'] = CrearLoteForm(self.request.POST, instance=context['macroproyecto'].lote)
 
         else:
             
             context['lista_proyectos'] = ProyectoFormSet(instance=self.object)
+            context['lote_form'] = CrearLoteForm(instance=context['macroproyecto'].lote)
             
         return context
 
     def form_valid(self, form):
         context = self.get_context_data()        
         lista_proyectos = context['lista_proyectos']
-        # lote_form = context['lote_form']
-        
-        # print(self.request.POST)
 
-        lote_form = CrearLoteForm(self.request.POST)
+        # lote_form = CrearLoteForm(self.request.POST)
+        lote_form = context['lote_form']
 
         print(lote_form)
 
         if lote_form.is_valid() and form.is_valid():
-            print("poraqui1")
+            print("poraqui1")            
             
+            macroproyecto = form.save()
+            macroproyecto.lote = lote_form.save()
 
-
+            macroproyecto.save()
+            
+                        
 
             if lista_proyectos.is_valid():
                 print("poraqui3")
@@ -142,7 +146,7 @@ class MacroproyectoEditView(UpdateView):
             else:
                 
                 print("poraqui2")
-                return self.render_to_response(self.get_context_data(form=form,lista_proyectos=lista_proyectos))
+                return self.render_to_response(self.get_context_data(form=form,lote_form=lote_form,lista_proyectos=lista_proyectos))            
 
             return super(MacroproyectoEditView, self).form_valid(form)
 
