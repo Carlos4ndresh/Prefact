@@ -47,6 +47,7 @@ class VentaForm(forms.ModelForm):
         model = Venta
         # fields = ('',)
         fields = '__all__'
+        # exclude = ()
 
 class EtapaForm(forms.ModelForm):
     """Form definition for Etapa."""
