@@ -1,6 +1,6 @@
 from django import forms 
 from proyecto.models import (Proyecto, Macroproyecto, Venta, Etapa, 
-                            SubEtapa, Incremento, ProyeccionIPC, TablaIPC)
+                            SubEtapa, ProyeccionIPC, TablaIPC)
 from django.forms import BaseInlineFormSet, inlineformset_factory
                             
 
@@ -47,7 +47,33 @@ class VentaForm(forms.ModelForm):
         model = Venta
         # fields = ('',)
         fields = '__all__'
-        # exclude = ()
+        exclude = (
+            'volumenTotalVenta',
+            'proyecto',
+            'volumenInicialesVenta',
+            'reajusteVenta'
+            )
+
+VentaFormSet = inlineformset_factory(Proyecto, Venta, form=VentaForm, 
+            exclude=(
+                'proyecto',
+                'volumenTotalVenta',
+                'volumenInicialesVenta',
+                'reajusteVenta',
+                ), 
+            labels={
+                'velocidadVentas': ("Velocidad"),
+                'porcentajeTopeRemanenteVentas': ("%Tope Remanente"),
+                'velocidadUltimasVentas': ("Vel. Ult. Ventas"),
+                'porcentajeTopeInicialVentas': ("%Tope Inicial"),
+                'porcentajeVelocidadInicialVentas': ("%Velocidad Inicial"),
+                'fechaInicioVentas': ("Fecha Inicio"),
+                'numeroDeIncrementos': ("#Incrementos"),
+                'porcenReajusteIncremento': ("%Reajuste Incr."),
+                'tipoIncremento': ("Tipo Incr."),
+                'porcenTopeReajusteIncremento': ("%Tope Reajuste"),
+            },
+            can_delete=False)
 
 class EtapaForm(forms.ModelForm):
     """Form definition for Etapa."""
@@ -69,7 +95,7 @@ class SubEtapaForm(forms.ModelForm):
         # fields = ('',)
         fields = '__all__'
 
-class IncrementoForm(forms.ModelForm):
+''' class IncrementoForm(forms.ModelForm):
     """Form definition for Incremento."""
 
     class Meta:
@@ -78,7 +104,7 @@ class IncrementoForm(forms.ModelForm):
         model = Incremento
         # fields = ('',)
         fields = '__all__'
-
+ '''
 class ProyeccionIPCForm(forms.ModelForm):
     """Form definition for ProyeccionIPC."""
 

@@ -1,15 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
-from proyecto.forms import MacroproyectoForm, ProyectoForm
-from django.forms import BaseInlineFormSet, inlineformset_factory
+from proyecto.forms import MacroproyectoForm, ProyectoForm, VentaForm
+# from django.forms import BaseInlineFormSet, inlineformset_factory
 from inmueble.forms import CrearLoteForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from . import models
-from .forms import ProyectoFormSet
+from .forms import ProyectoFormSet, VentaFormSet
 from django.views.generic import (TemplateView,ListView,
                                   DetailView,CreateView,
-                                  UpdateView,DeleteView)
+                                  UpdateView,DeleteView,FormView)
+from django.views.generic.edit import FormMixin                                  
 from django.db import transaction
                                   
 
@@ -17,19 +18,57 @@ from django.db import transaction
 
 # Create your views here.
 
-class ProyectoIndexView(ListView):
-    model = models.Proyecto
+class ProyectoListView(ListView,FormMixin):
 
+    template_name = 'proyecto/incremento_ventas.html'
+    form_class = VentaForm
 
-class ProyectoCreateView(CreateView):
-    model = models.Proyecto
-    fields = ['nombreProyecto','descripcionProyecto','m2PorProyecto']
-    # template_name = "TEMPLATE_NAME"
-    # proy = models.Proyecto()
-    # proy_form = ProyectoForm()
-    # ProyectoFormSet = inlineformset_factory(models.Macroproyecto,model, form=ProyectoForm, exclude=('macroproyecto',), min_num=1,extra=3)
+    def get_queryset(self):
+        self.macroproyecto = get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
+        return models.Proyecto.objects.filter(macroproyecto=self.macroproyecto)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProyectoListView, self).get_context_data(**kwargs)
+        context['macroproyecto'] = self.macroproyecto
+
+        if self.request.POST:
+            context['lista_ventas'] = VentaFormSet(self.request.POST)
+        else:
+            context['lista_ventas'] = VentaFormSet()
+
+        return context
+
+    def form_valid(self,form):
+        context = self.get_context_data()        
+        lista_ventas = context['lista_ventas']
+
+        if lista_ventas.is_valid():
+            lista_ventas.save()
+        else:
+            return self.render_to_response(self.get_context_data(lista_ventas=lista_ventas))
+
+        return super(ProyectoListView, self).form_valid(form)
     
-    # formsetIn = ProyectoFormSet(instance=proy)
+    def get_success_url(self):
+        return reverse("proyecto:indexProyecto")
+
+
+''' 
+class ProyectoListView(FormView):
+
+    template_name = 'proyecto/incremento_ventas.html'
+
+    def get_queryset(self):
+        self.macroproyecto = get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
+        return models.Proyecto.objects.filter(macroproyecto=self.macroproyecto)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProyectoListView, self).get_context_data(**kwargs)
+        context['macroproyecto'] = self.macroproyecto
+        context['proyecto_list'] = self.get_queryset()
+        return context
+
+ '''
 
 class MacroproyectoListView(ListView):
     template_name = 'macroproyecto/macroproyecto_list.html'

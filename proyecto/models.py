@@ -37,9 +37,18 @@ class Venta(models.Model):
     porcentajeVelocidadInicialVentas = models.DecimalField(max_digits=5,decimal_places=2)
     fechaInicioVentas = models.DateField(blank=False)
     proyecto = models.ForeignKey(Proyecto, related_name='proyectoVenta', on_delete=models.PROTECT)
-    volumenTotalVenta = models.DecimalField(max_digits=20,decimal_places=4)
+    volumenTotalVenta = models.DecimalField(max_digits=20,decimal_places=4,blank=True, null=True)
     reajusteVenta = models.DecimalField(max_digits=20,decimal_places=4)
     volumenInicialesVenta = models.DecimalField(max_digits=20,decimal_places=4)
+
+    ## Datos de incrementos
+
+    numeroDeIncrementos = models.IntegerField(null=True,blank=True)
+    ''' # Porcentaje Reajuste FACTOR INCREMENTO '''
+    porcenReajusteIncremento = models.DecimalField(max_digits=5,decimal_places=2,null=True,blank=True)
+    tipoIncremento = models.ForeignKey(parametros_models.TipoIncremento, related_name='tipoIncrementoIncr', 
+        on_delete=models.PROTECT, default=1)
+    porcenTopeReajusteIncremento = models.DecimalField(max_digits=5,decimal_places=2,blank=True, null=True)
 
 
     def __str__(self):
@@ -72,9 +81,8 @@ class SubEtapa(models.Model):
     def __unicode__(self):
         pass 
 
-class Incremento(models.Model):
+''' class Incremento(models.Model):
     numeroDeIncrementos = models.IntegerField(blank=False)
-    ''' # Porcentaje Reajuste FACTOR INCREMENTO '''
     porcenReajusteIncremento = models.DecimalField(max_digits=5,decimal_places=2,blank=False,null=True)
     tipoIncremento = models.ForeignKey(parametros_models.TipoIncremento, related_name='tipoIncrementoIncr', 
         on_delete=models.PROTECT)
@@ -86,6 +94,8 @@ class Incremento(models.Model):
 
     def __unicode__(self):
         pass
+
+ '''
 
 class ProyeccionIPC(models.Model):
     anosProyeccionIPC = models.IntegerField(blank=False)
