@@ -1,20 +1,30 @@
 {% extends 'plantilla.html' %}
+{% load staticfiles %}
 
 {% block titulo %}
   <title>Proyectos</title>
 {% endblock titulo %}
   
 {% block body_block %}
-  <div class="jumbotron">
-
-    <h2>Listado de Proyectos</h2>
-      <ol>
-        {% for proyecto in proyecto_list %}
-            <li>{{proyecto.nombreProyecto}}</li>
-        {% endfor %}
-      </ol>
-
-  </div>
+<h2>Listado de Proyecto</h2>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Metros Cuadrados</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for proyecto in proyecto_list %}
+              <tr>
+                <td>{{ proyecto.nombreProyecto }}</td>
+              </tr>
+            {% endfor %}
+        </tbody>
+      </table> 
+</div>       
 
 
 {% endblock %}

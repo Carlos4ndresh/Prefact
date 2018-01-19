@@ -9,7 +9,7 @@ class Macroproyecto(models.Model):
     nombreMacroproyecto = models.CharField(max_length=45, blank=False)
     descripcionMacroproyecto = models.CharField(max_length=255, blank=True, null=True)
     m2Macroproyecto = models.IntegerField()
-    lote = models.OneToOneField(inmueble_models.Lote,on_delete=models.PROTECT,primary_key=True,related_name='lote')
+    lote = models.OneToOneField(inmueble_models.Lote,on_delete=models.PROTECT,primary_key=True,related_name='macroproyecto')
 
     def __str__(self):
         return "Macroproyecto {a}".format(a=self.nombreMacroproyecto)
@@ -17,12 +17,15 @@ class Macroproyecto(models.Model):
     def get_absolute_url(self):        
         return reverse('macro_detail', kwargs={'pk': self.pk})
 
+    def show_proyectos(self):
+        return self.proyecto_set.all()[0]
+
 
 class Proyecto(models.Model):
     nombreProyecto = models.CharField(max_length=255, blank=False, unique=False) 
     descripcionProyecto = models.CharField(max_length=255, blank=True, null=True)
     m2PorProyecto = models.IntegerField()
-    macroproyecto = models.ForeignKey(Macroproyecto, related_name='macroproyecto', on_delete=models.PROTECT)
+    macroproyecto = models.ForeignKey(Macroproyecto, related_name='proyectos', on_delete=models.PROTECT)
 
     def __str__(self):
         return "Proyecto: {a}".format(a=self.nombreProyecto) 
@@ -36,7 +39,7 @@ class Venta(models.Model):
     porcentajeTopeInicialVentas = models.DecimalField(max_digits=5,decimal_places=2)
     porcentajeVelocidadInicialVentas = models.DecimalField(max_digits=5,decimal_places=2)
     fechaInicioVentas = models.DateField(blank=False)
-    proyecto = models.ForeignKey(Proyecto, related_name='proyectoVenta', on_delete=models.PROTECT)
+    proyecto = models.ForeignKey(Proyecto, related_name='venta', on_delete=models.PROTECT)
     volumenTotalVenta = models.DecimalField(max_digits=20,decimal_places=4,blank=True, null=True)
     reajusteVenta = models.DecimalField(max_digits=20,decimal_places=4)
     volumenInicialesVenta = models.DecimalField(max_digits=20,decimal_places=4)
@@ -46,7 +49,7 @@ class Venta(models.Model):
     numeroDeIncrementos = models.IntegerField(null=True,blank=True)
     ''' # Porcentaje Reajuste FACTOR INCREMENTO '''
     porcenReajusteIncremento = models.DecimalField(max_digits=5,decimal_places=2,null=True,blank=True)
-    tipoIncremento = models.ForeignKey(parametros_models.TipoIncremento, related_name='tipoIncrementoIncr', 
+    tipoIncremento = models.ForeignKey(parametros_models.TipoIncremento, related_name='ventaIncremento', 
         on_delete=models.PROTECT, default=1)
     porcenTopeReajusteIncremento = models.DecimalField(max_digits=5,decimal_places=2,blank=True, null=True)
 
@@ -61,7 +64,7 @@ class Etapa(models.Model):
     ''' Campos legacy no se tiene claro todavía si son necesarios '''
     numeroTipoInmuebleEtapa = models.IntegerField()
     numeroTipoInmueble2Etapa = models.IntegerField()
-    tipoProyecto = models.ForeignKey(parametros_models.TipoProyecto, related_name='tipoProyecto', 
+    tipoProyecto = models.ForeignKey(parametros_models.TipoProyecto, related_name='etapa', 
         on_delete=models.PROTECT)
 
     def __str__(self):
@@ -73,7 +76,7 @@ class Etapa(models.Model):
 class SubEtapa(models.Model):
     nombreSubEtapa = models.CharField(max_length=45, blank=False)
     descripcionSubEtapa = models.CharField(max_length=255, blank=True, null=True)
-    etapa = models.ForeignKey(Etapa, related_name='etapa', on_delete=models.PROTECT)
+    etapa = models.ForeignKey(Etapa, related_name='subetapa', on_delete=models.PROTECT)
 
     def __str__(self):
         return "Subetapa {a} de etapa {b}".format(a=self.nombreSubEtapa,b=self.etapa.nombreEtapa) 
@@ -100,7 +103,7 @@ class SubEtapa(models.Model):
 class ProyeccionIPC(models.Model):
     anosProyeccionIPC = models.IntegerField(blank=False)
     tasaBaseProyeccionIPC = models.DecimalField(max_digits=5,decimal_places=2,blank=False)
-    proyecto = models.ForeignKey(Proyecto, related_name='proyectoProyeccion', on_delete=models.PROTECT)
+    proyecto = models.ForeignKey(Proyecto, related_name='proyeccionIPC', on_delete=models.PROTECT)
 
     def __str__(self):
         return "Proyeccion IPC Proyecto {a}:{b}".format(a=self.proyecto.nombreProyecto,
@@ -113,7 +116,7 @@ class TablaIPC(models.Model):
     anoTablaIPC = models.IntegerField()
     ipcAnoTablaIPC = models.DecimalField(max_digits=5,decimal_places=2,blank=True, null=True)
     numeroInmueblesEntregados = models.IntegerField()
-    proyeccionIPC = models.ForeignKey(ProyeccionIPC,related_name='proyeccionIPC',
+    proyeccionIPC = models.ForeignKey(ProyeccionIPC,related_name='tablaIPC',
         on_delete=models.PROTECT)
 
     def __str__(self):

@@ -54,7 +54,7 @@ class VentaForm(forms.ModelForm):
             'reajusteVenta'
             )
 
-VentaFormSet = inlineformset_factory(Proyecto, Venta, form=VentaForm, 
+VentaFormSet = inlineformset_factory(Proyecto, Venta, form=VentaForm, max_num=1,
             exclude=(
                 'proyecto',
                 'volumenTotalVenta',

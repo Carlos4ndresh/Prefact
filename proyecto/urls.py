@@ -10,5 +10,6 @@ urlpatterns = [
     # url(r'^nuevoproyecto/$',views.ProyectoCreateView.as_view(),name='nuevoProy'),
     # url(r'^macroproydetalle/(?P<pk>\d+)$',views.MacroproyectoDetailView.as_view(),name='macro_detail'),
     url(r'^macroproydetalle/(?P<pk>\d+)/edit/$',views.MacroproyectoEditView.as_view(),name='macro_edit'),
-    url(r'^proyecto/(?P<pk>\d+)/incrementos/$',views.ProyectoListView.as_view(),name='proyecto_incremento'),
+    url(r'^proyecto/$',views.ProyectoListView.as_view(),name='proyecto_lista'),
+    url(r'^proyecto/(?P<pk>\d+)/incrementos/$',views.ProyectoIncrementoView.as_view(),name='proyecto_incremento'),
 ]

@@ -22,8 +22,10 @@
                       {% comment %} <td>{{ macroproyecto.nombreMacroproyecto }}</td> {% endcomment %}
                       <td><a href="{% url 'proyecto:macro_edit' pk=macroproyecto.pk %}">{{ macroproyecto.nombreMacroproyecto }}</a></td>
                       <td>{{ macroproyecto.descripcionMacroproyecto }}</td>
-                      <td>{{ macroproyecto.m2Macroproyecto }}</td>                        
-                      <td><a href="{% url 'proyecto:proyecto_incremento' pk=macroproyecto.pk %}" class="btn-info btn-sm">Incrementos y Velocidades</a></td>
+                      <td>{{ macroproyecto.m2Macroproyecto }}</td>   
+                      {% if macroproyecto.proyectos.all %}
+                      <td><a href="{% url 'proyecto:proyecto_incremento' pk=macroproyecto.pk %}" class="btn-info btn-sm">Incrementos y Velocidades</a></td>                          
+                      {% endif %}                                        
                       <td><a href="" class="btn-success btn-sm">Inventario de Inmuebles</a></td>
                       <td><a href="" class="btn-warning btn-sm">Informaci&oacute;n de factibilidad</a></td>
                     </tr>

@@ -50,9 +50,9 @@ class TipoInmueble(models.Model):
     noUnidadesTipoInmueble = models.IntegerField()
     valorM2TipoInmueble = models.DecimalField(max_digits=20,decimal_places=4)
     secundarioTipoInmueble = models.BooleanField()
-    paramInmueble = models.ForeignKey(ParametroInmueble, related_name='+', on_delete=models.PROTECT)
+    paramInmueble = models.ForeignKey(ParametroInmueble, related_name='tipoInmueble', on_delete=models.PROTECT)
     valorSalariosMinTipoInmueble = models.DecimalField(max_digits=16,decimal_places=2)
-    etapa = models.ForeignKey('proyecto.Etapa', related_name='+', on_delete=models.PROTECT)
+    etapa = models.ForeignKey('proyecto.Etapa', related_name='tipoInmueble', on_delete=models.PROTECT)
 
     def __str__(self):
         return "Tipo Inmueble {a}".format(a=self.nombreTipoInmueble)
