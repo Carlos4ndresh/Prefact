@@ -46,14 +46,16 @@ class ProyectoIncrementoView(FormView):
         if self.request.POST:
             context['lista_ventas'] = VentaFormSet(self.request.POST)
         else:
-            context['lista_ventas'] = VentaFormSet()
-            for proyecto in proyecto_list:
-                print(proyecto)
+            # # context['lista_ventas'] = VentaFormSet()
+            # print(lista_ventas)
             # for proyecto in proyecto_list:
-            #     ventaform = VentaFormSet(instance=proyecto)
-            #     print(ventaform)
-            #     lista_ventas.append(ventaform)                                
+            #     # print(proyecto)
+            #     formv = VentaFormSet(instance=proyecto)
+            #     # print(formv)
+            #     lista_ventas.append(formv)
             # context['lista_ventas'] = lista_ventas
+            # print(lista_ventas)
+            context['lista_ventas'] = VentaFormSet()
             
         return context
 
@@ -62,8 +64,10 @@ class ProyectoIncrementoView(FormView):
         lista_ventas = context['lista_ventas']
 
         if lista_ventas.is_valid():
-            print(lista_ventas)
-            lista_ventas.save()
+            # print(lista_ventas)
+            # lista_ventas.save()
+            for venta in lista_ventas:
+                print(venta)
         else:
             return self.render_to_response(self.get_context_data(lista_ventas=lista_ventas))
 
@@ -71,7 +75,6 @@ class ProyectoIncrementoView(FormView):
     
     def get_success_url(self):
         return reverse("proyecto:indexProyecto")
-
 
 class MacroproyectoCreateView(SuccessMessageMixin, CreateView):
     template_name = 'macroproyecto/macroproyecto_create.html'
