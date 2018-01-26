@@ -13,7 +13,7 @@
             <h4 class="panel-title">Debe ingresar la información por cada proyecto listado</h4>            
         </div>
         <div class="panel-body">
-            <form action="" method="POST">
+            <form method="POST">
                 {% csrf_token %}
                     <table>                       
                         {% for formset in  lista_ventas %}
