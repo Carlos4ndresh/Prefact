@@ -26,6 +26,12 @@ class MacroproyectoListView(ListView):
     template_name = 'macroproyecto/macroproyecto_list.html'
     model = models.Macroproyecto    
 
+
+class ProyectoInventarioView(TemplateView):
+    template_name = 'proyecto/proyecto_inventario.html'
+
+
+
 class ProyectoIncrementoView(FormView):
     template_name = 'proyecto/incremento_ventas.html'
     # form_class = VentaForm
@@ -46,16 +52,16 @@ class ProyectoIncrementoView(FormView):
         if self.request.POST:
             context['lista_ventas'] = VentaFormSet(self.request.POST)
         else:
-            # # context['lista_ventas'] = VentaFormSet()
-            # print(lista_ventas)
-            # for proyecto in proyecto_list:
-            #     # print(proyecto)
-            #     formv = VentaFormSet(instance=proyecto)
-            #     # print(formv)
-            #     lista_ventas.append(formv)
-            # context['lista_ventas'] = lista_ventas
-            # print(lista_ventas)
-            context['lista_ventas'] = VentaFormSet()
+            # context['lista_ventas'] = VentaFormSet()
+            print(lista_ventas)
+            for proyecto in proyecto_list:
+                # print(proyecto)
+                formv = VentaFormSet(instance=proyecto)
+                # print(formv)
+                lista_ventas.append(formv)
+            context['lista_ventas'] = lista_ventas
+            print(lista_ventas)
+            # context['lista_ventas'] = VentaFormSet()
             
         return context
 
