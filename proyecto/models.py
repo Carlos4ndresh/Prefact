@@ -41,8 +41,8 @@ class Venta(models.Model):
     fechaInicioVentas = models.DateField(blank=False)
     proyecto = models.ForeignKey(Proyecto, related_name='venta', on_delete=models.PROTECT)
     volumenTotalVenta = models.DecimalField(max_digits=20,decimal_places=4,blank=True, null=True)
-    reajusteVenta = models.DecimalField(max_digits=20,decimal_places=4)
-    volumenInicialesVenta = models.DecimalField(max_digits=20,decimal_places=4)
+    reajusteVenta = models.DecimalField(max_digits=20,decimal_places=4,blank=True, null=True)
+    volumenInicialesVenta = models.DecimalField(max_digits=20,decimal_places=4,blank=True, null=True)
 
     ## Datos de incrementos
 

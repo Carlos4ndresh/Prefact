@@ -22,6 +22,13 @@ class ProyectoListView(ListView):
     template_name = 'proyecto/proyecto_list.html'
     model = models.Proyecto
 
+    def get_queryset(self):
+        self.macroproyecto = get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
+        return models.Proyecto.objects.filter(macroproyecto=self.macroproyecto)
+
+    def macroproyecto(self):
+        return get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
+
 class MacroproyectoListView(ListView):
     template_name = 'macroproyecto/macroproyecto_list.html'
     model = models.Macroproyecto    
@@ -32,52 +39,66 @@ class ProyectoInventarioView(TemplateView):
 
 
 
-class ProyectoIncrementoView(FormView):
+class ProyectoIncrementoView(TemplateView):
     template_name = 'proyecto/incremento_ventas.html'
-    # form_class = VentaForm
-    form_class = VentaFormSet
+    # form_class = VentaFormSet
 
     def get_queryset(self):
         self.macroproyecto = get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
         return models.Proyecto.objects.filter(macroproyecto=self.macroproyecto)
 
-    def get_context_data(self, **kwargs):
-        context = super(ProyectoIncrementoView, self).get_context_data(**kwargs)
+    def macroproyecto(self):
+        return get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
+    
+    def lista_ventas(self):
+        proyecto_list = self.get_queryset() 
 
-        context['macroproyecto'] = get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
-        context['proyecto_list'] = self.get_queryset()        
-
-        proyecto_list = context['proyecto_list']
-        lista_ventas = []
         if self.request.POST:
-            context['lista_ventas'] = VentaFormSet(self.request.POST)
-        else:
-            # context['lista_ventas'] = VentaFormSet()
-            print(lista_ventas)
+            lista_ventas = []
             for proyecto in proyecto_list:
-                # print(proyecto)
-                formv = VentaFormSet(instance=proyecto)
-                # print(formv)
+                formv = VentaFormSet(self.request.POST,instance=proyecto)
                 lista_ventas.append(formv)
-            context['lista_ventas'] = lista_ventas
-            print(lista_ventas)
-            # context['lista_ventas'] = VentaFormSet()
-            
-        return context
+            return lista_ventas
+        else:
+            lista_ventas = []
+            for proyecto in proyecto_list:
+                formv = VentaFormSet(instance=proyecto)
+                lista_ventas.append(formv)
+            return lista_ventas
 
-    def form_valid(self,form):
+    def post(self, request, *args, **kwargs):
+        # lista_ventas = VentaFormSet(self.request.POST)
+        lista_ventas = []
+        proyecto_list = self.get_queryset()
+        # for proyecto in proyecto_list:
+        #     formv = VentaFormSet(self.request.POST,instance=proyecto)
+        #     lista_ventas.append(formv)
+        #     # print(formv)
+        #     print(self.request.POST)
+        #     if formv.is_valid():
+        #         formv.save()
+        # if (lista_ventas.is_valid()):
+        #     return self.form_valid(form, lista_ventas)
+        return self.form_invalid(lista_ventas)
+
+    def form_valid(self,lista_ventas):
         context = self.get_context_data()        
-        lista_ventas = context['lista_ventas']
-
         if lista_ventas.is_valid():
-            # print(lista_ventas)
-            # lista_ventas.save()
-            for venta in lista_ventas:
-                print(venta)
+            lista_ventas.save()
         else:
             return self.render_to_response(self.get_context_data(lista_ventas=lista_ventas))
 
         return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self,lista_ventas):
+        """
+        Called if whether a form is invalid. Re-renders the context
+        data with the data-filled forms and errors.
+        """
+        # print(lista_ventas)
+        return self.render_to_response(
+            self.get_context_data(lista_ventas=lista_ventas)
+        )
     
     def get_success_url(self):
         return reverse("proyecto:indexProyecto")
