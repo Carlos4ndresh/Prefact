@@ -35,6 +35,15 @@ class VentaUpdateView(UpdateView):
     template_name = "proyecto/incrementos_edit.html"
     form_class = VentaForm
 
+    def proyecto(self):
+        return get_object_or_404(models.Proyecto, pk=self.kwargs['pk'])
+
+    def get_object(self):
+        proyecto = get_object_or_404(models.Proyecto, pk=self.kwargs['pk'])
+        return models.Venta.objects.get(proyecto__pk=self.kwargs['pk'])
+
+    def get_success_url(self):
+        return redirect('proyecto:proyecto_list',pk=self.proyecto().macroproyecto.pk).url
 
 class VentaCreateView(FormView):
     model = models.Venta
