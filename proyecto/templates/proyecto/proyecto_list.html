@@ -24,7 +24,12 @@
                       <td>{{ proyecto.nombreProyecto }}</td>
                       <td>{{ proyecto.descripcionProyecto }}</td>
                       <td>{{ proyecto.m2PorProyecto }}</td>
-                      <td><a href="" class="btn-success btn-sm">Incrementos y Ventas</a></td>  
+                      
+                      {% if proyecto.venta.all %}
+                        <td><a href="" class="btn-danger btn-sm">Incrementos y Ventas</a></td>  
+                      {% else %}
+                        <td><a href="{% url 'proyecto:proyecto_incremento' pk=proyecto.pk %}" class="btn-success btn-sm">Incrementos y Ventas</a></td>  
+                      {% endif %}                                         
                     </tr>
                   {% endfor %}
               </tbody>

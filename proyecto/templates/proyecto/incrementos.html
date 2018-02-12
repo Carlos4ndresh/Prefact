@@ -8,6 +8,23 @@
 
 {% block body_block %}
 
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel panel-heading">
+                <h3 class="panel-title">Ingrese información para las ventas de su proyecto</h3>
+            </div>
+            <div class="panel panel-body">
+                <form method="POST">
+                    {% csrf_token %}
+                   {{ form.as_p }}
+                    <button class="btn btn-success" type="submit">
+                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                                Guardar
+                    </button>   
+                </form>
+            </div>
+        </div>
+    </div>
     
 {% endblock body_block %}
 

@@ -2,6 +2,7 @@ from django import forms
 from proyecto.models import (Proyecto, Macroproyecto, Venta, Etapa, 
                             SubEtapa, ProyeccionIPC, TablaIPC)
 from django.forms import BaseInlineFormSet, inlineformset_factory
+from django.utils.translation import ugettext_lazy as _
                             
 
 class MacroproyectoForm(forms.ModelForm):
@@ -46,13 +47,25 @@ class VentaForm(forms.ModelForm):
 
         model = Venta
         # fields = ('',)
-        fields = '__all__'
+        # fields = '__all__'
         exclude = (
             'volumenTotalVenta',
             'proyecto',
             'volumenInicialesVenta',
             'reajusteVenta'
             )
+        labels = {
+                'velocidadVentas': _("Velocidad"),
+                'porcentajeTopeRemanenteVentas': _("%Tope Remanente"),
+                'velocidadUltimasVentas': _("Vel. Ult. Ventas"),
+                'porcentajeTopeInicialVentas': _("%Tope Inicial"),
+                'porcentajeVelocidadInicialVentas': _("%Velocidad Inicial"),
+                'fechaInicioVentas': _("Fecha Inicio"),
+                'numeroDeIncrementos': _("#Incrementos"),
+                'porcenReajusteIncremento': _("%Reajuste Incr."),
+                'tipoIncremento': _("Tipo Incr."),
+                'porcenTopeReajusteIncremento': _("%Tope Reajuste"),
+            },
 
 VentaFormSet = inlineformset_factory(Proyecto, Venta, form=VentaForm, max_num=1,
             exclude=(

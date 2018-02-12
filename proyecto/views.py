@@ -29,6 +29,19 @@ class ProyectoListView(ListView):
     def macroproyecto(self):
         return get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
 
+
+class VentaCreateView(FormView):
+    model = models.Venta
+    template_name = "proyecto/incrementos.html"
+    form_class = VentaForm
+
+    def form_valid(self, form):
+        venta = form.save(commit=False)
+        venta.proyecto = models.Proyecto.objects.get(pk=(self.kwargs['pk']))
+        venta.save()
+        return redirect('proyecto:proyecto_list',pk=venta.proyecto.macroproyecto.pk)
+
+
 class MacroproyectoListView(ListView):
     template_name = 'macroproyecto/macroproyecto_list.html'
     model = models.Macroproyecto    
