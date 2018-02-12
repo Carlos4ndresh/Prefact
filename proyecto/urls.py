@@ -12,5 +12,6 @@ urlpatterns = [
     # url(r'^proyecto/(?P<pk>\d+)/incrementos/$',views.ProyectoIncrementoView.as_view(),name='proyecto_incremento'),
     url(r'^proyecto/(?P<pk>\d+)/lista/$',views.ProyectoListView.as_view(),name='proyecto_list'),
     url(r'^proyecto/(?P<pk>\d+)/incrementos/create/$',views.VentaCreateView.as_view(),name='proyecto_incremento'),
+    url(r'^proyecto/(?P<pk>\d+)/incrementos/edit/$',views.VentaUpdateView.as_view(),name='incremento_edit'),
     url(r'^proyecto/(?P<pk>\d+)/inventario/$',views.ProyectoInventarioView.as_view(),name='proyecto_inventario'),
 ]

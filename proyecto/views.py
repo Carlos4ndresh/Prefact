@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from proyecto.forms import MacroproyectoForm, ProyectoForm, VentaForm
-# from django.forms import BaseInlineFormSet, inlineformset_factory
 from inmueble.forms import CrearLoteForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from . import models
-from .forms import ProyectoFormSet, VentaFormSet
+from .forms import ProyectoFormSet
 from django.views.generic import (TemplateView,ListView,
                                   DetailView,CreateView,
                                   UpdateView,DeleteView,FormView)
@@ -30,10 +29,20 @@ class ProyectoListView(ListView):
         return get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
 
 
+
+class VentaUpdateView(UpdateView):
+    model = models.Venta
+    template_name = "proyecto/incrementos_edit.html"
+    form_class = VentaForm
+
+
 class VentaCreateView(FormView):
     model = models.Venta
     template_name = "proyecto/incrementos.html"
     form_class = VentaForm
+
+    def proyecto(self):
+        return get_object_or_404(models.Proyecto, pk=self.kwargs['pk'])
 
     def form_valid(self, form):
         venta = form.save(commit=False)

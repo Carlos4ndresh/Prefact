@@ -46,47 +46,12 @@ class VentaForm(forms.ModelForm):
         """Meta definition for Ventaform."""
 
         model = Venta
-        # fields = ('',)
-        # fields = '__all__'
         exclude = (
             'volumenTotalVenta',
             'proyecto',
             'volumenInicialesVenta',
             'reajusteVenta'
             )
-        labels = {
-                'velocidadVentas': _("Velocidad"),
-                'porcentajeTopeRemanenteVentas': _("%Tope Remanente"),
-                'velocidadUltimasVentas': _("Vel. Ult. Ventas"),
-                'porcentajeTopeInicialVentas': _("%Tope Inicial"),
-                'porcentajeVelocidadInicialVentas': _("%Velocidad Inicial"),
-                'fechaInicioVentas': _("Fecha Inicio"),
-                'numeroDeIncrementos': _("#Incrementos"),
-                'porcenReajusteIncremento': _("%Reajuste Incr."),
-                'tipoIncremento': _("Tipo Incr."),
-                'porcenTopeReajusteIncremento': _("%Tope Reajuste"),
-            },
-
-VentaFormSet = inlineformset_factory(Proyecto, Venta, form=VentaForm, max_num=1,
-            exclude=(
-                'proyecto',
-                'volumenTotalVenta',
-                'volumenInicialesVenta',
-                'reajusteVenta',
-                ), 
-            labels={
-                'velocidadVentas': ("Velocidad"),
-                'porcentajeTopeRemanenteVentas': ("%Tope Remanente"),
-                'velocidadUltimasVentas': ("Vel. Ult. Ventas"),
-                'porcentajeTopeInicialVentas': ("%Tope Inicial"),
-                'porcentajeVelocidadInicialVentas': ("%Velocidad Inicial"),
-                'fechaInicioVentas': ("Fecha Inicio"),
-                'numeroDeIncrementos': ("#Incrementos"),
-                'porcenReajusteIncremento': ("%Reajuste Incr."),
-                'tipoIncremento': ("Tipo Incr."),
-                'porcenTopeReajusteIncremento': ("%Tope Reajuste"),
-            },
-            can_delete=False)
 
 class EtapaForm(forms.ModelForm):
     """Form definition for Etapa."""
@@ -108,16 +73,6 @@ class SubEtapaForm(forms.ModelForm):
         # fields = ('',)
         fields = '__all__'
 
-''' class IncrementoForm(forms.ModelForm):
-    """Form definition for Incremento."""
-
-    class Meta:
-        """Meta definition for Incrementoform."""
-
-        model = Incremento
-        # fields = ('',)
-        fields = '__all__'
- '''
 class ProyeccionIPCForm(forms.ModelForm):
     """Form definition for ProyeccionIPC."""
 
