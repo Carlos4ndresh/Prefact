@@ -5,7 +5,7 @@ from inmueble.forms import CrearLoteForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from . import models
-from .forms import ProyectoFormSet
+from .forms import ProyectoFormSet, EtapaFormSet
 from django.views.generic import (TemplateView,ListView,
                                   DetailView,CreateView,
                                   UpdateView,DeleteView,FormView)
@@ -28,7 +28,64 @@ class ProyectoListView(ListView):
     def macroproyecto(self):
         return get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
 
+class EtapaUpdateView(TemplateView):
+    model = models.Etapa
+    template_name = "proyecto/etapa_edit.html"
 
+    def proyecto(self):
+        return get_object_or_404(models.Proyecto, pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super(EtapaUpdateView, self).get_context_data(**kwargs)
+        proyecto = self.proyecto()
+
+        if self.request.POST:
+            context['lista_etapas'] = EtapaFormSet(self.request.POST, instance=proyecto)
+        else:            
+            context['lista_etapas'] = EtapaFormSet(instance=proyecto)
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        lista_etapas = context['lista_etapas']
+        if lista_etapas.is_valid():
+            lista_etapas.instance = self.proyecto()
+            lista_etapas.save()            
+        return redirect('proyecto:proyecto_list',pk=self.proyecto().macroproyecto.pk)
+    
+    def get_success_url(self):
+        return redirect('proyecto:proyecto_list',pk=self.proyecto().pk).url
+
+
+class EtapaCreateView(CreateView):
+    model = models.Etapa
+    template_name = "proyecto/etapa_create.html"
+    form_class = EtapaFormSet
+
+    def proyecto(self):
+        return get_object_or_404(models.Proyecto, pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super(EtapaCreateView, self).get_context_data(**kwargs)
+
+        if self.request.POST:
+            context['lista_etapas'] = EtapaFormSet(self.request.POST)
+        else:
+            context['lista_etapas'] = EtapaFormSet()
+        return context
+    
+    def form_valid(self,form):
+        context = self.get_context_data()
+
+        if form.is_valid():
+            form.instance = self.proyecto()
+            form.save()
+            return redirect('proyecto:proyecto_list',pk=self.proyecto().macroproyecto.pk)
+
+    def get_success_url(self):
+        return redirect('proyecto:proyecto_list',pk=self.proyecto().macroproyecto.pk).url
+            
 
 class VentaUpdateView(UpdateView):
     model = models.Venta

@@ -62,8 +62,8 @@ class Etapa(models.Model):
     nombreEtapa = models.CharField(max_length=45, blank=False)
     descripcionEtapa = models.CharField(max_length=255, blank=True, null=True)
     ''' Campos legacy no se tiene claro todavía si son necesarios '''
-    numeroTipoInmuebleEtapa = models.IntegerField()
-    numeroTipoInmueble2Etapa = models.IntegerField()
+    numeroTipoInmuebleEtapa = models.IntegerField(blank=True, null=True)
+    numeroTipoInmueble2Etapa = models.IntegerField(blank=True, null=True)
     proyectoEtapa = models.ForeignKey('Proyecto', related_name='etapas_proyecto', on_delete=models.PROTECT,default=999999999)
     tipoProyecto = models.ForeignKey(parametros_models.TipoProyecto, related_name='etapa_tipoproy', on_delete=models.PROTECT,default=999999999)
 

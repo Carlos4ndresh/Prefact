@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^proyecto/(?P<pk>\d+)/incrementos/create/$',views.VentaCreateView.as_view(),name='proyecto_incremento'),
     url(r'^proyecto/(?P<pk>\d+)/incrementos/edit/$',views.VentaUpdateView.as_view(),name='incremento_edit'),
     url(r'^proyecto/(?P<pk>\d+)/inventario/$',views.ProyectoInventarioView.as_view(),name='proyecto_inventario'),
+    url(r'^proyecto/(?P<pk>\d+)/etapa/create$',views.EtapaCreateView.as_view(),name='etapa_create'),
+    url(r'^proyecto/(?P<pk>\d+)/etapa/edit$',views.EtapaUpdateView.as_view(),name='etapa_edit'),
 ]

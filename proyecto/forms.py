@@ -59,9 +59,17 @@ class EtapaForm(forms.ModelForm):
     class Meta:
         """Meta definition for Etapaform."""
 
-        model = Etapa
-        # fields = ('',)
-        fields = '__all__'
+        model = Etapa        
+        exclude = (
+                'proyectoEtapa',
+                'numeroTipoInmueble2Etapa',
+                )
+        labels = {
+            'nombreEtapa': _('Nombre'),
+            'descripcionEtapa': _('Descripción'),
+        }
+
+EtapaFormSet = inlineformset_factory(Proyecto, Etapa, form=EtapaForm, extra=2, can_delete=True)
 
 class SubEtapaForm(forms.ModelForm):
     """Form definition for SubEtapa."""

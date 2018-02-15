@@ -16,11 +16,9 @@
                     <h3 class="panel-title">Información Macroproyecto</h3>
                 </div>
                 <div class="panel-body">
-                    {% comment %} {{ form.as_p }} {% endcomment %}
                     {% bootstrap_form_errors form error_types='all'  %}
                     {% bootstrap_form form error_types='all' %}
                     <table>
-                            {% comment %} {{ lote_form.as_table }} {% endcomment %}
                             {% bootstrap_form_errors lote_form error_types='all' %}
                             {% bootstrap_form lote_form error_types='all' %}
                     </table>
