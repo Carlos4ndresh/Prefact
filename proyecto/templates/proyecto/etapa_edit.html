@@ -23,6 +23,7 @@
                             {% if forloop.first %}
                                 <thead>
                                     <tr>
+                                        <th>Inventario Inmuebles</th>
                                         {% for field in form.visible_fields %}
                                             <th>{{ field.label|capfirst }}</th>
                                         {% endfor %}
@@ -30,6 +31,7 @@
                                 </thead>
                             {% endif %}                          
                                     <tr class="{% cycle row1 row2 %} formset_row">
+                                        <td>a</td>
                                         {% for field in form.visible_fields %}
                                             <td>
                                                 {% if forloop.first %}
@@ -39,8 +41,8 @@
                                                 {% endif %}
                                                 {{ field.errors.as_ul }}
                                                 {{ field }}
-                                            </td>
-                                        {% endfor %}
+                                            </td>                                                                                   
+                                        {% endfor %}                                             
                                     </tr>
                        {% endfor %}
                     </table>

@@ -67,6 +67,8 @@ class EtapaForm(forms.ModelForm):
         labels = {
             'nombreEtapa': _('Nombre'),
             'descripcionEtapa': _('Descripción'),
+            'numeroTipoInmuebleEtapa': _('Número Inmuebles'),
+            'tipoProyecto': _('Tipo de Proyecto'),
         }
 
 EtapaFormSet = inlineformset_factory(Proyecto, Etapa, form=EtapaForm, extra=2, can_delete=True)
