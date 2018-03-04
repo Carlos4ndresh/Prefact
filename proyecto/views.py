@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from proyecto.forms import MacroproyectoForm, ProyectoForm, VentaForm
-from inmueble.forms import CrearLoteForm
+from inmueble.forms import CrearLoteForm, InventarioFormSet
 from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from . import models
+from inmueble import models as modelInm
 from .forms import ProyectoFormSet, EtapaFormSet
 from django.views.generic import (TemplateView,ListView,
                                   DetailView,CreateView,
@@ -27,6 +28,19 @@ class ProyectoListView(ListView):
 
     def macroproyecto(self):
         return get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
+
+class EtapaListView(ListView):
+    model = models.Etapa
+    context_object_name = 'etapa_list'
+    template_name='proyecto/etapa_list.html' 
+
+    def proyecto(self):
+        return get_object_or_404(models.Proyecto, pk=self.kwargs['pk'])
+
+    def get_queryset(self):
+        self.proyecto = get_object_or_404(models.Proyecto, pk=self.kwargs['pk'])
+        queryset = models.Etapa.objects.filter(proyectoEtapa=self.proyecto)
+        return queryset
 
 class EtapaUpdateView(TemplateView):
     model = models.Etapa
@@ -125,6 +139,44 @@ class MacroproyectoListView(ListView):
 class ProyectoInventarioView(TemplateView):
     template_name = 'proyecto/proyecto_inventario.html'
 
+
+class InventarioCreateView(CreateView):
+    model = modelInm.TipoInmueble
+    template_name = "proyecto/etapa_inventario.html"
+    form_class = InventarioFormSet
+
+    def etapa(self):
+        return get_object_or_404(models.Etapa, pk=self.kwargs['pk'])
+
+    def proyecto(self):
+        etapa = self.etapa()
+        return etapa.proyectoEtapa
+
+    def get_context_data(self, **kwargs):
+        context = super(InventarioCreateView, self).get_context_data(**kwargs)
+
+        if self.request.POST:
+            context['lista_inventario'] = InventarioFormSet(self.request.POST)
+        else:
+            context['lista_inventario'] = InventarioFormSet()
+        return context
+    
+    def form_valid(self,form):
+        context = self.get_context_data()
+
+        if form.is_valid():
+            form.instance = self.etapa()
+            form.save()
+            return redirect('proyecto:etapa_list',pk=self.proyecto().pk)
+
+
+    def get_success_url(self):
+        return redirect('proyecto:proyecto_list',pk=self.proyecto().macroproyecto.pk).url
+
+
+class InventarioEditView(UpdateView):
+    model = modelInm.TipoInmueble
+    template_name = "proyecto/etapa_inventario_edit.html"
 
 
 class ProyectoIncrementoView(TemplateView):

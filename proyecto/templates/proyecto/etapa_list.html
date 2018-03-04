@@ -1,0 +1,42 @@
+{% extends 'plantilla.html' %}
+{% load staticfiles %}
+
+{% block titulo %}
+  <title>Inventario de Inmuebles x Etapas</title>
+{% endblock titulo %}
+  
+{% block body_block %}
+<h2>Inventario para Etapas de {{ view.proyecto.nombreProyecto|capfirst }}</h2>
+<div class="panel panel-default">
+  <div class="panel-heading">
+      <div class="table-responsive">
+          <table class="table table-striped">
+              <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Tipo de Proyecto</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for etapa in etapa_list %}
+                    <tr>
+                      <td>{{ etapa.nombreEtapa }}</td>
+                      <td>{{ etapa.descripcionEtapa }}</td>
+                      <td>{{ etapa.tipoProyecto }}</td>
+                      
+                      {% if etapa.tipoInmueble.all %}
+                        <td><a href="" class="btn-success btn-sm">Inventario</a></td>  
+                      {% else %}
+                        <td><a href="{% url 'proyecto:inventario_create' pk=etapa.pk %}" class="btn-danger btn-sm">Inventario</a></td>  
+                      {% endif %}                                        
+                    </tr>
+                  {% endfor %}
+              </tbody>
+            </table> 
+            <a href="{% url 'proyecto:proyecto_list' pk=view.proyecto.macroproyecto.pk %}" class="btn btn-primary">Volver a Proyectos</a>  
+      </div> 
+  </div>
+</div>      
+
+{% endblock %}

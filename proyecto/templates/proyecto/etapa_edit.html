@@ -16,14 +16,12 @@
             <div class="panel panel-body">
                 <form method="POST">
                     {% csrf_token %}
-                    {{ lista_etapas.management_form }}
                     <table class="table">
                         {{ lista_etapas.management_form }}
                         {% for form in lista_etapas.forms %}
                             {% if forloop.first %}
                                 <thead>
                                     <tr>
-                                        <th>Inventario Inmuebles</th>
                                         {% for field in form.visible_fields %}
                                             <th>{{ field.label|capfirst }}</th>
                                         {% endfor %}
@@ -31,7 +29,6 @@
                                 </thead>
                             {% endif %}                          
                                     <tr class="{% cycle row1 row2 %} formset_row">
-                                        <td>a</td>
                                         {% for field in form.visible_fields %}
                                             <td>
                                                 {% if forloop.first %}
