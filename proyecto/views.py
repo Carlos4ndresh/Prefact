@@ -54,9 +54,9 @@ class EtapaUpdateView(TemplateView):
         proyecto = self.proyecto()
 
         if self.request.POST:
-            context['lista_etapas'] = EtapaFormSet(self.request.POST, instance=proyecto)
+            context['lista_etapas'] = EtapaFormSet(self.request.POST, instance=proyecto,prefix='etapas')
         else:            
-            context['lista_etapas'] = EtapaFormSet(instance=proyecto)
+            context['lista_etapas'] = EtapaFormSet(instance=proyecto,prefix='etapas')
 
         return context
 
@@ -72,10 +72,9 @@ class EtapaUpdateView(TemplateView):
         return redirect('proyecto:proyecto_list',pk=self.proyecto().pk).url
 
 
-class EtapaCreateView(CreateView):
+class EtapaCreateView(TemplateView):
     model = models.Etapa
     template_name = "proyecto/etapa_create.html"
-    form_class = EtapaFormSet
 
     def proyecto(self):
         return get_object_or_404(models.Proyecto, pk=self.kwargs['pk'])
@@ -84,22 +83,86 @@ class EtapaCreateView(CreateView):
         context = super(EtapaCreateView, self).get_context_data(**kwargs)
 
         if self.request.POST:
-            context['lista_etapas'] = EtapaFormSet(self.request.POST)
+            context['lista_etapas'] = EtapaFormSet(self.request.POST,prefix='etapas')
         else:
-            context['lista_etapas'] = EtapaFormSet()
+            context['lista_etapas'] = EtapaFormSet(prefix='etapas')
         return context
     
-    def form_valid(self,form):
+    def post(self, request, *args, **kwargs):
         context = self.get_context_data()
-
-        if form.is_valid():
-            form.instance = self.proyecto()
-            form.save()
-            return redirect('proyecto:proyecto_list',pk=self.proyecto().macroproyecto.pk)
+        lista_etapas = context['lista_etapas']
+        if lista_etapas.is_valid():
+            lista_etapas.instance = self.proyecto()
+            lista_etapas.save()            
+        return redirect('proyecto:proyecto_list',pk=self.proyecto().macroproyecto.pk)
 
     def get_success_url(self):
         return redirect('proyecto:proyecto_list',pk=self.proyecto().macroproyecto.pk).url
-            
+
+
+class InventarioCreateView(TemplateView):
+    model = modelInm.TipoInmueble
+    template_name = "proyecto/etapa_inventario.html"
+    form_class = InventarioFormSet
+
+    def etapa(self):
+        return get_object_or_404(models.Etapa, pk=self.kwargs['pk'])
+
+    def proyecto(self):
+        etapa = self.etapa()
+        return etapa.proyectoEtapa
+
+    def get_context_data(self, **kwargs):
+        context = super(InventarioCreateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['lista_inventario'] = InventarioFormSet(self.request.POST,prefix='inventarios')
+        else:
+            context['lista_inventario'] = InventarioFormSet(prefix='inventarios')
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        lista_inventario = context['lista_inventario']
+        if lista_inventario.is_valid():
+            lista_inventario.instance = self.etapa()
+            lista_inventario.save()            
+        return redirect('proyecto:etapa_list',pk=self.proyecto().pk)
+    
+   
+    def get_success_url(self):
+        return redirect('proyecto:proyecto_list',pk=self.proyecto().pk).url            
+
+class InventarioEditView(TemplateView):
+    model = modelInm.TipoInmueble
+    template_name = "proyecto/etapa_inventario_edit.html"
+
+    def etapa(self):
+        return get_object_or_404(models.Etapa, pk=self.kwargs['pk'])
+
+    def proyecto(self):
+        etapa = self.etapa()
+        return etapa.proyectoEtapa
+
+    def get_context_data(self, **kwargs):
+        context = super(InventarioEditView, self).get_context_data(**kwargs)
+        etapa = self.etapa()
+        if self.request.POST:
+            context['lista_inventario'] = InventarioFormSet(self.request.POST,instance=etapa,prefix='inventarios')
+        else:
+            context['lista_inventario'] = InventarioFormSet(instance=etapa,prefix='inventarios')
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        lista_inventario = context['lista_inventario']
+        if lista_inventario.is_valid():
+            lista_inventario.instance = self.etapa()
+            lista_inventario.save()            
+        return redirect('proyecto:etapa_list',pk=self.proyecto().pk)
+    
+   
+    def get_success_url(self):
+        return redirect('proyecto:proyecto_list',pk=self.proyecto().pk).url            
 
 class VentaUpdateView(UpdateView):
     model = models.Venta
@@ -138,46 +201,6 @@ class MacroproyectoListView(ListView):
 
 class ProyectoInventarioView(TemplateView):
     template_name = 'proyecto/proyecto_inventario.html'
-
-
-class InventarioCreateView(CreateView):
-    model = modelInm.TipoInmueble
-    template_name = "proyecto/etapa_inventario.html"
-    form_class = InventarioFormSet
-
-    def etapa(self):
-        return get_object_or_404(models.Etapa, pk=self.kwargs['pk'])
-
-    def proyecto(self):
-        etapa = self.etapa()
-        return etapa.proyectoEtapa
-
-    def get_context_data(self, **kwargs):
-        context = super(InventarioCreateView, self).get_context_data(**kwargs)
-
-        if self.request.POST:
-            context['lista_inventario'] = InventarioFormSet(self.request.POST)
-        else:
-            context['lista_inventario'] = InventarioFormSet()
-        return context
-    
-    def form_valid(self,form):
-        context = self.get_context_data()
-
-        if form.is_valid():
-            form.instance = self.etapa()
-            form.save()
-            return redirect('proyecto:etapa_list',pk=self.proyecto().pk)
-
-
-    def get_success_url(self):
-        return redirect('proyecto:proyecto_list',pk=self.proyecto().macroproyecto.pk).url
-
-
-class InventarioEditView(UpdateView):
-    model = modelInm.TipoInmueble
-    template_name = "proyecto/etapa_inventario_edit.html"
-
 
 class ProyectoIncrementoView(TemplateView):
     template_name = 'proyecto/incremento_ventas.html'
@@ -254,9 +277,9 @@ class MacroproyectoCreateView(SuccessMessageMixin, CreateView):
         context = super(MacroproyectoCreateView, self).get_context_data(**kwargs)
         context['lote_form'] = self.second_form_class
         if self.request.POST:
-            context['lista_proyectos'] = ProyectoFormSet(self.request.POST)
+            context['lista_proyectos'] = ProyectoFormSet(self.request.POST,prefix='proyectos')
         else:
-            context['lista_proyectos'] = ProyectoFormSet()
+            context['lista_proyectos'] = ProyectoFormSet(prefix='proyectos')
         return context
 
     def form_valid(self, form):
@@ -267,9 +290,7 @@ class MacroproyectoCreateView(SuccessMessageMixin, CreateView):
         if lote_form.is_valid():
             lote = lote_form.save()
             macroproyecto = form.save(commit=False)
-            print(lote)
             macroproyecto.lote = lote
-            print(macroproyecto.lote)
             macroproyecto.save()
             if lista_proyectos.is_valid():
                 lista_proyectos.instance = macroproyecto
@@ -314,12 +335,12 @@ class MacroproyectoEditView(UpdateView):
 
         if self.request.POST:
 
-            context['lista_proyectos'] = ProyectoFormSet(self.request.POST, instance=self.object)
+            context['lista_proyectos'] = ProyectoFormSet(self.request.POST, instance=self.object,prefix='proyectos')
             context['lote_form'] = CrearLoteForm(self.request.POST, instance=context['macroproyecto'].lote)
 
         else:
             
-            context['lista_proyectos'] = ProyectoFormSet(instance=self.object)
+            context['lista_proyectos'] = ProyectoFormSet(instance=self.object,prefix='proyectos')
             context['lote_form'] = CrearLoteForm(instance=context['macroproyecto'].lote)
             
         return context
@@ -334,7 +355,6 @@ class MacroproyectoEditView(UpdateView):
         print(lote_form)
 
         if lote_form.is_valid() and form.is_valid():
-            print("poraqui1")            
             
             macroproyecto = form.save()
             macroproyecto.lote = lote_form.save()
@@ -344,10 +364,9 @@ class MacroproyectoEditView(UpdateView):
                         
 
             if lista_proyectos.is_valid():
-                print("poraqui3")
                 # lista_proyectos.instance = macroproyecto
                 # lista_proyectos.save()
-
+                
                 lista_proyectos.instance = self.object
                 lista_proyectos.save()
 

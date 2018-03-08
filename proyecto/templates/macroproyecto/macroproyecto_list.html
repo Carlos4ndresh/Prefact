@@ -26,8 +26,9 @@
                       <td>{{ macroproyecto.descripcionMacroproyecto }}</td>
                       <td>{{ macroproyecto.m2Macroproyecto }}</td>   
                       {% if macroproyecto.proyectos.all %}
-                        <td><a href="{% url 'proyecto:proyecto_list' pk=macroproyecto.pk %}" class="btn-info btn-sm">Proyectos</a></td>                          
-                        {% comment %} <td><a href="{% url 'proyecto:proyecto_inventario' pk=macroproyecto.pk %}" class="btn-success btn-sm">Inventario de Inmuebles</a></td>                       {% endcomment %}
+                        <td><a href="{% url 'proyecto:proyecto_list' pk=macroproyecto.pk %}" class="btn-success btn-sm">Proyectos</a></td>                          
+                      {% else %}
+                      <td><a href="" class="btn-danger btn-sm">Proyectos</a></td>                          
                       {% endif %}     
                       {% comment %} <td><a href="" class="btn-warning btn-sm">Informaci&oacute;n de factibilidad</a></td> {% endcomment %}
                     </tr>

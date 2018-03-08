@@ -16,7 +16,8 @@
             <div class="panel panel-body">
                 <form method="POST">
                     {% csrf_token %}
-                   {{ form.as_p }}
+                    {% bootstrap_form form error_types='all' %}
+                   {% comment %} {{ form.as_p }} {% endcomment %}
                     <button class="btn btn-success" type="submit">
                         <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
                                 Guardar

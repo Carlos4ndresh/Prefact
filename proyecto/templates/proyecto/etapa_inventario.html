@@ -11,16 +11,14 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel panel-heading">
-                <h3 class="panel-title">Inventario de Inmuebles para la Etapa {{ view.etapa.nombreEtapa|capfirst }}</h3>
+                <h3 class="panel-title">Inventario de Inmuebles para la Etapa: {{ view.etapa.nombreEtapa|capfirst }}</h3>
             </div>
             <div class="panel panel-body">
                 <form method="POST">
                     {% csrf_token %}
-                    {{ lista_inventario.management_form }}
                     <table class="table">
-                        
+                        {{ lista_inventario.management_form }}
                         {% for form in lista_inventario  %}
-                            {% bootstrap_form_errors form layout='inline' %}
                             {% if forloop.first %}
                                 <thead>
                                     <tr>
@@ -64,6 +62,7 @@
     $('.formset_row').formset({
         addText: 'Añadir',
         deleteText: 'Quitar',
+        prefix: 'inventarios'
     });
 </script>
 {% endblock js_script %}

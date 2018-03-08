@@ -33,7 +33,7 @@ class ProyectoForm(forms.ModelForm):
         exclude = ('macroproyecto',)
     
 
-ProyectoFormSet = inlineformset_factory(Macroproyecto,Proyecto,form=ProyectoForm, extra=3,exclude=('macroproyecto',), labels={
+ProyectoFormSet = inlineformset_factory(Macroproyecto,Proyecto,form=ProyectoForm,extra=1,exclude=('macroproyecto',), labels={
             'nombreProyecto': ("Nombre"),
             'descripcionProyecto': ("Descripción"),
             'm2PorProyecto': ("Metros Cuadrados"),
@@ -83,7 +83,7 @@ class EtapaForm(forms.ModelForm):
             'tipoProyecto': _('Tipo de Proyecto'),
         }
 
-EtapaFormSet = inlineformset_factory(Proyecto, Etapa, form=EtapaForm, extra=2, can_delete=True)
+EtapaFormSet = inlineformset_factory(Proyecto, Etapa, form=EtapaForm, extra=1, can_delete=True)
 
 class SubEtapaForm(forms.ModelForm):
     """Form definition for SubEtapa."""
