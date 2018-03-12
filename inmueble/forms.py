@@ -1,5 +1,10 @@
 from django import forms
-from inmueble.models import Lote
+from inmueble.models import Lote, TipoInmueble
+from proyecto.models import Etapa
+from django.forms import BaseInlineFormSet, inlineformset_factory
+from django.utils.translation import ugettext_lazy as _
+
+
 
 class CrearLoteForm(forms.ModelForm):
     class Meta:
@@ -20,4 +25,43 @@ class CrearLoteForm(forms.ModelForm):
             'tasaInteresMensualLote' : forms.NumberInput(),
             'mesesTotalesPagoLote' : forms.NumberInput(),
         }
+        labels = {
+            'nombreLote': _('Nombre del Lote'),
+            'areaBrutaLote': _('Área Bruta (M2)'),
+            'areaCesionViasLote': _('Área de Cesión en Vías (M2)'),
+            'porcentajeCesionVerdesLote': _('% Cesión áreas verdes'),
+            'areaCesionTierraLote': _('Área de Cesión (M2)'),
+            'valorM2Cesion': _('Valor del M2 en Cesión'),
+            'valorLote': _('Valor del Lote'),
+            'valorPorcentajeLote': _('% del Valor del Lote sobre proyecto'),
+            'valorEnPorcentaje': _('¿Cargar valor del Lote al proyecto?'),
+            'porcentajeFinanciarLote': _('% de financiación del lote'),
+            'mesesGraciaInteresesLote': _('# de meses de gracia en el pago del lote'),
+            'tasaInteresMensualLote': _('% tasa de interés del lote'),
+            'mesesTotalesPagoLote': _('Plazo de pago en meses'),
+        }
 
+
+class TipoInmuebleForm(forms.ModelForm):
+    """Form definition for Inventario."""
+
+    class Meta:
+        """Meta definition for Inventarioform."""
+
+        model = TipoInmueble
+        exclude = (
+                'etapa',
+                )
+
+        labels = {
+            'nombreTipoInmueble': _('Nombre Inmuebles'),
+            'areaTipoInmueble': _('Área de Inmuebles (M2)'),
+            'noUnidadesTipoInmueble': _('# Unidades a Vender'),
+            'valorM2TipoInmueble': _('Valor por M2'),
+            'secundarioTipoInmueble': _('¿Es inmueble secundario?'),
+            'paramInmueble': _('Clase de Inmueble'),
+            'valorSalariosMinTipoInmueble': _('Valor en Salarios Mínimos'),
+        }
+
+
+InventarioFormSet = inlineformset_factory(Etapa, TipoInmueble, form=TipoInmuebleForm, extra=1, can_delete=True)

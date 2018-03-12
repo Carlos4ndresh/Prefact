@@ -20,6 +20,13 @@ class MacroproyectoForm(forms.ModelForm):
             'm2Macroproyecto' : forms.NumberInput
         }
 
+        labels = {
+            'nombreMacroproyecto': _('Nombre del Macroproyecto'),
+            'descripcionMacroproyecto': _('Descripción del Macroproyecto'),
+            'velocidadUltimasVentas': _('Velocidad (Tasa) de Últimas Ventas'),
+            'm2Macroproyecto': _('Número de Metros Cuadrados'),            
+        }
+
 
 class ProyectoForm(forms.ModelForm):
     """Form definition for Proyecto."""
@@ -33,7 +40,7 @@ class ProyectoForm(forms.ModelForm):
         exclude = ('macroproyecto',)
     
 
-ProyectoFormSet = inlineformset_factory(Macroproyecto,Proyecto,form=ProyectoForm, extra=3,exclude=('macroproyecto',), labels={
+ProyectoFormSet = inlineformset_factory(Macroproyecto,Proyecto,form=ProyectoForm,extra=1,exclude=('macroproyecto',), labels={
             'nombreProyecto': ("Nombre"),
             'descripcionProyecto': ("Descripción"),
             'm2PorProyecto': ("Metros Cuadrados"),
@@ -52,6 +59,18 @@ class VentaForm(forms.ModelForm):
             'volumenInicialesVenta',
             'reajusteVenta'
             )
+        labels = {
+            'velocidadVentas': _('Velocidad (Tasa) de Ventas'),
+            'porcentajeTopeRemanenteVentas': _('% Máximo (tope) de Remanente de Ventas'),
+            'velocidadUltimasVentas': _('Velocidad (Tasa) de Últimas Ventas'),
+            'porcentajeTopeInicialVentas': _('% Máximo (tope) de Ventas iniciales '),
+            'porcentajeVelocidadInicialVentas': _('% Velocidad (Tasa) de Ventas iniciales '),
+            'fechaInicioVentas': _('Fecha de Inicio de Ventas'),
+            'numeroDeIncrementos': _('Cantidad de Incrementos'),
+            'porcenReajusteIncremento': _('% de Reajuste en cada incremento'),
+            'tipoIncremento': _('Tipo de Incremento'),
+            'porcenTopeReajusteIncremento': _('% Tope de Reajuste de Incrementos'),
+        }
 
 class EtapaForm(forms.ModelForm):
     """Form definition for Etapa."""
@@ -71,7 +90,7 @@ class EtapaForm(forms.ModelForm):
             'tipoProyecto': _('Tipo de Proyecto'),
         }
 
-EtapaFormSet = inlineformset_factory(Proyecto, Etapa, form=EtapaForm, extra=2, can_delete=True)
+EtapaFormSet = inlineformset_factory(Proyecto, Etapa, form=EtapaForm, extra=1, can_delete=True)
 
 class SubEtapaForm(forms.ModelForm):
     """Form definition for SubEtapa."""

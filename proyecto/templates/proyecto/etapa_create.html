@@ -18,7 +18,6 @@
                     {% csrf_token %}
                     {{ lista_etapas.management_form }}
                     <table class="table">
-                        {{ lista_etapas.management_form }}
                         {% for form in lista_etapas.forms %}
                             {% if forloop.first %}
                                 <thead>
@@ -62,6 +61,7 @@
     $('.formset_row').formset({
         addText: 'Añadir',
         deleteText: 'Quitar',
+        prefix: 'etapas'
     });
 </script>
 {% endblock js_script %}

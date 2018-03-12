@@ -8,7 +8,7 @@ class ParametroInmueble(models.Model):
     m2MinimoParametroInmueble = models.IntegerField()
 
     def __str__(self):
-        return "Lote {a}".format(a=self.nombreParametroInmueble)
+        return "Inmueble {a}".format(a=self.nombreParametroInmueble)
 
 
 class Lote(models.Model):
@@ -45,13 +45,14 @@ class PagoLote(models.Model):
 
 
 class TipoInmueble(models.Model):
+    ## also known as inventario de inmuebles
     nombreTipoInmueble = models.CharField(max_length=45, unique=True)
     areaTipoInmueble = models.IntegerField()
     noUnidadesTipoInmueble = models.IntegerField()
     valorM2TipoInmueble = models.DecimalField(max_digits=20,decimal_places=4)
     secundarioTipoInmueble = models.BooleanField()
     paramInmueble = models.ForeignKey('ParametroInmueble', related_name='tipoInmueble', on_delete=models.PROTECT)
-    valorSalariosMinTipoInmueble = models.DecimalField(max_digits=16,decimal_places=2)
+    valorSalariosMinTipoInmueble = models.DecimalField(max_digits=16,decimal_places=2, blank=True, null=True)
     etapa = models.ForeignKey('proyecto.Etapa', related_name='tipoInmueble', on_delete=models.PROTECT)
 
     def __str__(self):

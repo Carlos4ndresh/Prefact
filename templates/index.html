@@ -14,7 +14,17 @@
         <div class="jumbotron">
             <h3>Por favor indique que necesita</h3>
             <p><a href="{% url 'proyecto:nuevoMacro' %}">Iniciar Nuevo Flujo de Factibilidad</a></p>
-            <p><a href="{% url 'proyecto:indexProyecto' %}">Ver Proyectos Registrados</a></p>
+            <p><a href="{% url 'proyecto:indexProyecto' %}">Ver Proyectos Registrados</a></p>            
+        </div>
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-4">
+                            <h4>Convenciones</h4>
+                            <p>Información disponible para editar/ver</p><a href="" class="btn-success btn-sm">Inventario</a>
+                            <p>Información que debe ser ingresada o no está disponible</p><a href="" class="btn-danger btn-sm">Inventario</a>
+                            <p>Información diponible parcialmente o miscelánea</p><a href="" class="btn-warning btn-sm">Inventario</a>
+                    </div>
+            </div>
         </div>
     </div>
 {% endblock body_block %}
