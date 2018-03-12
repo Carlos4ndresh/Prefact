@@ -25,6 +25,21 @@ class CrearLoteForm(forms.ModelForm):
             'tasaInteresMensualLote' : forms.NumberInput(),
             'mesesTotalesPagoLote' : forms.NumberInput(),
         }
+        labels = {
+            'nombreLote': _('Nombre del Lote'),
+            'areaBrutaLote': _('Área Bruta (M2)'),
+            'areaCesionViasLote': _('Área de Cesión en Vías (M2)'),
+            'porcentajeCesionVerdesLote': _('% Cesión áreas verdes'),
+            'areaCesionTierraLote': _('Área de Cesión (M2)'),
+            'valorM2Cesion': _('Valor del M2 en Cesión'),
+            'valorLote': _('Valor del Lote'),
+            'valorPorcentajeLote': _('% del Valor del Lote sobre proyecto'),
+            'valorEnPorcentaje': _('¿Cargar valor del Lote al proyecto?'),
+            'porcentajeFinanciarLote': _('% de financiación del lote'),
+            'mesesGraciaInteresesLote': _('# de meses de gracia en el pago del lote'),
+            'tasaInteresMensualLote': _('% tasa de interés del lote'),
+            'mesesTotalesPagoLote': _('Plazo de pago en meses'),
+        }
 
 
 class TipoInmuebleForm(forms.ModelForm):

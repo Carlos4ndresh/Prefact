@@ -20,6 +20,13 @@ class MacroproyectoForm(forms.ModelForm):
             'm2Macroproyecto' : forms.NumberInput
         }
 
+        labels = {
+            'nombreMacroproyecto': _('Nombre del Macroproyecto'),
+            'descripcionMacroproyecto': _('Descripción del Macroproyecto'),
+            'velocidadUltimasVentas': _('Velocidad (Tasa) de Últimas Ventas'),
+            'm2Macroproyecto': _('Número de Metros Cuadrados'),            
+        }
+
 
 class ProyectoForm(forms.ModelForm):
     """Form definition for Proyecto."""

@@ -8,7 +8,7 @@
 
 {% block body_block %}
 <h2>Proyecto {{ view.proyecto.nombreProyecto|capfirst }}</h2>
-    <div class="container">
+    <div class="container-fluid">
         <div class="panel panel-default">
             <div class="panel panel-heading">
                 <h3 class="panel-title">Inventario de Inmuebles para la Etapa: {{ view.etapa.nombreEtapa|capfirst }}</h3>
@@ -16,7 +16,7 @@
             <div class="panel panel-body">
                 <form method="POST">
                     {% csrf_token %}
-                    <table class="table">
+                    <table class="table table-responsive">
                         {{ lista_inventario.management_form }}
                         {% for form in lista_inventario  %}
                             {% if forloop.first %}
@@ -48,11 +48,10 @@
                                     Guardar
                      </button>
                     <button onclick="window.history.back();" class="btn btn-primary" type="button">Cancelar</button>                       
-                </form>
-            </div>
+                </form>   
+            </div>         
         </div>
     </div>
-    
     
 {% endblock body_block %}
 
