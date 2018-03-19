@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^proyecto/(?P<pk>\d+)/etapa/list/$',views.EtapaListView.as_view(),name='etapa_list'),
     url(r'^proyecto/etapa/(?P<pk>\d+)/inventario/$',views.InventarioCreateView.as_view(),name='inventario_create'),
     url(r'^proyecto/etapa/(?P<pk>\d+)/inventario/edit/$',views.InventarioEditView.as_view(),name='inventario_edit'),
+    url(r'^prefactibilidad/(?P<pk>\d+)/view/$',views.PrefactibilidadView.as_view(),name='prefactibilidad_view'),
 ]

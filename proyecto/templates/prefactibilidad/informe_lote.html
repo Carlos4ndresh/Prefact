@@ -1,0 +1,51 @@
+{% extends 'plantilla.html' %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+{% block tituloPagina %}
+    <title>Prefactibilidad</title>
+{% endblock tituloPagina %}
+
+{% block body_block %}
+<h2>Proyecto {{ view.proyecto.nombreProyecto|capfirst }}</h2>
+    <div class="container">
+        <div class="panel panel-success" id="panelLote">
+            <div class="panel panel-heading">
+                <h3 class="panel-title"><a href="" onclick="$( '.panelLote' ).hide();">Lote Pepito</a></h3>
+            </div>
+            <div class="panel panel-body">
+                
+            </div>
+        </div>
+        <div class="panel panel-danger">
+            <div class="panel panel-heading">
+                <h3 class="panel-title">Resultados Financieros (Valor, Intereses y Financiación)</h3>
+            </div>
+            <div class="panel panel-body">
+
+            </div>
+        </div>
+        <div class="panel panel-warning">
+            <div class="panel panel-heading">
+                <h3 class="panel-title">Inventario de Inmuebles</h3>
+            </div>
+            <div class="panel panel-body">
+
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel panel-heading">
+                <h3 class="panel-title">Pago del Inmueble</h3>
+            </div>
+            <div class="panel panel-body">
+
+            </div>
+        </div>
+    </div>
+    
+{% endblock body_block %}
+
+
+{% block js_script %}
+
+{% endblock js_script %}

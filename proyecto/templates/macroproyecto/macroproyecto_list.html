@@ -15,13 +15,12 @@
                   <tr>
                     <th>Nombre</th>
                     <th>Descripción</th>
-                    <th>Metros Cuadrados</th>
+                    <th>Metros Cuadrados (M2)</th>
                   </tr>
               </thead>
               <tbody>
                   {% for macroproyecto in macroproyecto_list %}
                     <tr>
-                      {% comment %} <td>{{ macroproyecto.nombreMacroproyecto }}</td> {% endcomment %}
                       <td><a href="{% url 'proyecto:macro_edit' pk=macroproyecto.pk %}">{{ macroproyecto.nombreMacroproyecto }}</a></td>
                       <td>{{ macroproyecto.descripcionMacroproyecto }}</td>
                       <td>{{ macroproyecto.m2Macroproyecto }}</td>   
@@ -29,8 +28,12 @@
                         <td><a href="{% url 'proyecto:proyecto_list' pk=macroproyecto.pk %}" class="btn-success btn-sm">Proyectos</a></td>                          
                       {% else %}
                       <td><a href="" class="btn-danger btn-sm">Proyectos</a></td>                          
-                      {% endif %}     
-                      {% comment %} <td><a href="" class="btn-warning btn-sm">Informaci&oacute;n de factibilidad</a></td> {% endcomment %}
+                      {% endif %}
+                      {% if macroproyecto.is_macroproyecto_complete %}
+                        <td><a href="{% url 'proyecto:prefactibilidad_view' pk=macroproyecto.pk %}" class="btn-warning btn-sm">Prefactibilidad</a></td>
+                      {% else %}
+                        <td><a href="" class="btn-danger btn-sm">Prefactibilidad</a></td>
+                      {% endif %}                                              
                     </tr>
                   {% endfor %}
               </tbody>

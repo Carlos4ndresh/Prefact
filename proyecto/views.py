@@ -18,6 +18,11 @@ from django.db import transaction
 
 # Create your views here.
 
+
+class PrefactibilidadView(TemplateView):
+    template_name = "prefactibilidad/informe_lote.html"
+
+
 class ProyectoListView(ListView):
     template_name = 'proyecto/proyecto_list.html'
     model = models.Proyecto

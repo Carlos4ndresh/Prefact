@@ -8,7 +8,7 @@ class ParametroInmueble(models.Model):
     m2MinimoParametroInmueble = models.IntegerField()
 
     def __str__(self):
-        return "Inmueble {a}".format(a=self.nombreParametroInmueble)
+        return "{a}".format(a=self.nombreParametroInmueble)
 
 
 class Lote(models.Model):

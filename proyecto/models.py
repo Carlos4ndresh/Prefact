@@ -19,6 +19,17 @@ class Macroproyecto(models.Model):
 
     def show_proyectos(self):
         return self.proyecto_set.all()[0]
+    
+    def is_macroproyecto_complete(self):
+
+        tiposinmuebles = inmueble_models.TipoInmueble.objects.filter(etapa__proyectoEtapa__macroproyecto=self)
+        ventas = Venta.objects.filter(proyecto__macroproyecto=self)
+
+        if tiposinmuebles and ventas:
+            return True
+        else:
+            return False        
+
 
 
 class Proyecto(models.Model):
