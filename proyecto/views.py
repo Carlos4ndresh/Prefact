@@ -22,6 +22,9 @@ from django.db import transaction
 class PrefactibilidadView(TemplateView):
     template_name = "prefactibilidad/informe_lote.html"
 
+    def macroproyecto(self):
+        return get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
+
 
 class ProyectoListView(ListView):
     template_name = 'proyecto/proyecto_list.html'

@@ -1,20 +1,28 @@
 {% extends 'plantilla.html' %}
 {% load staticfiles %}
 {% load bootstrap3 %}
+{% load humanize %}
 
 {% block tituloPagina %}
     <title>Prefactibilidad</title>
 {% endblock tituloPagina %}
 
 {% block body_block %}
-<h2>Proyecto {{ view.proyecto.nombreProyecto|capfirst }}</h2>
+<h2>Proyecto {{ view.macroproyecto.nombreMacroproyecto|capfirst }}</h2>
     <div class="container">
         <div class="panel panel-success" id="panelLote">
             <div class="panel panel-heading">
-                <h3 class="panel-title"><a href="" onclick="$( '.panelLote' ).hide();">Lote Pepito</a></h3>
+                <h3 class="panel-title"><a href="" onclick="collapse">Lote {{ view.macroproyecto.lote.nombreLote|capfirst}}</a></h3>
             </div>
             <div class="panel panel-body">
-                
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-4">
+                                <h2 class="text-success col-lg-1">{{ view.macroproyecto.lote.areaBrutaLote|intcomma}}</h4>
+                                <h2 class="">{{ view.macroproyecto.lote.mesesTotalesPagoLote}}</h4>
+                        </div>                            
+                    </div>                        
+                </div>
             </div>
         </div>
         <div class="panel panel-danger">
