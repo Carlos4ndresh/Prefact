@@ -8,7 +8,7 @@ pip install -r /srv/Prefact/Prefact/requirements.txt
 
 python manage.py migrate                  # Apply database migrations
 
-echo "from django.contrib.auth.models import User; User.objects.filter(email='carlos.herrera@outlook.com').delete(); User.objects.create_superuser('cherrera', 'carlos.herrera@outlook.com'', 'C4r105!2018')" | python manage.py shell
+echo "from django.contrib.auth.models import User; User.objects.filter(email='carlos.herrera@outlook.com').delete(); User.objects.create_superuser('cherrera', 'carlos.herrera@outlook.com'', 'C4r105')" | python manage.py shell
 
 
 python manage.py collectstatic --noinput  # Collect static files
