@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^parametros/', IndexParametrosView.as_view(), name="parametros"),
     # url(r'^inmueble/',include('inmueble.urls')),
     url(r'^proyecto/',include('proyecto.urls'),name="proyectos"),
+    url(r'^accounts/',include('login.urls'),name="login"),
     url(r'^admin/', admin.site.urls),
 ]
 

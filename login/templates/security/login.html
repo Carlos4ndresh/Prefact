@@ -1,0 +1,21 @@
+{% extends "plantilla.html" %}
+{% load bootstrap3 %}
+
+{% block titulo  %}
+<title>Ingreso al sistema</title>
+{% endblock titulo  %}
+
+{% block tituloPagina %}
+    Ingrese sus credenciales
+{% endblock tituloPagina  %}
+
+{% block body_block %}
+<div class="container">
+    <h1>Login</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <input type="submit" value="Login" class="btn btn-default">
+    </form>
+</div>
+{% endblock %}
