@@ -12,21 +12,21 @@ from django.views.generic import (TemplateView,ListView,
                                   UpdateView,DeleteView,FormView)
 from django.views.generic.edit import FormMixin                                  
 from django.db import transaction
-                                  
+from django.contrib.auth.mixins import LoginRequiredMixin                                
 
 
 
 # Create your views here.
 
 
-class PrefactibilidadView(TemplateView):
+class PrefactibilidadView(LoginRequiredMixin,TemplateView):
     template_name = "prefactibilidad/informe_lote.html"
 
     def macroproyecto(self):
         return get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
 
 
-class ProyectoListView(ListView):
+class ProyectoListView(LoginRequiredMixin,ListView):
     template_name = 'proyecto/proyecto_list.html'
     model = models.Proyecto
 
@@ -37,7 +37,7 @@ class ProyectoListView(ListView):
     def macroproyecto(self):
         return get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
 
-class EtapaListView(ListView):
+class EtapaListView(LoginRequiredMixin,ListView):
     model = models.Etapa
     context_object_name = 'etapa_list'
     template_name='proyecto/etapa_list.html' 
@@ -50,7 +50,7 @@ class EtapaListView(ListView):
         queryset = models.Etapa.objects.filter(proyectoEtapa=self.proyecto)
         return queryset
 
-class EtapaUpdateView(TemplateView):
+class EtapaUpdateView(LoginRequiredMixin,TemplateView):
     model = models.Etapa
     template_name = "proyecto/etapa_edit.html"
 
@@ -80,7 +80,7 @@ class EtapaUpdateView(TemplateView):
         return redirect('proyecto:proyecto_list',pk=self.proyecto().pk).url
 
 
-class EtapaCreateView(TemplateView):
+class EtapaCreateView(LoginRequiredMixin,TemplateView):
     model = models.Etapa
     template_name = "proyecto/etapa_create.html"
 
@@ -108,7 +108,7 @@ class EtapaCreateView(TemplateView):
         return redirect('proyecto:proyecto_list',pk=self.proyecto().macroproyecto.pk).url
 
 
-class InventarioCreateView(TemplateView):
+class InventarioCreateView(LoginRequiredMixin,TemplateView):
     model = modelInm.TipoInmueble
     template_name = "proyecto/etapa_inventario.html"
     form_class = InventarioFormSet
@@ -140,7 +140,7 @@ class InventarioCreateView(TemplateView):
     def get_success_url(self):
         return redirect('proyecto:proyecto_list',pk=self.proyecto().pk).url            
 
-class InventarioEditView(TemplateView):
+class InventarioEditView(LoginRequiredMixin,TemplateView):
     model = modelInm.TipoInmueble
     template_name = "proyecto/etapa_inventario_edit.html"
 
@@ -172,7 +172,7 @@ class InventarioEditView(TemplateView):
     def get_success_url(self):
         return redirect('proyecto:proyecto_list',pk=self.proyecto().pk).url            
 
-class VentaUpdateView(UpdateView):
+class VentaUpdateView(LoginRequiredMixin,UpdateView):
     model = models.Venta
     template_name = "proyecto/incrementos_edit.html"
     form_class = VentaForm
@@ -187,7 +187,7 @@ class VentaUpdateView(UpdateView):
     def get_success_url(self):
         return redirect('proyecto:proyecto_list',pk=self.proyecto().macroproyecto.pk).url
 
-class VentaCreateView(FormView):
+class VentaCreateView(LoginRequiredMixin,FormView):
     model = models.Venta
     template_name = "proyecto/incrementos.html"
     form_class = VentaForm
@@ -202,15 +202,15 @@ class VentaCreateView(FormView):
         return redirect('proyecto:proyecto_list',pk=venta.proyecto.macroproyecto.pk)
 
 
-class MacroproyectoListView(ListView):
+class MacroproyectoListView(LoginRequiredMixin,ListView):
     template_name = 'macroproyecto/macroproyecto_list.html'
     model = models.Macroproyecto    
 
 
-class ProyectoInventarioView(TemplateView):
+class ProyectoInventarioView(LoginRequiredMixin,TemplateView):
     template_name = 'proyecto/proyecto_inventario.html'
 
-class ProyectoIncrementoView(TemplateView):
+class ProyectoIncrementoView(LoginRequiredMixin,TemplateView):
     template_name = 'proyecto/incremento_ventas.html'
     # form_class = VentaFormSet
 
@@ -274,7 +274,7 @@ class ProyectoIncrementoView(TemplateView):
     def get_success_url(self):
         return reverse("proyecto:indexProyecto")
 
-class MacroproyectoCreateView(SuccessMessageMixin, CreateView):
+class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, CreateView):
     template_name = 'macroproyecto/macroproyecto_create.html'
     form_class = MacroproyectoForm
     model = models.Macroproyecto
@@ -327,7 +327,7 @@ class MacroproyectoCreateView(SuccessMessageMixin, CreateView):
         # return reverse("proyecto:nuevoProy")
         return reverse("proyecto:indexProyecto")
 
-class MacroproyectoEditView(UpdateView):
+class MacroproyectoEditView(LoginRequiredMixin,UpdateView):
     template_name = 'macroproyecto/macroproyecto_detail.html'
     success_url = reverse_lazy("proyecto:indexProyecto")
     form_class = MacroproyectoForm

@@ -21,8 +21,3 @@ def lote(request):
     
     return render(request,'inmueble/lote.html',{'formLote':formLote})
  '''
- 
- class LotesList(ListView):
-     model = Lote
-     context_object_name = 'lotes'
-     template_name=''
