@@ -17,12 +17,22 @@
             <div class="panel panel-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-lg-4">
-                                <h2 class="text-success col-lg-1">{{ view.macroproyecto.lote.areaBrutaLote|intcomma}}</h4>                                
+                        <div class="col-md-3">
+                            <h2 class="text-success">Area del lote</h2>
+                            <h2 id="areabruta" class="text-success">{{ view.macroproyecto.lote.areaBrutaLote|intcomma}}</h2>                                
                         </div>                            
-                        <div class="col-lg-4">
-                            <h2 class="">{{ view.macroproyecto.lote.mesesTotalesPagoLote}}</h4>
+                        <div class="col-md-3">
+                            <h2 class="text-success">Area de Cesión para vias</h2>
+                            <h2 class="text-success">{{ view.macroproyecto.lote.areaCesionViasLote}}</h2>
                         </div>
+                        <div class="col-md-3">
+                                <h2 class="text-success">Area a ceder en tierra</h2>
+                                <h2 class="text-success">{{ view.macroproyecto.lote.areaCesionTierraLote}}</h2>
+                        </div>
+                        <div class="col-md-3">
+                                <h2 class="text-success">% de Cesión para Zonas Verdes</h2>
+                                <h2 class="text-success">{{ view.macroproyecto.lote.porcentajeCesionVerdesLote|intcomma}}</h2>
+                        </div>  
                     </div>                        
                 </div>
             </div>
@@ -32,7 +42,48 @@
                 <h3 class="panel-title">Resultados Financieros (Valor, Intereses y Financiación)</h3>
             </div>
             <div class="panel panel-body">
-
+                    <div class="container-fluid">
+                            <div class="row">
+                                    <div class="col-md-2">
+                                        <h2 class="text-danger">% Financiación</h2>
+                                    </div>                            
+                                    <div class="col-md-2">
+                                        <h2 class="text-danger">% Interés Mensual</h2>
+                                    </div>
+                                    <div class="col-md-2">
+                                            <h2 class="text-danger">Meses de pago</h2>
+                                    </div>
+                                    <div class="col-md-2">
+                                            <h2 class="text-danger">Meses de gracia</h2>
+                                    </div>  
+                                    <div class="col-md-2">
+                                            <h2 class="text-danger">Valor Financiado del Lote</h2>
+                                    </div>  
+                                    <div class="col-md-2">
+                                            <h2 class="text-danger">Valor Total (+Intereses)</h2>
+                                    </div>  
+                            </div>  
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <h2 class="text-danger">{{ view.macroproyecto.lote.porcentajeFinanciarLote|intcomma}}</h2>                                
+                                </div>                            
+                                <div class="col-md-2">
+                                    <h2 class="text-danger">{{ view.macroproyecto.lote.tasaInteresMensualLote|intcomma}}</h2>
+                                </div>
+                                <div class="col-md-2">
+                                        <h2 class="text-danger">{{ view.macroproyecto.lote.mesesTotalesPagoLote}}</h2>
+                                </div>
+                                <div class="col-md-2">
+                                        <h2 class="text-danger">{{ view.macroproyecto.lote.mesesGraciaInteresesLote}}</h2>
+                                </div>  
+                                <div class="col-md-2">
+                                        <h2 class="text-danger">TODO</h2>
+                                </div>  
+                                <div class="col-md-2">
+                                        <h2 class="text-danger">{{ view.macroproyecto.lote.valorTotalLote|intcomma}}</h2>
+                                </div>  
+                            </div>                        
+                    </div>
             </div>
         </div>
         <div class="panel panel-warning">
@@ -40,7 +91,22 @@
                 <h3 class="panel-title">Inventario de Inmuebles</h3>
             </div>
             <div class="panel panel-body">
-
+                    <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-4">
+                                        <h2 class="text-warning">Inmuebles disponibles para Venta</h2>
+                                        <h2 class="text-danger">TODO</h2>                                
+                                </div>                            
+                                <div class="col-md-4">
+                                    <h2 class="text-warning">Velocidad de Ventas</h2>
+                                    <h2 class="text-warning">TODO _ THINK</h2>
+                                </div>
+                                <div class="col-md-4">
+                                        <h2 class="text-warning">Número de incrementos</h2>
+                                        <h2 class="text-warning">TODO</h2>
+                                </div>
+                            </div>                        
+                    </div>
             </div>
         </div>
         <div class="panel panel-info">
@@ -48,7 +114,22 @@
                 <h3 class="panel-title">Pago del Inmueble</h3>
             </div>
             <div class="panel panel-body">
-
+                    <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-4">
+                                        <h2 class="text-warning">Area del lote</h2>
+                                        <h2 class="text-info">{{ view.macroproyecto.lote.areaBrutaLote|intcomma}}</h2>                                
+                                </div>                            
+                                <div class="col-md-4">
+                                    <h2 class="text-warning">Meses de pago</h2>
+                                    <h2 class="text-warning">{{ view.macroproyecto.lote.mesesTotalesPagoLote}}</h2>
+                                </div>
+                                <div class="col-md-4">
+                                        <h2 class="text-warning">Meses de pago</h2>
+                                        <h2 class="text-warning">{{ view.macroproyecto.lote.mesesTotalesPagoLote}}</h2>
+                                </div>
+                            </div>                        
+                    </div>
             </div>
         </div>
     </div>
