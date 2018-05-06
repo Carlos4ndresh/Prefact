@@ -22,7 +22,7 @@ class Macroproyecto(models.Model):
     
     def is_macroproyecto_complete(self):
 
-        tiposinmuebles = inmueble_models.TipoInmueble.objects.filter(etapa__proyectoEtapa__macroproyecto=self)
+        tiposinmuebles = inmueble_models.TipoInmueble.objects.filter(subEtapa__etapa__proyectoEtapa__macroproyecto=self)
         ventas = Venta.objects.filter(proyecto__macroproyecto=self)
 
         if tiposinmuebles and ventas:
@@ -76,7 +76,6 @@ class Etapa(models.Model):
     numeroTipoInmuebleEtapa = models.IntegerField(blank=True, null=True)
     numeroTipoInmueble2Etapa = models.IntegerField(blank=True, null=True)
     proyectoEtapa = models.ForeignKey('Proyecto', related_name='etapas_proyecto', on_delete=models.PROTECT,default=999999999)
-    tipoProyecto = models.ForeignKey(parametros_models.TipoProyecto, related_name='etapa_tipoproy', on_delete=models.PROTECT,default=999999999)
 
     def __str__(self):
         return self.nombreEtapa

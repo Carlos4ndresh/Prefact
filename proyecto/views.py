@@ -6,7 +6,7 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from . import models
 from inmueble import models as modelInm
-from .forms import ProyectoFormSet, EtapaFormSet
+from .forms import ProyectoFormSet, EtapaFormSet, SubEtapaFormSet
 from django.views.generic import (TemplateView,ListView,
                                   DetailView,CreateView,
                                   UpdateView,DeleteView,FormView)
@@ -108,13 +108,95 @@ class EtapaCreateView(LoginRequiredMixin,TemplateView):
         return redirect('proyecto:proyecto_list',pk=self.proyecto().macroproyecto.pk).url
 
 
+class SubEtapaCreateView(LoginRequiredMixin,TemplateView):
+    template_name = "proyecto/subetapa_create.html"
+    model = models.SubEtapa
+
+    def proyecto(self):
+        return self.etapa().proyectoEtapa
+    
+    def etapa(self):
+        return get_object_or_404(models.Etapa, pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super(SubEtapaCreateView, self).get_context_data(**kwargs)
+
+        if self.request.POST:
+            context['lista_subetapas'] = SubEtapaFormSet(self.request.POST,prefix='subetapas')
+        else:
+            context['lista_subetapas'] = SubEtapaFormSet(prefix='subetapas')
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        lista_subetapas = context['lista_subetapas']
+        if lista_subetapas.is_valid():
+            lista_subetapas.instance = self.etapa()
+            lista_subetapas.save()            
+        return redirect('proyecto:etapa_list',pk=self.etapa().proyectoEtapa.pk)
+
+    def get_success_url(self):
+        return redirect('proyecto:etapa_list',pk=self.proyecto().proyectoEtapa.pk).url
+
+class SubEtapaUpdateView(LoginRequiredMixin,TemplateView):
+    template_name = "proyecto/subetapa_edit.html"
+    model = models.SubEtapa
+
+    def proyecto(self):
+        return self.etapa().proyectoEtapa
+    
+    def etapa(self):
+        return get_object_or_404(models.Etapa, pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super(SubEtapaUpdateView, self).get_context_data(**kwargs)
+        etapa = self.etapa()
+
+        if self.request.POST:
+            context['lista_subetapas'] = SubEtapaFormSet(self.request.POST, instance=etapa,prefix='subetapas')
+        else:            
+            context['lista_subetapas'] = SubEtapaFormSet(instance=etapa,prefix='subetapas')
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        lista_subetapas = context['lista_subetapas']
+        if lista_subetapas.is_valid():
+            lista_subetapas.instance = self.etapa()
+            lista_subetapas.save()            
+        return redirect('proyecto:etapa_list',pk=self.etapa().proyectoEtapa.pk)
+    
+    def get_success_url(self):
+        return redirect('proyecto:etapa_list',pk=self.proyecto().proyectoEtapa.pk).url
+
+
+class SubEtapaListView(LoginRequiredMixin,ListView):
+    template_name = "proyecto/subetapa_list.html"
+    model = models.SubEtapa
+    context_object_name = 'subetapa_list'
+
+    def proyecto(self):
+        return self.etapa().proyectoEtapa
+    
+    def etapa(self):
+        return get_object_or_404(models.Etapa, pk=self.kwargs['pk'])
+
+    def get_queryset(self):
+        self.etapa = get_object_or_404(models.Etapa, pk=self.kwargs['pk'])
+        queryset = models.SubEtapa.objects.filter(etapa=self.etapa)
+        return queryset
+
 class InventarioCreateView(LoginRequiredMixin,TemplateView):
     model = modelInm.TipoInmueble
     template_name = "proyecto/etapa_inventario.html"
     form_class = InventarioFormSet
 
+    def subetapa(self):
+        return get_object_or_404(models.SubEtapa,pk=self.kwargs['pk'])
+
     def etapa(self):
-        return get_object_or_404(models.Etapa, pk=self.kwargs['pk'])
+        return self.subetapa().etapa
 
     def proyecto(self):
         etapa = self.etapa()
@@ -132,20 +214,23 @@ class InventarioCreateView(LoginRequiredMixin,TemplateView):
         context = self.get_context_data()
         lista_inventario = context['lista_inventario']
         if lista_inventario.is_valid():
-            lista_inventario.instance = self.etapa()
+            lista_inventario.instance = self.subetapa()
             lista_inventario.save()            
         return redirect('proyecto:etapa_list',pk=self.proyecto().pk)
     
    
     def get_success_url(self):
-        return redirect('proyecto:proyecto_list',pk=self.proyecto().pk).url            
+        return redirect('proyecto:etapa_list',pk=self.proyecto().pk).url            
 
 class InventarioEditView(LoginRequiredMixin,TemplateView):
     model = modelInm.TipoInmueble
     template_name = "proyecto/etapa_inventario_edit.html"
 
+    def subetapa(self):
+        return get_object_or_404(models.SubEtapa,pk=self.kwargs['pk'])
+
     def etapa(self):
-        return get_object_or_404(models.Etapa, pk=self.kwargs['pk'])
+        return self.subetapa().etapa
 
     def proyecto(self):
         etapa = self.etapa()
@@ -153,24 +238,24 @@ class InventarioEditView(LoginRequiredMixin,TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(InventarioEditView, self).get_context_data(**kwargs)
-        etapa = self.etapa()
+        subetapa = self.subetapa()
         if self.request.POST:
-            context['lista_inventario'] = InventarioFormSet(self.request.POST,instance=etapa,prefix='inventarios')
+            context['lista_inventario'] = InventarioFormSet(self.request.POST,instance=subetapa,prefix='inventarios')
         else:
-            context['lista_inventario'] = InventarioFormSet(instance=etapa,prefix='inventarios')
+            context['lista_inventario'] = InventarioFormSet(instance=subetapa,prefix='inventarios')
         return context
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data()
         lista_inventario = context['lista_inventario']
         if lista_inventario.is_valid():
-            lista_inventario.instance = self.etapa()
+            lista_inventario.instance = self.subetapa()
             lista_inventario.save()            
         return redirect('proyecto:etapa_list',pk=self.proyecto().pk)
     
    
     def get_success_url(self):
-        return redirect('proyecto:proyecto_list',pk=self.proyecto().pk).url            
+        return redirect('proyecto:etapa_list',pk=self.proyecto().pk).url            
 
 class VentaUpdateView(LoginRequiredMixin,UpdateView):
     model = models.Venta

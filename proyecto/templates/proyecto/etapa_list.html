@@ -2,11 +2,11 @@
 {% load staticfiles %}
 
 {% block titulo %}
-  <title>Inventario de Inmuebles x Etapas</title>
+  <title>Inventario de Inmuebles x Etapas/SubEtapas</title>
 {% endblock titulo %}
   
 {% block body_block %}
-<h2>Inventario para Etapas de {{ view.proyecto.nombreProyecto|capfirst }}</h2>
+<h2>Etapas de {{ view.proyecto.nombreProyecto|capfirst }}</h2>
 <div class="panel panel-default">
   <div class="panel-heading">
       
@@ -18,7 +18,6 @@
               <tr>
                 <th>Nombre</th>
                 <th>Descripción</th>
-                <th>Tipo de Proyecto</th>
               </tr>
           </thead>
           <tbody>
@@ -26,13 +25,13 @@
                 <tr>
                   <td>{{ etapa.nombreEtapa }}</td>
                   <td>{{ etapa.descripcionEtapa }}</td>
-                  <td>{{ etapa.tipoProyecto }}</td>
                   
-                  {% if etapa.tipoInmueble.all %}
-                    <td><a href="{% url 'proyecto:inventario_edit' pk=etapa.pk %}" class="btn-success btn-sm">Inventario</a></td>  
+                  {% if etapa.subetapa.all %}
+                    <td><a href="{% url 'proyecto:subetapa_edit' pk=etapa.pk %}" class="btn-success btn-sm">Sub-etapas</a></td>  
+                    <td><a href="{% url 'proyecto:subetapa_list' pk=etapa.pk %}" class="btn-success btn-sm">Inventario</a></td>  
                   {% else %}
-                    <td><a href="{% url 'proyecto:inventario_create' pk=etapa.pk %}" class="btn-danger btn-sm">Inventario</a></td>  
-                  {% endif %}                                        
+                    <td><a href="{% url 'proyecto:subetapa_create' pk=etapa.pk %}" class="btn-danger btn-sm">Creación de Sub-Etapas</a></td>  
+                  {% endif %}
                 </tr>
               {% endfor %}
           </tbody>

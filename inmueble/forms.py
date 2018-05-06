@@ -1,6 +1,6 @@
 from django import forms
 from inmueble.models import Lote, TipoInmueble
-from proyecto.models import Etapa
+from proyecto.models import SubEtapa
 from django.forms import BaseInlineFormSet, inlineformset_factory
 from django.utils.translation import ugettext_lazy as _
 
@@ -50,7 +50,7 @@ class TipoInmuebleForm(forms.ModelForm):
 
         model = TipoInmueble
         exclude = (
-                'etapa',
+                'subEtapa',
                 )
 
         labels = {
@@ -64,4 +64,4 @@ class TipoInmuebleForm(forms.ModelForm):
         }
 
 
-InventarioFormSet = inlineformset_factory(Etapa, TipoInmueble, form=TipoInmuebleForm, extra=1, can_delete=True)
+InventarioFormSet = inlineformset_factory(SubEtapa, TipoInmueble, form=TipoInmuebleForm, extra=1, can_delete=True)

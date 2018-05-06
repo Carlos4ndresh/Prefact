@@ -1,0 +1,42 @@
+{% extends 'plantilla.html' %}
+{% load staticfiles %}
+
+{% block titulo %}
+  <title>Inventario de Inmuebles x Etapas/SubEtapas</title>
+{% endblock titulo %}
+  
+{% block body_block %}
+<h2>SubEtapas de {{ view.etapa.nombreEtapa|capfirst }}</h2>
+<div class="panel panel-default">
+  <div class="panel-heading">
+      
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table table-striped">
+          <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for subetapa in subetapa_list %}
+                <tr>
+                  <td>{{ subetapa.nombreSubEtapa }}</td>
+                  <td>{{ subetapa.descripcionSubEtapa }}</td>
+                  
+                  {% if subetapa.tipoInmueble.all %}
+                    <td><a href="{% url 'proyecto:inventario_edit' pk=subetapa.pk %}" class="btn-success btn-sm">Inventario</a></td>  
+                  {% else %}
+                    <td><a href="{% url 'proyecto:inventario_create' pk=subetapa.pk %}" class="btn-danger btn-sm">Inventario</a></td>  
+                  {% endif %}                                        
+                </tr>
+              {% endfor %}
+          </tbody>
+        </table> 
+    </div> 
+  </div>
+</div>      
+
+{% endblock %}

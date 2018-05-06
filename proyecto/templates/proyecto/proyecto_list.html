@@ -34,8 +34,8 @@
                       <td><a href="{% url 'proyecto:proyecto_incremento' pk=proyecto.pk %}" class="btn-danger btn-sm">Incrementos y Ventas</a></td>  
                     {% endif %}       
                     {% if proyecto.etapas_proyecto.all %}
-                      <td><a href="{% url 'proyecto:etapa_edit' pk=proyecto.pk %}" class="btn-success btn-sm">Etapas</a></td>  
-                      <td><a href="{% url 'proyecto:etapa_list' pk=proyecto.pk %}" class="btn-success btn-sm">Inventario de Inmuebles por Etapa</a></td>  
+                      <td><a href="{% url 'proyecto:etapa_edit' pk=proyecto.pk %}" class="btn-success btn-sm">Edición de Etapas</a></td>  
+                      <td><a href="{% url 'proyecto:etapa_list' pk=proyecto.pk %}" class="btn-success btn-sm">Sub-Etapas</a></td>  
                     {% else %}
                       <td><a href="{% url 'proyecto:etapa_create' pk=proyecto.pk %}" class="btn-danger btn-sm">Etapas</a></td>  
                       <td><a href="" class="btn-danger btn-sm">Inventario de Inmuebles por Etapa</a></td>  

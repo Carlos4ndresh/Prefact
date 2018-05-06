@@ -87,7 +87,6 @@ class EtapaForm(forms.ModelForm):
             'nombreEtapa': _('Nombre'),
             'descripcionEtapa': _('Descripción'),
             'numeroTipoInmuebleEtapa': _('Número Inmuebles'),
-            'tipoProyecto': _('Tipo de Proyecto'),
         }
 
 EtapaFormSet = inlineformset_factory(Proyecto, Etapa, form=EtapaForm, extra=1, can_delete=True)
@@ -99,8 +98,15 @@ class SubEtapaForm(forms.ModelForm):
         """Meta definition for SubEtapaform."""
 
         model = SubEtapa
-        # fields = ('',)
-        fields = '__all__'
+        exclude = (
+                'etapa',
+                )
+        labels = {
+            'nombreSubEtapa': _('Nombre'),
+            'descripcionSubEtapa': _('Descripción'),
+        }
+
+SubEtapaFormSet = inlineformset_factory(Etapa, SubEtapa, form=SubEtapaForm, extra=1, can_delete=True)
 
 class ProyeccionIPCForm(forms.ModelForm):
     """Form definition for ProyeccionIPC."""

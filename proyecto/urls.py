@@ -14,7 +14,12 @@ urlpatterns = [
     url(r'^proyecto/(?P<pk>\d+)/etapa/create/$',views.EtapaCreateView.as_view(),name='etapa_create'),
     url(r'^proyecto/(?P<pk>\d+)/etapa/edit/$',views.EtapaUpdateView.as_view(),name='etapa_edit'),
     url(r'^proyecto/(?P<pk>\d+)/etapa/list/$',views.EtapaListView.as_view(),name='etapa_list'),
-    url(r'^proyecto/etapa/(?P<pk>\d+)/inventario/$',views.InventarioCreateView.as_view(),name='inventario_create'),
-    url(r'^proyecto/etapa/(?P<pk>\d+)/inventario/edit/$',views.InventarioEditView.as_view(),name='inventario_edit'),
+    ## Crear vistas de subetapas
+    url(r'^proyecto/etapa/(?P<pk>\d+)/subetapa/create/$',views.SubEtapaCreateView.as_view(),name='subetapa_create'),
+    url(r'^proyecto/etapa/(?P<pk>\d+)/subetapa/edit/$',views.SubEtapaUpdateView.as_view(),name='subetapa_edit'),
+    url(r'^proyecto/etapa/(?P<pk>\d+)/subetapa/list/$',views.SubEtapaListView.as_view(),name='subetapa_list'),
+    ## Modificar por subetapa
+    url(r'^proyecto/etapa/subetapa/(?P<pk>\d+)/inventario/$',views.InventarioCreateView.as_view(),name='inventario_create'),
+    url(r'^proyecto/etapa/subetapa/(?P<pk>\d+)/inventario/edit/$',views.InventarioEditView.as_view(),name='inventario_edit'),
     url(r'^prefactibilidad/(?P<pk>\d+)/view/$',views.PrefactibilidadView.as_view(),name='prefactibilidad_view'),
 ]
