@@ -50,10 +50,11 @@ class Venta(models.Model):
     porcentajeTopeInicialVentas = models.DecimalField(max_digits=5,decimal_places=2)
     porcentajeVelocidadInicialVentas = models.DecimalField(max_digits=5,decimal_places=2)
     fechaInicioVentas = models.DateField(blank=False)
-    proyecto = models.ForeignKey(Proyecto, related_name='venta', on_delete=models.PROTECT)
     volumenTotalVenta = models.DecimalField(max_digits=20,decimal_places=4,blank=True, null=True)
     reajusteVenta = models.DecimalField(max_digits=20,decimal_places=4,blank=True, null=True)
     volumenInicialesVenta = models.DecimalField(max_digits=20,decimal_places=4,blank=True, null=True)
+
+    subetapa = models.ForeignKey('SubEtapa', related_name='ventas', on_delete=models.PROTECT,default=999999999)
 
     ## Datos de incrementos
 
@@ -113,7 +114,7 @@ class SubEtapa(models.Model):
 class ProyeccionIPC(models.Model):
     anosProyeccionIPC = models.IntegerField(blank=False)
     tasaBaseProyeccionIPC = models.DecimalField(max_digits=5,decimal_places=2,blank=False)
-    proyecto = models.ForeignKey(Proyecto, related_name='proyeccionIPC', on_delete=models.PROTECT)
+    subetapa = models.ForeignKey('SubEtapa', related_name='proyeccionIPC', on_delete=models.PROTECT,default=999999999)
 
     def __str__(self):
         return "Proyeccion IPC Proyecto {a}:{b}".format(a=self.proyecto.nombreProyecto,
