@@ -23,7 +23,7 @@ class Macroproyecto(models.Model):
     def is_macroproyecto_complete(self):
 
         tiposinmuebles = inmueble_models.TipoInmueble.objects.filter(subEtapa__etapa__proyectoEtapa__macroproyecto=self)
-        ventas = Venta.objects.filter(proyecto__macroproyecto=self)
+        ventas = Venta.objects.filter(subetapa__etapa__proyectoEtapa__macroproyecto=self)
 
         if tiposinmuebles and ventas:
             return True
