@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
-from proyecto.forms import MacroproyectoForm, ProyectoForm, VentaForm
+from proyecto.forms import MacroproyectoForm, ProyectoForm, VentaForm, VentaFormSet
 from inmueble.forms import CrearLoteForm, InventarioFormSet
 from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
@@ -272,19 +272,47 @@ class VentaUpdateView(LoginRequiredMixin,UpdateView):
     def get_success_url(self):
         return redirect('proyecto:proyecto_list',pk=self.proyecto().macroproyecto.pk).url
 
-class VentaCreateView(LoginRequiredMixin,FormView):
+# class VentaCreateView(LoginRequiredMixin,FormView):
+#     model = models.Venta
+#     template_name = "proyecto/incrementos.html"
+#     form_class = VentaForm
+
+#     def proyecto(self):
+#         return get_object_or_404(models.Proyecto, pk=self.kwargs['pk'])
+
+#     def form_valid(self, form):
+#         venta = form.save(commit=False)
+#         venta.proyecto = models.Proyecto.objects.get(pk=(self.kwargs['pk']))
+#         venta.save()
+#         return redirect('proyecto:proyecto_list',pk=venta.proyecto.macroproyecto.pk)
+
+class VentaCreateView(LoginRequiredMixin,TemplateView):
     model = models.Venta
     template_name = "proyecto/incrementos.html"
-    form_class = VentaForm
 
     def proyecto(self):
         return get_object_or_404(models.Proyecto, pk=self.kwargs['pk'])
 
-    def form_valid(self, form):
-        venta = form.save(commit=False)
-        venta.proyecto = models.Proyecto.objects.get(pk=(self.kwargs['pk']))
-        venta.save()
-        return redirect('proyecto:proyecto_list',pk=venta.proyecto.macroproyecto.pk)
+    def get_context_data(self, **kwargs):
+        context = super(VentaCreateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['lista_ventas'] = VentaFormSet(self.request.POST,prefix='ventas')
+        else:
+            context['lista_ventas'] = VentaFormSet(prefix='ventas')
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        lista_ventas = context['lista_ventas']
+        if lista_ventas.is_valid():
+            lista_ventas.save()            
+        return redirect('proyecto:proyecto_list',pk=self.proyecto().pk)
+    
+   
+    def get_success_url(self):
+        return redirect('proyecto:proyecto_list',pk=self.proyecto().pk).url    
+
+    
 
 
 class MacroproyectoListView(LoginRequiredMixin,ListView):

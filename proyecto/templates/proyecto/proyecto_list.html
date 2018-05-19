@@ -28,11 +28,11 @@
                     <td>{{ proyecto.descripcionProyecto }}</td>
                     <td>{{ proyecto.m2PorProyecto }}</td>
                     
-                    {% comment %} {% if proyecto.venta.all %}
+                    {% if proyecto.etapas_proyecto.subetapa.venta.all %}
                       <td><a href="{% url 'proyecto:incremento_edit' pk=proyecto.pk %}" class="btn-success btn-sm">Incrementos y Ventas</a></td>  
                     {% else %}
                       <td><a href="{% url 'proyecto:proyecto_incremento' pk=proyecto.pk %}" class="btn-danger btn-sm">Incrementos y Ventas</a></td>  
-                    {% endif %}        {% endcomment %}
+                    {% endif %} 
                     {% if proyecto.etapas_proyecto.all %}
                       <td><a href="{% url 'proyecto:etapa_edit' pk=proyecto.pk %}" class="btn-success btn-sm">Edición de Etapas</a></td>  
                       <td><a href="{% url 'proyecto:etapa_list' pk=proyecto.pk %}" class="btn-success btn-sm">Sub-Etapas</a></td>  

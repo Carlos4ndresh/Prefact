@@ -55,7 +55,6 @@ class VentaForm(forms.ModelForm):
         model = Venta
         exclude = (
             'volumenTotalVenta',
-            'proyecto',
             'volumenInicialesVenta',
             'reajusteVenta'
             )
@@ -71,6 +70,8 @@ class VentaForm(forms.ModelForm):
             'tipoIncremento': _('Tipo de Incremento'),
             'porcenTopeReajusteIncremento': _('% Tope de Reajuste de Incrementos'),
         }
+
+VentaFormSet = inlineformset_factory(SubEtapa, Venta, form=VentaForm, extra=1, can_delete=True)        
 
 class EtapaForm(forms.ModelForm):
     """Form definition for Etapa."""
