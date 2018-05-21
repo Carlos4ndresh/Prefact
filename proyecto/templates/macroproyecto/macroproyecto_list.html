@@ -34,11 +34,11 @@
                       {% else %}
                       <td><a href="" class="btn-danger btn-sm">Proyectos</a></td>                          
                       {% endif %}
-                      {% if macroproyecto.is_macroproyecto_complete %}
+                      {% comment %} {% if macroproyecto.is_macroproyecto_complete %} {% endcomment %}
                         <td><a href="{% url 'proyecto:prefactibilidad_view' pk=macroproyecto.pk %}" class="btn-warning btn-sm">Prefactibilidad</a></td>
-                      {% else %}
+                      {% comment %} {% else %} {% endcomment %}
                         <td><a href="" class="btn-danger btn-sm">Prefactibilidad</a></td>
-                      {% endif %}                                              
+                      {% comment %} {% endif %}                                               {% endcomment %}
                     </tr>
                   {% endfor %}
               </tbody>

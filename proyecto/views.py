@@ -440,6 +440,38 @@ class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, CreateView
         # return reverse("proyecto:nuevoProy")
         return reverse("proyecto:indexProyecto")
 
+
+class ProyectoUpdateView(LoginRequiredMixin,UpdateView):
+    model = models.Proyecto
+    template_name = "proyecto/proyecto_edit.html"
+    form_class = ProyectoForm
+
+    def macroproyecto(self):
+        return get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super(ProyectoUpdateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['lista_etapas'] = EtapaFormSet(self.request.POST, instance=self.object,prefix='etapas')
+        else:
+            context['lista_etapas'] = EtapaFormSet(instance=self.object,prefix='etapas')
+        return context
+    
+    def form_valid(self, form):
+        context = self.get_context_data()        
+        lista_etapas = context['lista_etapas']
+        if form.is_valid():
+            proyecto = form.save()
+            if lista_etapas.is_valid():
+                lista_etapas.instance = proyecto
+                lista_etapas.save()
+            else:
+                return self.render_to_response(self.get_context_data(form=form,lista_etapas=lista_etapas))
+        return super(ProyectoUpdateView, self).form_valid(form)
+    
+    def get_success_url(self):
+        return redirect("proyecto:proyecto_list",pk=self.macroproyecto().pk).url
+
 class MacroproyectoEditView(LoginRequiredMixin,UpdateView):
     template_name = 'macroproyecto/macroproyecto_detail.html'
     success_url = reverse_lazy("proyecto:indexProyecto")
@@ -473,8 +505,6 @@ class MacroproyectoEditView(LoginRequiredMixin,UpdateView):
         # lote_form = CrearLoteForm(self.request.POST)
         lote_form = context['lote_form']
 
-        print(lote_form)
-
         if lote_form.is_valid() and form.is_valid():
             
             macroproyecto = form.save()
@@ -493,7 +523,6 @@ class MacroproyectoEditView(LoginRequiredMixin,UpdateView):
 
             else:
                 
-                print("poraqui2")
                 return self.render_to_response(self.get_context_data(form=form,lote_form=lote_form,lista_proyectos=lista_proyectos))            
 
             return super(MacroproyectoEditView, self).form_valid(form)

@@ -38,6 +38,11 @@ class ProyectoForm(forms.ModelForm):
         # fields = ('',)
         # fields = '__all__'
         exclude = ('macroproyecto',)
+        labels={
+            'nombreProyecto': ("Nombre"),
+            'descripcionProyecto': ("Descripción"),
+            'm2PorProyecto': ("Metros Cuadrados"),
+            }
     
 
 ProyectoFormSet = inlineformset_factory(Macroproyecto,Proyecto,form=ProyectoForm,extra=1,exclude=('macroproyecto',), labels={
