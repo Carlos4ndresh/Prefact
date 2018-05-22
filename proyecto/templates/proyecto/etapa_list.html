@@ -9,7 +9,7 @@
 <h2>Etapas de {{ view.proyecto.nombreProyecto|capfirst }}</h2>
 <div class="panel panel-default">
   <div class="panel-heading">
-      
+      <h4 class="panel-title">Etapas creadas</h4>
   </div>
   <div class="panel-body">
     <div class="table-responsive">
@@ -23,12 +23,11 @@
           <tbody>
               {% for etapa in etapa_list %}
                 <tr>
-                  <td>{{ etapa.nombreEtapa }}</td>
+                  <td><a href="{% url 'proyecto:etapa_edit' pk=etapa.pk %}" >{{ etapa.nombreEtapa }}</a></td>
                   <td>{{ etapa.descripcionEtapa }}</td>
                   
                   {% if etapa.subetapa.all %}
-                    <td><a href="{% url 'proyecto:subetapa_edit' pk=etapa.pk %}" class="btn-success btn-sm">Sub-etapas</a></td>  
-                    <td><a href="{% url 'proyecto:subetapa_list' pk=etapa.pk %}" class="btn-success btn-sm">Inventario</a></td>  
+                    <td><a href="{% url 'proyecto:subetapa_edit' pk=etapa.pk %}" class="btn-success btn-sm">Sub-etapas</a></td>                      
                   {% else %}
                     <td><a href="{% url 'proyecto:subetapa_create' pk=etapa.pk %}" class="btn-danger btn-sm">Creación de Sub-Etapas</a></td>  
                   {% endif %}

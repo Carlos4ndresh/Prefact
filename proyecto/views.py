@@ -6,7 +6,7 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from . import models
 from inmueble import models as modelInm
-from .forms import ProyectoFormSet, EtapaFormSet, SubEtapaFormSet
+from .forms import ProyectoFormSet, EtapaFormSet, SubEtapaFormSet, EtapaForm
 from django.views.generic import (TemplateView,ListView,
                                   DetailView,CreateView,
                                   UpdateView,DeleteView,FormView)
@@ -50,34 +50,39 @@ class EtapaListView(LoginRequiredMixin,ListView):
         queryset = models.Etapa.objects.filter(proyectoEtapa=self.proyecto)
         return queryset
 
-class EtapaUpdateView(LoginRequiredMixin,TemplateView):
+class EtapaUpdateView(LoginRequiredMixin,UpdateView):
     model = models.Etapa
     template_name = "proyecto/etapa_edit.html"
+    form_class = EtapaForm
 
     def proyecto(self):
-        return get_object_or_404(models.Proyecto, pk=self.kwargs['pk'])
+        return self.object.proyectoEtapa
+
+    def macroproyecto(self):
+        return self.object.proyectoEtapa.macroproyecto
 
     def get_context_data(self, **kwargs):
         context = super(EtapaUpdateView, self).get_context_data(**kwargs)
-        proyecto = self.proyecto()
-
         if self.request.POST:
-            context['lista_etapas'] = EtapaFormSet(self.request.POST, instance=proyecto,prefix='etapas')
-        else:            
-            context['lista_etapas'] = EtapaFormSet(instance=proyecto,prefix='etapas')
-
+            context['lista_subetapas'] = SubEtapaFormSet(self.request.POST, instance=self.object,prefix='subetapas')
+        else:
+            context['lista_subetapas'] = SubEtapaFormSet(instance=self.object,prefix='subetapas')
         return context
 
-    def post(self, request, *args, **kwargs):
+    def form_valid(self, form):
         context = self.get_context_data()
-        lista_etapas = context['lista_etapas']
-        if lista_etapas.is_valid():
-            lista_etapas.instance = self.proyecto()
-            lista_etapas.save()            
-        return redirect('proyecto:proyecto_list',pk=self.proyecto().macroproyecto.pk)
-    
+        lista_subetapas = context['lista_subetapas']
+        if form.is_valid():
+            etapa = form.save()
+            if lista_subetapas.is_valid():
+                lista_subetapas.instance = etapa
+                lista_subetapas.save()
+            else:
+                return self.render_to_response(self.get_context_data(form=form,lista_subetapas=lista_subetapas))
+        return super(EtapaUpdateView, self).form_valid(form)
+
     def get_success_url(self):
-        return redirect('proyecto:proyecto_list',pk=self.proyecto().pk).url
+        return redirect('proyecto:etapa_list',pk=self.proyecto().pk).url
 
 
 class EtapaCreateView(LoginRequiredMixin,TemplateView):
@@ -351,18 +356,9 @@ class ProyectoIncrementoView(LoginRequiredMixin,TemplateView):
             return lista_ventas
 
     def post(self, request, *args, **kwargs):
-        # lista_ventas = VentaFormSet(self.request.POST)
         lista_ventas = []
         proyecto_list = self.get_queryset()
-        # for proyecto in proyecto_list:
-        #     formv = VentaFormSet(self.request.POST,instance=proyecto)
-        #     lista_ventas.append(formv)
-        #     # print(formv)
-        #     print(self.request.POST)
-        #     if formv.is_valid():
-        #         formv.save()
-        # if (lista_ventas.is_valid()):
-        #     return self.form_valid(form, lista_ventas)
+
         return self.form_invalid(lista_ventas)
 
     def form_valid(self,lista_ventas):
