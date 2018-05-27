@@ -27,7 +27,7 @@
                   <td>{{ etapa.descripcionEtapa }}</td>
                   
                   {% if etapa.subetapa.all %}
-                    <td><a href="{% url 'proyecto:subetapa_edit' pk=etapa.pk %}" class="btn-success btn-sm">Sub-etapas</a></td>                      
+                    <td><a href="{% url 'proyecto:subetapa_list' pk=etapa.pk %}" class="btn-success btn-sm">Sub-etapas</a></td>                      
                   {% else %}
                     <td><a href="{% url 'proyecto:subetapa_create' pk=etapa.pk %}" class="btn-danger btn-sm">Creación de Sub-Etapas</a></td>  
                   {% endif %}
@@ -35,6 +35,8 @@
               {% endfor %}
           </tbody>
         </table> 
+    </div>
+    <div class="panel panel-footer">
         <a href="{% url 'proyecto:proyecto_list' pk=view.proyecto.macroproyecto.pk %}" class="btn btn-primary">Volver a Proyectos</a>  
     </div> 
   </div>

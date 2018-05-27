@@ -6,7 +6,7 @@
 {% endblock titulo %}
   
 {% block body_block %}
-<h2>SubEtapas de {{ view.etapa.nombreEtapa|capfirst }}</h2>
+<h2>SubEtapas de {{ view.etapa.nombreEtapa|capfirst }}, Proyecto: {{ view.proyecto.nombreProyecto|capfirst}}</h2>
 <div class="panel panel-default">
   <div class="panel-heading">
       
@@ -23,7 +23,8 @@
           <tbody>
               {% for subetapa in subetapa_list %}
                 <tr>
-                  <td>{{ subetapa.nombreSubEtapa }}</td>
+                  
+                  <td><a href="{% url 'proyecto:subetapa_edit' pk=subetapa.pk %}">{{ subetapa.nombreSubEtapa }}</a></td>
                   <td>{{ subetapa.descripcionSubEtapa }}</td>
                   
                   {% if subetapa.tipoInmueble.all %}
@@ -40,6 +41,9 @@
               {% endfor %}
           </tbody>
         </table> 
+    </div> 
+    <div class="panel panel-footer">
+        <a href="{% url 'proyecto:etapa_list' pk=view.proyecto.pk %}" class="btn btn-primary">Volver a Etapas</a>  
     </div> 
   </div>
 </div>      

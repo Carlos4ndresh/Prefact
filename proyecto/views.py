@@ -6,7 +6,7 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from . import models
 from inmueble import models as modelInm
-from .forms import ProyectoFormSet, EtapaFormSet, SubEtapaFormSet, EtapaForm
+from .forms import ProyectoFormSet, EtapaFormSet, SubEtapaFormSet, EtapaForm, SubEtapaForm
 from django.views.generic import (TemplateView,ListView,
                                   DetailView,CreateView,
                                   UpdateView,DeleteView,FormView)
@@ -143,37 +143,19 @@ class SubEtapaCreateView(LoginRequiredMixin,TemplateView):
     def get_success_url(self):
         return redirect('proyecto:etapa_list',pk=self.proyecto().proyectoEtapa.pk).url
 
-class SubEtapaUpdateView(LoginRequiredMixin,TemplateView):
+class SubEtapaUpdateView(LoginRequiredMixin,UpdateView):
     template_name = "proyecto/subetapa_edit.html"
     model = models.SubEtapa
+    form_class = SubEtapaForm
 
     def proyecto(self):
-        return self.etapa().proyectoEtapa
+        return self.object.etapa.proyectoEtapa
     
     def etapa(self):
-        return get_object_or_404(models.Etapa, pk=self.kwargs['pk'])
-
-    def get_context_data(self, **kwargs):
-        context = super(SubEtapaUpdateView, self).get_context_data(**kwargs)
-        etapa = self.etapa()
-
-        if self.request.POST:
-            context['lista_subetapas'] = SubEtapaFormSet(self.request.POST, instance=etapa,prefix='subetapas')
-        else:            
-            context['lista_subetapas'] = SubEtapaFormSet(instance=etapa,prefix='subetapas')
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-        context = self.get_context_data()
-        lista_subetapas = context['lista_subetapas']
-        if lista_subetapas.is_valid():
-            lista_subetapas.instance = self.etapa()
-            lista_subetapas.save()            
-        return redirect('proyecto:etapa_list',pk=self.etapa().proyectoEtapa.pk)
+        return self.object.etapa
     
     def get_success_url(self):
-        return redirect('proyecto:etapa_list',pk=self.proyecto().proyectoEtapa.pk).url
+        return redirect('proyecto:subetapa_list',pk=self.etapa().pk).url
 
 
 class SubEtapaListView(LoginRequiredMixin,ListView):
@@ -182,7 +164,7 @@ class SubEtapaListView(LoginRequiredMixin,ListView):
     context_object_name = 'subetapa_list'
 
     def proyecto(self):
-        return self.etapa().proyectoEtapa
+        return self.etapa.proyectoEtapa
     
     def etapa(self):
         return get_object_or_404(models.Etapa, pk=self.kwargs['pk'])
@@ -443,7 +425,8 @@ class ProyectoUpdateView(LoginRequiredMixin,UpdateView):
     form_class = ProyectoForm
 
     def macroproyecto(self):
-        return get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
+        return self.object.macroproyecto
+
 
     def get_context_data(self, **kwargs):
         context = super(ProyectoUpdateView, self).get_context_data(**kwargs)

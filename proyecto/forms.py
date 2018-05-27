@@ -111,6 +111,9 @@ class SubEtapaForm(forms.ModelForm):
             'nombreSubEtapa': _('Nombre'),
             'descripcionSubEtapa': _('Descripción'),
         }
+        widgets = {
+            'descripcionSubEtapa' : forms.Textarea(),
+        }
 
 SubEtapaFormSet = inlineformset_factory(Etapa, SubEtapa, form=SubEtapaForm, extra=1, can_delete=True)
 
