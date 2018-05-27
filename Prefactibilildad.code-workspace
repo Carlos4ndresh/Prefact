@@ -5,6 +5,6 @@
 		}
 	],
 	"settings": {
-		"python.pythonPath": "${workspaceRoot}/venvprefact/bin/python"
+		"python.pythonPath": "${workspaceFolder}/venv/bin/python"
 	}
 }
