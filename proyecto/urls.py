@@ -11,11 +11,6 @@ urlpatterns = [
     ## Proyectos
     url(r'^macroproyecto/(?P<pk>\d+)/lista/$',views.ProyectoListView.as_view(),name='proyecto_list'),
     url(r'^proyecto/(?P<pk>\d+)/edit/$',views.ProyectoUpdateView.as_view(),name='proyecto_edit'),
-    ## Incrementos
-    url(r'^proyecto/(?P<pk>\d+)/incrementos/create/$',views.VentaCreateView.as_view(),name='proyecto_incremento'),
-    url(r'^proyecto/(?P<pk>\d+)/incrementos/edit/$',views.VentaUpdateView.as_view(),name='incremento_edit'),
-    ## Inventario
-    url(r'^proyecto/(?P<pk>\d+)/inventario/$',views.ProyectoInventarioView.as_view(),name='proyecto_inventario'),
     ## Etapas
     url(r'^proyecto/(?P<pk>\d+)/etapa/create/$',views.EtapaCreateView.as_view(),name='etapa_create'),
     url(r'^proyecto/(?P<pk>\d+)/etapa/edit/$',views.EtapaUpdateView.as_view(),name='etapa_edit'),
@@ -28,4 +23,7 @@ urlpatterns = [
     url(r'^proyecto/etapa/subetapa/(?P<pk>\d+)/inventario/$',views.InventarioCreateView.as_view(),name='inventario_create'),
     url(r'^proyecto/etapa/subetapa/(?P<pk>\d+)/inventario/edit/$',views.InventarioEditView.as_view(),name='inventario_edit'),
     url(r'^prefactibilidad/(?P<pk>\d+)/view/$',views.PrefactibilidadView.as_view(),name='prefactibilidad_view'),
+    ## Incrementos
+    url(r'^proyecto/etapa/subetapa/(?P<pk>\d+)/incrementos/create/$',views.VentaCreateView.as_view(),name='incremento_create'),
+    url(r'^proyecto/etapa/subetapa/(?P<pk>\d+)/incrementos/edit/$',views.VentaUpdateView.as_view(),name='incremento_edit'),
 ]

@@ -61,7 +61,8 @@ class VentaForm(forms.ModelForm):
         exclude = (
             'volumenTotalVenta',
             'volumenInicialesVenta',
-            'reajusteVenta'
+            'reajusteVenta',
+            'subetapa'
             )
         labels = {
             'velocidadVentas': _('Velocidad (Tasa) de Ventas'),
@@ -93,6 +94,9 @@ class EtapaForm(forms.ModelForm):
             'nombreEtapa': _('Nombre'),
             'descripcionEtapa': _('Descripción'),
             'numeroTipoInmuebleEtapa': _('Número Inmuebles'),
+        }
+        widgets = {
+            'descripcionEtapa' : forms.Textarea(),
         }
 
 EtapaFormSet = inlineformset_factory(Proyecto, Etapa, form=EtapaForm, extra=1, can_delete=True)

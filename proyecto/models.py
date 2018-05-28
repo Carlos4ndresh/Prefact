@@ -94,22 +94,7 @@ class SubEtapa(models.Model):
 
     def __unicode__(self):
         pass 
-
-''' class Incremento(models.Model):
-    numeroDeIncrementos = models.IntegerField(blank=False)
-    porcenReajusteIncremento = models.DecimalField(max_digits=5,decimal_places=2,blank=False,null=True)
-    tipoIncremento = models.ForeignKey(parametros_models.TipoIncremento, related_name='tipoIncrementoIncr', 
-        on_delete=models.PROTECT)
-    proyecto = models.ForeignKey(Proyecto, related_name='proyectoIncremento', on_delete=models.PROTECT) 
-    porcenTopeReajusteIncremento = models.DecimalField(max_digits=5,decimal_places=2,)
-
-    def __str__(self):
-        return "Incrementos para el proyecto {a}: {b}".format(a=self.proyecto.nombreProyecto,b=self.numeroDeIncrementos) 
-
-    def __unicode__(self):
-        pass
-
- '''
+                
 
 class ProyeccionIPC(models.Model):
     anosProyeccionIPC = models.IntegerField(blank=False)

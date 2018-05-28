@@ -33,9 +33,9 @@
                     <td><a href="{% url 'proyecto:inventario_create' pk=subetapa.pk %}" class="btn-danger btn-sm">Inventario</a></td>  
                   {% endif %}    
                   {% if subetapa.ventas.all %}
-                      <td><a href="" class="btn-success btn-sm">Incrementos y Ventas</a></td>  
+                      <td><a href="{% url 'proyecto:incremento_edit' pk=subetapa.pk %}" class="btn-success btn-sm">Incrementos y Ventas</a></td>  
                   {% else %}
-                      <td><a href="" class="btn-danger btn-sm">Incrementos y Ventas</a></td>  
+                      <td><a href="{% url 'proyecto:incremento_create' pk=subetapa.pk %}" class="btn-danger btn-sm">Incrementos y Ventas</a></td>  
                   {% endif %}                                       
                 </tr>
               {% endfor %}

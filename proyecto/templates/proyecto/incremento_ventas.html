@@ -8,33 +8,21 @@
 
 {% block body_block %}
     <h3>Incrementos/Ventas por proyecto para: {{ view.macroproyecto.nombreMacroproyecto|capfirst }}</h3>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">Debe ingresar la información por cada proyecto listado</h4>            
-        </div>
-        <div class="panel-body">
-            <form method="POST">
+    <form method="POST">
+        <div class="panel panel-default">
+            <div class="panel panel-heading">
+                <h4 class="panel-title">Debe ingresar la información por cada proyecto listado</h4>            
+            </div>
+            <div class="panel panel-body">
                 {% csrf_token %}
-                    {% for venta in view.lista_ventas  %}     
-                    
-                    {{venta.management_form}}
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><h5>Proyecto: {{ venta.instance.nombreProyecto }}</h5></div>
-                        </div>
-                        <div class="panel-body">                                
-                            <table class="table-responsive">
-                                {{venta}}
-                            </table>
-                        </div>
-                    {% endfor %}
-                <button class="btn btn-success" type="submit">
-                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
-                                Guardar
-                </button>
-            </form>
+                {% bootstrap_form_errors form error_types='all'  %}
+                {% bootstrap_form form error_types='all' %}
+            </div>
+            <div class="panel panel-footer">
+            
+            </div>
         </div>
-    </div>
-    
+    </form>
 {% endblock body_block %}
 
 
