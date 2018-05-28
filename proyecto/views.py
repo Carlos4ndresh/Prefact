@@ -250,10 +250,17 @@ class VentaUpdateView(LoginRequiredMixin,UpdateView):
     form_class = VentaForm
 
     def proyecto(self):
-        return self.object.etapa.proyectoEtapa
+        return self.object.subetapa.etapa.proyectoEtapa
+    
+    def subetapa(self):
+        return get_object_or_404(models.SubEtapa, pk=self.kwargs['pk'])
+
+    def get_object(self):
+        subetapa = self.subetapa()
+        return models.Venta.objects.get(subetapa__pk=self.kwargs['pk'])
 
     def get_success_url(self):
-        return redirect('proyecto:proyecto_list',pk=self.proyecto().macroproyecto.pk).url
+        return redirect('proyecto:subetapa_list',pk=self.subetapa().etapa.pk).url
 
 class VentaCreateView(LoginRequiredMixin,FormView):
     model = models.Venta

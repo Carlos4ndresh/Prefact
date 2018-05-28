@@ -7,26 +7,31 @@
 {% endblock tituloPagina %}
 
 {% block body_block %}
-<h2>Proyecto {{ view.proyecto.nombreProyecto|capfirst }}</h2>
-    <div class="container">
-        <div class="panel panel-default">
-            <div class="panel panel-heading">
-                <h3 class="panel-title">Ingrese información para las ventas de su proyecto</h3>
+<h2>Proyecto {{ view.proyecto.nombreProyecto|capfirst }}, Macroproyecto: {{ view.proyecto.macroproyecto.nombreMacroproyecto|capfirst }}</h2>
+<form method="POST">
+    <div class="panel panel-default">
+        <div class="panel panel-heading">
+            <h4 class="panel-title">Incrementos sobre las ventas para la subetapa: {{ view.subetapa.nombreSubEtapa|capfirst }},
+                Etapa: {{ view.subetapa.etapa.nombreEtapa|capfirst }}
+            </h4>
+        </div>
+        <div class="panel panel-body">
+            {% csrf_token %}
+            {% bootstrap_form_errors form error_types='all'  %}
+            {% bootstrap_form form error_types='all' %}            
+        </div>
+        <div class="panel panel-footer">
+            <div class="button btn-group">
+                <button class="btn btn-success" type="submit">
+                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>Guardar
+                </button>
+                <button onclick="window.history.back();" class="btn btn-danger" type="button">Cancelar</button> 
+                <a href="{% url 'proyecto:indexProyecto' %}" class="btn btn-primary">Volver a Macroproyectos</a>
             </div>
-            <div class="panel panel-body">
-                <form method="POST">
-                    {% csrf_token %}
-                    {% bootstrap_form form error_types='all' %}
-                   {% comment %} {{ form.as_p }} {% endcomment %}
-                    <button class="btn btn-success" type="submit">
-                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
-                                Guardar
-                    </button>   
-                    <button onclick="window.history.back();" class="btn btn-primary" type="button">Cancelar</button>
-                </form>
-            </div>
+
         </div>
     </div>
+</form>
     
 {% endblock body_block %}
 
