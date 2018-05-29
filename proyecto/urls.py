@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^$',views.MacroproyectoListView.as_view(),name='indexProyecto'),
     url(r'^nuevomacro/$',views.MacroproyectoCreateView.as_view(),name='nuevoMacro'),
     url(r'^macroproydetalle/(?P<pk>\d+)/edit/$',views.MacroproyectoEditView.as_view(),name='macro_edit'),
+    url(r'^macroproyecto/new$',views.MacroproyectoCreateAutoView.as_view(),name='createAutoMacro'),
     ## Proyectos
     url(r'^macroproyecto/(?P<pk>\d+)/lista/$',views.ProyectoListView.as_view(),name='proyecto_list'),
     url(r'^proyecto/(?P<pk>\d+)/edit/$',views.ProyectoUpdateView.as_view(),name='proyecto_edit'),

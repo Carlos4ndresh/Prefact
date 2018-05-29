@@ -348,6 +348,12 @@ class ProyectoIncrementoView(LoginRequiredMixin,TemplateView):
     def get_success_url(self):
         return reverse("proyecto:indexProyecto")
 
+class MacroproyectoCreateAutoView(LoginRequiredMixin,CreateView):
+    template_name = 'macroproyecto/macroproyecto_auto.html'
+    model = models.Macroproyecto
+    form_class = MacroproyectoForm
+
+
 class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, CreateView):
     template_name = 'macroproyecto/macroproyecto_create.html'
     form_class = MacroproyectoForm

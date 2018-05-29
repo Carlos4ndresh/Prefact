@@ -1,0 +1,71 @@
+{% extends "plantilla.html" %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+{% block tituloPagina %}
+    <title>Nuevo Lote/Macroproyecto</title>
+{% endblock tituloPagina %}
+
+{% block body_block %}
+<h3>Crear un nuevo Macroproyecto</h3>
+<form method="POST">
+    <div class="container-fluid">
+            <div class="row">
+                    <div class="col-md-9">
+                            <div class="panel panel-default">
+                                    <div class="panel panel-heading">
+                                        <h3 class="panel-title">Información Macroproyecto</h3>
+                                    </div>
+                                    <div class="panel panel-body">
+                                        {% bootstrap_form form error_types='all' %}
+                                        <div class="panel-default">
+                                            <div class="panel panel-heading">
+                                                <h3 class="panel-title">Información Lote</h3>
+                                            </div>
+                                            <div class="panel panel-body">
+                                                {% bootstrap_form form error_types='all' %}
+                                            </div>
+                                            <div class="panel panel-footer">
+                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-footer">
+                                        <div class="button btn-group">
+                                            <button class="btn btn-success" type="submit">
+                                                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>Guardar
+                                            </button>
+                                            <button onclick="window.history.back();" class="btn btn-danger" type="button">Cancelar</button> 
+                                            <a href="{% url 'proyecto:indexProyecto' %}" class="btn btn-primary">Volver a Macroproyectos</a>
+                                        </div>
+                                    </div>
+                            </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="panel panel-default">
+                            <div class="panel panel-heading">
+                                <h3 class="panel-title">Información de Etapas y Subetapas</h3>
+                            </div>
+                            <div class="panel panel-body">
+                                    {% bootstrap_form form error_types='all' %}
+                            </div>
+                            <div class="panel panel-footer">
+
+                            </div>
+                        </div>
+                    </div>
+            </div>
+    </div>
+</form>
+{% endblock body_block %}
+
+{% block js_script %}
+<script src="{% static 'prefact/js/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+    $('.formset_row').formset({
+        addText: 'Añadir',
+        deleteText: 'Quitar',
+        prefix: 'proyectos'
+    });
+</script>
+{% endblock js_script %}
