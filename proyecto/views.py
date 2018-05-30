@@ -352,6 +352,7 @@ class MacroproyectoCreateAutoView(LoginRequiredMixin,CreateView):
     template_name = 'macroproyecto/macroproyecto_auto.html'
     model = models.Macroproyecto
     form_class = MacroproyectoForm
+    
 
 
 class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, CreateView):

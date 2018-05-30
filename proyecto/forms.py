@@ -27,6 +27,16 @@ class MacroproyectoForm(forms.ModelForm):
             'm2Macroproyecto': _('Número de Metros Cuadrados'),            
         }
 
+# Form para auto macroproyecto
+
+class MacroEtapaAutoForm(forms.Form):
+    numeroEtapas = forms.NumberInput
+    numeroSubEtapas = forms.NumberInput
+
+class MacroIncrementoInventarioAutoForm(forms.Form):
+    numeroEtapas = forms.NumberInput
+    numeroSubEtapas = forms.NumberInput   
+    
 
 class ProyectoForm(forms.ModelForm):
     """Form definition for Proyecto."""
