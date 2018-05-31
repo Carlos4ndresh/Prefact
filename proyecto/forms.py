@@ -24,7 +24,7 @@ class MacroproyectoForm(forms.ModelForm):
             'nombreMacroproyecto': _('Nombre del Macroproyecto'),
             'descripcionMacroproyecto': _('Descripción del Macroproyecto'),
             'velocidadUltimasVentas': _('Velocidad (Tasa) de Últimas Ventas'),
-            'm2Macroproyecto': _('Número de Metros Cuadrados'),            
+            'm2Macroproyecto': _('Área Bruta (M2)'),            
         }
 
 # Form para auto macroproyecto

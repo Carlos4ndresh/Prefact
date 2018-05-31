@@ -391,6 +391,7 @@ class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, CreateView
             lote = lote_form.save(commit=False)
             macroproyecto = form.save(commit=False)
             lote.nombreLote = macroproyecto.nombreMacroproyecto
+            lote.areaBrutaLote = macroproyecto.m2Macroproyecto
             lote.save()
             macroproyecto.lote = lote
             macroproyecto.save()
