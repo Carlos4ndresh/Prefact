@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from proyecto.forms import MacroproyectoForm, ProyectoForm, VentaForm, VentaFormSet
-from inmueble.forms import CrearLoteForm, InventarioFormSet
+from inmueble.forms import CrearLoteForm, InventarioFormSet, TipoInmuebleForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from . import models
 from inmueble import models as modelInm
-from .forms import ProyectoFormSet, EtapaFormSet, SubEtapaFormSet, EtapaForm, SubEtapaForm
+from .forms import ProyectoFormSet, EtapaFormSet, SubEtapaFormSet, EtapaForm, SubEtapaForm, MacroEtapaAutoForm
 from django.views.generic import (TemplateView,ListView,
                                   DetailView,CreateView,
                                   UpdateView,DeleteView,FormView)
@@ -352,7 +352,18 @@ class MacroproyectoCreateAutoView(LoginRequiredMixin,CreateView):
     template_name = 'macroproyecto/macroproyecto_auto.html'
     model = models.Macroproyecto
     form_class = MacroproyectoForm
-    
+    lote_form = CrearLoteForm
+    etapa_form = MacroEtapaAutoForm
+    venta_form = VentaForm
+    inventario_form = TipoInmuebleForm
+
+    def get_context_data(self, **kwargs):
+        context = super(MacroproyectoCreateAutoView, self).get_context_data(**kwargs)
+        context['lote_form'] = self.lote_form
+        context['etapa_form'] = self.etapa_form
+        context['venta_form'] = self.venta_form
+        context['inventario_form'] = self.inventario_form
+        return context
 
 
 class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, CreateView):
