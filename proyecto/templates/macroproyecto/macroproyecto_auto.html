@@ -18,28 +18,35 @@
                                     </div>
                                     <div class="panel panel-body">
                                         {% bootstrap_form form error_types='all' %}
-                                        <div class="panel-default">
-                                            <div class="panel panel-heading">
-                                                <h3 class="panel-title">Información Lote</h3>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                    <div class="panel-default">
+                                                            <div class="panel panel-heading">
+                                                                <h3 class="panel-title">Información Lote</h3>
+                                                            </div>
+                                                            <div class="panel panel-body">
+                                                                {% bootstrap_form lote_form error_types='all' %}
+                                                            </div>
+                                                            <div class="panel panel-footer">
+                                            
+                                                            </div>
+                                                    </div>                                                
                                             </div>
-                                            <div class="panel panel-body">
-                                                {% bootstrap_form lote_form error_types='all' %}
-                                            </div>
-                                            <div class="panel panel-footer">
-                            
+                                            <div class="col-md-6">
+                                                    <div class="panel panel-default">
+                                                            <div class="panel panel-heading">
+                                                                <h3 class="panel-title">Información de Incrementos</h3>
+                                                            </div>
+                                                            <div class="panel panel-body">
+                                                                    {% bootstrap_form venta_form error_types='all' %}
+                                                            </div>
+                                                            <div class="panel panel-footer">
+                                
+                                                            </div>
+                                                    </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-default">
-                                            <div class="panel panel-heading">
-                                                <h3 class="panel-title">Información de Incrementos</h3>
-                                            </div>
-                                            <div class="panel panel-body">
-                                                    {% bootstrap_form venta_form error_types='all' %}
-                                            </div>
-                                            <div class="panel panel-footer">
-                
-                                            </div>
-                                        </div>
+
                                     </div>
                                     <div class="panel panel-footer">
                                         <div class="button btn-group">
