@@ -30,8 +30,9 @@ class MacroproyectoForm(forms.ModelForm):
 # Form para auto macroproyecto
 
 class MacroEtapaAutoForm(forms.Form):
-    numeroEtapas = forms.DecimalField(decimal_places=0)
-    numeroSubEtapas = forms.DecimalField(decimal_places=0)
+    numeroEtapas = forms.DecimalField(label="# Etapas" ,decimal_places=0)
+    numeroSubEtapas = forms.DecimalField(label="# SubEtapas", decimal_places=0)
+
     
 
 class ProyectoForm(forms.ModelForm):

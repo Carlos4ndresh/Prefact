@@ -388,8 +388,10 @@ class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, CreateView
         lote_form = CrearLoteForm(self.request.POST)
 
         if lote_form.is_valid():
-            lote = lote_form.save()
+            lote = lote_form.save(commit=False)
             macroproyecto = form.save(commit=False)
+            lote.nombreLote = macroproyecto.nombreMacroproyecto
+            lote.save()
             macroproyecto.lote = lote
             macroproyecto.save()
             if lista_proyectos.is_valid():

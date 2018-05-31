@@ -10,7 +10,7 @@ class CrearLoteForm(forms.ModelForm):
     class Meta:
         model = Lote
         fields = '__all__'
-        exclude = ('valorTotalLote','mesesDePagoLote')
+        exclude = ('valorTotalLote','mesesDePagoLote','nombreLote')
 
         widgets = {
             'areaBrutaLote' : forms.NumberInput(),
