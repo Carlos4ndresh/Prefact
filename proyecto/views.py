@@ -491,7 +491,11 @@ class MacroproyectoEditView(LoginRequiredMixin,UpdateView):
         if lote_form.is_valid() and form.is_valid():
             
             macroproyecto = form.save()
-            macroproyecto.lote = lote_form.save()
+            lote = lote_form.save(commit=False)
+            lote.nombreLote = macroproyecto.nombreMacroproyecto
+            lote.areaBrutaLote = macroproyecto.m2Macroproyecto
+            lote.save()
+            macroproyecto.lote = lote
 
             macroproyecto.save()
             

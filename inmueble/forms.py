@@ -26,8 +26,6 @@ class CrearLoteForm(forms.ModelForm):
             'mesesTotalesPagoLote' : forms.NumberInput(),
         }
         labels = {
-            'nombreLote': _('Nombre del Lote'),
-            'areaBrutaLote': _('Área Bruta (M2)'),
             'areaCesionViasLote': _('Área de Cesión en Vías (M2)'),
             'porcentajeCesionVerdesLote': _('% Cesión áreas verdes'),
             'areaCesionTierraLote': _('Área de Cesión (M2)'),
