@@ -46,7 +46,7 @@ class PagoLote(models.Model):
 
 class TipoInmueble(models.Model):
     ## also known as inventario de inmuebles
-    nombreTipoInmueble = models.CharField(max_length=45, unique=True)
+    nombreTipoInmueble = models.CharField(max_length=45)
     areaTipoInmueble = models.IntegerField()
     noUnidadesTipoInmueble = models.IntegerField()
     valorM2TipoInmueble = models.DecimalField(max_digits=20,decimal_places=4)
