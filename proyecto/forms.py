@@ -3,6 +3,7 @@ from proyecto.models import (Proyecto, Macroproyecto, Venta, Etapa,
                             SubEtapa, ProyeccionIPC, TablaIPC)
 from django.forms import BaseInlineFormSet, inlineformset_factory
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ValidationError
                             
 
 class MacroproyectoForm(forms.ModelForm):
@@ -30,9 +31,27 @@ class MacroproyectoForm(forms.ModelForm):
 # Form para auto macroproyecto
 
 class MacroEtapaAutoForm(forms.Form):
-    numeroEtapas = forms.DecimalField(label="# Etapas" ,decimal_places=0)
-    numeroSubEtapas = forms.DecimalField(label="# SubEtapas", decimal_places=0)
+    numeroProyectos = forms.IntegerField(label="# Proyectos")
+    numeroEtapas = forms.IntegerField(label="# Etapas")
+    numeroSubEtapas = forms.IntegerField(label="# SubEtapas")
 
+    def clean_numeroProyectos(self):
+        dato = self.cleaned_data['numeroProyectos']
+        if dato > 3:
+            raise ValidationError(_('Número de proyectos inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
+        return dato
+    
+    def clean_numeroEtapas(self):
+        dato = self.cleaned_data['numeroEtapas']
+        if dato > 3:
+            raise ValidationError(_('Número de etapas inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
+        return dato
+    
+    def clean_numeroSubEtapas(self):
+        dato = self.cleaned_data['numeroSubEtapas']
+        if dato > 3:
+            raise ValidationError(_('Número de SubEtapas inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
+        return dato
     
 
 class ProyectoForm(forms.ModelForm):

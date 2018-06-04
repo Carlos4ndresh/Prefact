@@ -363,10 +363,92 @@ class MacroproyectoCreateAutoView(LoginRequiredMixin,CreateView):
         context['etapa_form'] = self.etapa_form
         context['venta_form'] = self.venta_form
         context['inventario_form'] = self.inventario_form
+
+        if self.request.POST:
+            context['lote_form'] = CrearLoteForm(self.request.POST)
+            context['etapa_form'] = MacroEtapaAutoForm(self.request.POST)
+            context['venta_form'] = VentaForm(self.request.POST)
+            context['inventario_form'] = TipoInmuebleForm(self.request.POST)
+
         return context
+    
+    def form_valid(self, form):
+        context = self.get_context_data()
+        lote_form =  context['lote_form']
+        etapas_form =  context['etapa_form']
+        venta_form =  context['venta_form']
+        inventario_form =  context['inventario_form']
+
+        if lote_form.is_valid() and etapas_form.is_valid() and venta_form.is_valid() and inventario_form.is_valid():
+            lote = lote_form.save(commit=False)
+            macroproyecto = form.save(commit=False)
+            lote.nombreLote = macroproyecto.nombreMacroproyecto
+            lote.areaBrutaLote = macroproyecto.m2Macroproyecto
+            lote.save()
+            macroproyecto.lote = lote
+            macroproyecto.save()
+            
+            numeroProyectos = etapas_form.cleaned_data['numeroProyectos']
+            numeroEtapas = etapas_form.cleaned_data['numeroEtapas']
+            numeroSubEtapas = etapas_form.cleaned_data['numeroSubEtapas']
+            for x in range(numeroProyectos):
+                metros = (macroproyecto.m2Macroproyecto/numeroProyectos+1)
+                proyecto = models.Proyecto(
+                    nombreProyecto=macroproyecto.nombreMacroproyecto+str(x+1),
+                    descripcionProyecto=macroproyecto.descripcionMacroproyecto+str(x+1),
+                    m2PorProyecto=metros,
+                    macroproyecto=macroproyecto
+                    )
+                proyecto.save()
+                for i in range(numeroEtapas):
+                    etapa = models.Etapa(
+                            nombreEtapa=macroproyecto.nombreMacroproyecto+str(x+1)+str(i+1),
+                            descripcionEtapa=macroproyecto.descripcionMacroproyecto+str(x+1)+str(i+1),
+                            proyectoEtapa=proyecto)
+                    etapa.save()
+                    for j in range(numeroSubEtapas):
+                        subetapa = models.SubEtapa(
+                                nombreSubEtapa=macroproyecto.nombreMacroproyecto+str(x+1)+str(i+1)+str(j+1),
+                                descripcionSubEtapa=macroproyecto.descripcionMacroproyecto+str(x+1)+str(i+1)+str(j+1),
+                                etapa=etapa
+                            )
+                        subetapa.save()
+                        venta = venta_form.save(commit=False)
+                        venta.pk = None
+                        venta.subetapa = subetapa
+                        venta.save()
+                        inventario = inventario_form.save(commit=False)
+                        inventario.pk = None
+                        inventario.subEtapa = subetapa
+                        inventario.save()
+        else:
+            return self.render_to_response(self.get_context_data(form=form,lote_form=lote_form,etapas_form=etapas_form,venta_form=venta_form,inventario_form=inventario_form))
+        return super(MacroproyectoCreateAutoView, self).form_valid(form)
+    
+    def get_success_url(self):
+        return reverse("proyecto:indexProyecto")
+
+    def form_invalid(self, form, lote_form,etapas_form,venta_form,inventario_form):
+        """
+        Called if a form is invalid. Re-renders the context data with the
+        data-filled forms and errors.
+
+        Args:
+            form: Assignment Form
+            assignment_question_form: Assignment Question Form
+        """
+        print("aqui invalido")
+        return self.render_to_response(
+                 self.get_context_data(form=form,
+                                        lote_form=lote_form,
+                                       etapas_form=etapas_form,
+                                       venta_form=venta_form,
+                                       inventario_form=inventario_form                                       
+                                       )
+        )
 
 
-class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, CreateView):
+class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, TemplateView):
     template_name = 'macroproyecto/macroproyecto_create.html'
     form_class = MacroproyectoForm
     model = models.Macroproyecto
@@ -502,8 +584,6 @@ class MacroproyectoEditView(LoginRequiredMixin,UpdateView):
                         
 
             if lista_proyectos.is_valid():
-                # lista_proyectos.instance = macroproyecto
-                # lista_proyectos.save()
                 
                 lista_proyectos.instance = self.object
                 lista_proyectos.save()
