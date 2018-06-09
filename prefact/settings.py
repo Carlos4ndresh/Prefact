@@ -117,9 +117,9 @@ if 'DB_NAME' in os.environ:
             'USER': os.environ['DB_USER'],
             'PASSWORD': os.environ['DB_PASS'],
             # 'HOST': os.environ['DB_SERVICE'],
-            'HOST': 'mysqlprefact',
+            'HOST': os.environ['MYSQLPREFACT_SERVICE_HOST'],
             # 'PORT': os.environ['DB_PORT']
-            'PORT': '3306'
+            'PORT': os.environ['MYSQLPREFACT_SERVICE_PORT']
         }
     }
 else:
