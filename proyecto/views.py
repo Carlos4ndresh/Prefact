@@ -448,7 +448,7 @@ class MacroproyectoCreateAutoView(LoginRequiredMixin,CreateView):
         )
 
 
-class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, TemplateView):
+class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, CreateView):
     template_name = 'macroproyecto/macroproyecto_create.html'
     form_class = MacroproyectoForm
     model = models.Macroproyecto
@@ -482,7 +482,6 @@ class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, TemplateVi
                 lista_proyectos.save()
             else:
                 return self.render_to_response(self.get_context_data(form=form,lista_proyectos=lista_proyectos))
-            self.request.session['macroproyID'] = macroproyecto.pk
         return super(MacroproyectoCreateView, self).form_valid(form)
 
     def form_invalid(self, form, lista_proyectos):
