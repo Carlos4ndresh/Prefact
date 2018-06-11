@@ -6,7 +6,7 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from . import models
 from inmueble import models as modelInm
-from .forms import ProyectoFormSet, EtapaFormSet, SubEtapaFormSet, EtapaForm, SubEtapaForm, MacroProyectoAutoForm
+from .forms import ProyectoFormSet, EtapaFormSet, SubEtapaFormSet, EtapaForm, SubEtapaForm, MacroProyectoAutoForm, EtapaAutoFormSet
 from django.views.generic import (TemplateView,ListView,
                                   DetailView,CreateView,
                                   UpdateView,DeleteView,FormView)
@@ -452,19 +452,9 @@ class MacroproyectoCreateAutoView(LoginRequiredMixin,CreateView):
         return super(MacroproyectoCreateAutoView, self).form_valid(form) 
     
     def get_success_url(self):
-        # return reverse("proyecto:createAutoMacro2")
         return redirect("proyecto:createAutoMacro2",pk=self.object.pk).url
 
     def form_invalid(self, form, lote_form,proyecto_form):
-        """
-        Called if a form is invalid. Re-renders the context data with the
-        data-filled forms and errors.
-
-        Args:
-            form: Assignment Form
-            assignment_question_form: Assignment Question Form
-        """
-        print("aqui invalido")
         return self.render_to_response(
                  self.get_context_data(form=form,
                                         lote_form=lote_form,
@@ -475,10 +465,16 @@ class MacroproyectoCreateAutoView(LoginRequiredMixin,CreateView):
 class MacroproyectoEtapasAutoView(LoginRequiredMixin,TemplateView):
     template_name = 'macroproyecto/macroproyecto_auto_etapas.html'
 
+    def proyectos(self):
+        self.macroproyecto = get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
+        return models.Proyecto.objects.filter(macroproyecto=self.macroproyecto)
+
     def get_context_data(self, **kwargs):
         context = super(MacroproyectoEtapasAutoView, self).get_context_data(**kwargs)
         if self.request.POST:
             pass
+        else:
+            context['lista_numero_etapas'] = EtapaAutoFormSet()
         return context
     
    
@@ -512,15 +508,6 @@ class MacroproyectoEtapasAutoView(LoginRequiredMixin,TemplateView):
         return reverse("proyecto:createAutoMacro2")
 
     def form_invalid(self, form, lote_form,proyecto_form):
-        """
-        Called if a form is invalid. Re-renders the context data with the
-        data-filled forms and errors.
-
-        Args:
-            form: Assignment Form
-            assignment_question_form: Assignment Question Form
-        """
-        print("aqui invalido")
         return self.render_to_response(
                  self.get_context_data(form=form,
                                         lote_form=lote_form,

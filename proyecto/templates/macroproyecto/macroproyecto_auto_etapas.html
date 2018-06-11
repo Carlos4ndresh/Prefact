@@ -19,6 +19,10 @@
     </div>
 </div>
 <form method="POST">
+    {% csrf_token %}
+    {{ view.proyectos }}
+    {{ lista_numero_etapas.management_form }}
+    {{ lista_numero_etapas }}
 </form>
 {% endblock body_block %}
 

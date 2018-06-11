@@ -1,7 +1,7 @@
 from django import forms 
 from proyecto.models import (Proyecto, Macroproyecto, Venta, Etapa, 
                             SubEtapa, ProyeccionIPC, TablaIPC)
-from django.forms import BaseInlineFormSet, inlineformset_factory
+from django.forms import BaseInlineFormSet, inlineformset_factory, formset_factory
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
                             
@@ -41,6 +41,11 @@ class MacroProyectoAutoForm(forms.Form):
 
 class MacroEtapaAutoForm(forms.Form):
     numeroEtapas = forms.IntegerField(label="# Etapas")
+    proyecto = forms.IntegerField(widget=forms.HiddenInput())
+
+    # def __init__(self, *args, **kwargs):
+    #     super(MacroEtapaAutoForm, self).__init__(*args,**kwargs)
+    #     self.fields['proyecto'].widget = Hid
 
     def clean_numeroEtapas(self):
         dato = self.cleaned_data['numeroEtapas']
@@ -48,6 +53,7 @@ class MacroEtapaAutoForm(forms.Form):
             raise ValidationError(_('Número de etapas inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
         return dato
 
+EtapaAutoFormSet = formset_factory(MacroEtapaAutoForm)
 
 # class MacroEtapaAutoForm(forms.Form):
 #     numeroProyectos = forms.IntegerField(label="# Proyectos")
