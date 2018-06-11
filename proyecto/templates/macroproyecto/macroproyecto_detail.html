@@ -75,7 +75,9 @@
     $('.formset_row').formset({
         addText: 'Añadir',
         deleteText: 'Quitar',
-        prefix: 'proyectos'
+        addCssClass: "btn btn-success",
+        prefix: "{{ lista_proyectos.prefix }}"
+
     });
 </script>
 {% endblock js_script %}

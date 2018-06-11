@@ -29,29 +29,48 @@ class MacroproyectoForm(forms.ModelForm):
         }
 
 # Form para auto macroproyecto
-
-class MacroEtapaAutoForm(forms.Form):
+class MacroProyectoAutoForm(forms.Form):
     numeroProyectos = forms.IntegerField(label="# Proyectos")
-    numeroEtapas = forms.IntegerField(label="# Etapas")
-    numeroSubEtapas = forms.IntegerField(label="# SubEtapas")
 
     def clean_numeroProyectos(self):
         dato = self.cleaned_data['numeroProyectos']
         if dato > 3:
             raise ValidationError(_('Número de proyectos inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
         return dato
-    
+
+
+class MacroEtapaAutoForm(forms.Form):
+    numeroEtapas = forms.IntegerField(label="# Etapas")
+
     def clean_numeroEtapas(self):
         dato = self.cleaned_data['numeroEtapas']
         if dato > 3:
             raise ValidationError(_('Número de etapas inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
         return dato
+
+
+# class MacroEtapaAutoForm(forms.Form):
+#     numeroProyectos = forms.IntegerField(label="# Proyectos")
+#     numeroEtapas = forms.IntegerField(label="# Etapas")
+#     numeroSubEtapas = forms.IntegerField(label="# SubEtapas")
+
+#     def clean_numeroProyectos(self):
+#         dato = self.cleaned_data['numeroProyectos']
+#         if dato > 3:
+#             raise ValidationError(_('Número de proyectos inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
+#         return dato
     
-    def clean_numeroSubEtapas(self):
-        dato = self.cleaned_data['numeroSubEtapas']
-        if dato > 3:
-            raise ValidationError(_('Número de SubEtapas inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
-        return dato
+#     def clean_numeroEtapas(self):
+#         dato = self.cleaned_data['numeroEtapas']
+#         if dato > 3:
+#             raise ValidationError(_('Número de etapas inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
+#         return dato
+    
+#     def clean_numeroSubEtapas(self):
+#         dato = self.cleaned_data['numeroSubEtapas']
+#         if dato > 3:
+#             raise ValidationError(_('Número de SubEtapas inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
+#         return dato
     
 
 class ProyectoForm(forms.ModelForm):
