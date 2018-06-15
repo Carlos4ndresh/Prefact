@@ -6,7 +6,7 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from . import models
 from inmueble import models as modelInm
-from .forms import ProyectoFormSet, EtapaFormSet, SubEtapaFormSet, EtapaForm, SubEtapaForm, MacroProyectoAutoForm, 
+from .forms import ProyectoFormSet, EtapaFormSet, SubEtapaFormSet, EtapaForm, SubEtapaForm, MacroProyectoAutoForm
 from django.views.generic import (TemplateView,ListView,
                                   DetailView,CreateView,
                                   UpdateView,DeleteView,FormView)
@@ -475,7 +475,7 @@ class MacroproyectoEtapasAutoView(LoginRequiredMixin,TemplateView):
             pass
         else:
             # context['lista_numero_etapas'] = EtapaAutoFormSet()
-
+            pass
         return context
     
    
