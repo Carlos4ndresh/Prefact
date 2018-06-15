@@ -353,7 +353,7 @@ class MacroproyectoCreateAutoView(LoginRequiredMixin,CreateView):
     model = models.Macroproyecto
     form_class = MacroproyectoForm
     lote_form = CrearLoteForm
-    proyecto_form = MacroProyectoAutoForm
+    proyecto_form = w   Form
     # venta_form = VentaForm
     # inventario_form = TipoInmuebleForm
 
@@ -465,9 +465,12 @@ class MacroproyectoCreateAutoView(LoginRequiredMixin,CreateView):
 class MacroproyectoEtapasAutoView(LoginRequiredMixin,TemplateView):
     template_name = 'macroproyecto/macroproyecto_auto_etapas.html'
 
-    def proyectos(self):
-        self.macroproyecto = get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
-        return models.Proyecto.objects.filter(macroproyecto=self.macroproyecto)
+    # def proyectos(self):
+    #     self.macroproyecto = get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
+    #     return models.Proyecto.objects.filter(macroproyecto=self.macroproyecto)
+    
+    def macroproyecto(self):
+        return get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
         context = super(MacroproyectoEtapasAutoView, self).get_context_data(**kwargs)
@@ -475,6 +478,7 @@ class MacroproyectoEtapasAutoView(LoginRequiredMixin,TemplateView):
             pass
         else:
             # context['lista_numero_etapas'] = EtapaAutoFormSet()
+            proyectos = Proyecto.objects.filter(macroproyecto=self.macroproyecto())
             pass
         return context
     
