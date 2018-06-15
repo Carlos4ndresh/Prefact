@@ -53,8 +53,6 @@ class MacroEtapaAutoForm(forms.Form):
             raise ValidationError(_('Número de etapas inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
         return dato
 
-EtapaAutoFormSet = formset_factory(MacroEtapaAutoForm)
-
 # class MacroEtapaAutoForm(forms.Form):
 #     numeroProyectos = forms.IntegerField(label="# Proyectos")
 #     numeroEtapas = forms.IntegerField(label="# Etapas")
