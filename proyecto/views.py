@@ -6,13 +6,23 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from . import models
 from inmueble import models as modelInm
-from .forms import ProyectoFormSet, EtapaFormSet, SubEtapaFormSet, EtapaForm, SubEtapaForm, MacroProyectoAutoForm
+from .forms import (
+                    ProyectoFormSet, EtapaFormSet, SubEtapaFormSet, EtapaForm, SubEtapaForm, 
+                    MacroProyectoAutoForm, MacroEtapaAutoForm,
+                    )
 from django.views.generic import (TemplateView,ListView,
                                   DetailView,CreateView,
                                   UpdateView,DeleteView,FormView)
 from django.views.generic.edit import FormMixin                                  
 from django.db import transaction
-from django.contrib.auth.mixins import LoginRequiredMixin                                
+from django.contrib.auth.mixins import LoginRequiredMixin  
+from django.core.exceptions import ValidationError
+from django.forms import formset_factory,forms
+from django.utils.translation import ugettext_lazy as _
+
+
+
+
 
 
 
@@ -353,7 +363,7 @@ class MacroproyectoCreateAutoView(LoginRequiredMixin,CreateView):
     model = models.Macroproyecto
     form_class = MacroproyectoForm
     lote_form = CrearLoteForm
-    proyecto_form = w   Form
+    proyecto_form = MacroProyectoAutoForm
     # venta_form = VentaForm
     # inventario_form = TipoInmuebleForm
 
@@ -474,40 +484,19 @@ class MacroproyectoEtapasAutoView(LoginRequiredMixin,TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MacroproyectoEtapasAutoView, self).get_context_data(**kwargs)
+        proyectos = models.Proyecto.objects.filter(macroproyecto=self.macroproyecto())
         if self.request.POST:
             pass
         else:
-            # context['lista_numero_etapas'] = EtapaAutoFormSet()
-            proyectos = Proyecto.objects.filter(macroproyecto=self.macroproyecto())
-            pass
+            etapaAuto_formset = formset_factory(MacroEtapaAutoForm,extra=proyectos.count())
+            print('countproy:'+str(proyectos.count()))
+            context['etapaslist'] = etapaAuto_formset(initial=[{'id': x.id } for x in proyectos],prefix='etapalist')  
+            print(context['etapaslist'])          
         return context
-    
    
     def form_valid(self,form):
         context = self.get_context_data()
-        
-        if form.is_valid() and lote_form.is_valid() and proyecto_form.is_valid():
-            lote = lote_form.save(commit=False)
-            macroproyecto = form.save(commit=False)
-            lote.nombreLote = macroproyecto.nombreMacroproyecto
-            lote.areaBrutaLote = macroproyecto.m2Macroproyecto
-            lote.save()
-            macroproyecto.lote = lote
-            macroproyecto.save()
-            
-            numeroProyectos = proyecto_form.cleaned_data['numeroProyectos']  
-            for x in range(numeroProyectos):
-                metros = (macroproyecto.m2Macroproyecto/numeroProyectos+1)
-                proyecto = models.Proyecto(
-                    nombreProyecto=macroproyecto.nombreMacroproyecto+str(x+1),
-                    descripcionProyecto=macroproyecto.descripcionMacroproyecto+str(x+1),
-                    m2PorProyecto=metros,
-                    macroproyecto=macroproyecto
-                    )
-                proyecto.save()
-        else:
-            return self.render_to_response(self.get_context_data(form=form,lote_form=lote_form,proyecto_form=proyecto_form))
-        return super(MacroproyectoCreateAutoView, self).form_valid(form) 
+        pass
     
     def get_success_url(self):
         return reverse("proyecto:createAutoMacro2")
