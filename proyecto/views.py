@@ -488,9 +488,12 @@ class MacroproyectoEtapasAutoView(LoginRequiredMixin,TemplateView):
         if self.request.POST:
             pass
         else:
-            etapaAuto_formset = formset_factory(MacroEtapaAutoForm,extra=proyectos.count())
+            etapaAuto_formset = formset_factory(MacroEtapaAutoForm,extra=proyectos.count(),max_num=proyectos.count())
             print('countproy:'+str(proyectos.count()))
-            context['etapaslist'] = etapaAuto_formset(initial=[{'id': x.id } for x in proyectos],prefix='etapalist')  
+            context['etapaslist'] = etapaAuto_formset(initial=[
+                { 'nombreProyecto': x.nombreProyecto, 
+                 'idProyecto': x.pk } for x in proyectos
+                ],prefix='etapalist')  
             print(context['etapaslist'])          
         return context
    

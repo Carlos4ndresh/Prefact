@@ -41,7 +41,9 @@ class MacroProyectoAutoForm(forms.Form):
 
 class MacroEtapaAutoForm(forms.Form):
     numeroEtapas = forms.IntegerField(label="# Etapas")
-    proyecto = forms.IntegerField(widget=forms.TextInput())
+    nombreProyecto = forms.CharField(disabled=True,label='Nombre del Proyecto')
+    idProyecto = forms.IntegerField(widget=forms.HiddenInput())
+    
 
     # def __init__(self, *args, **kwargs):
     #     super(MacroEtapaAutoForm, self).__init__(*args,**kwargs)
