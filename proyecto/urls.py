@@ -9,7 +9,8 @@ urlpatterns = [
     url(r'^nuevomacro/$',views.MacroproyectoCreateView.as_view(),name='nuevoMacro'),
     url(r'^macroproydetalle/(?P<pk>\d+)/edit/$',views.MacroproyectoEditView.as_view(),name='macro_edit'),
     url(r'^macroproyecto/new$',views.MacroproyectoCreateAutoView.as_view(),name='createAutoMacro'),
-    url(r'^macroproyecto/new/(?P<pk>\d+)$',views.MacroproyectoEtapasAutoView.as_view(),name='createAutoMacro2'),    
+    url(r'^macroproyecto/new/etapas/(?P<pk>\d+)$',views.MacroproyectoEtapasAutoView.as_view(),name='createAutoMacro2'),
+    url(r'^macroproyecto/new/subetapas/(?P<pk>\d+)$',views.MacroproyectoSubEtapasAutoView.as_view(),name='createAutoMacro3'),
     ## Proyectos
     url(r'^macroproyecto/(?P<pk>\d+)/lista/$',views.ProyectoListView.as_view(),name='proyecto_list'),
     url(r'^proyecto/(?P<pk>\d+)/edit/$',views.ProyectoUpdateView.as_view(),name='proyecto_edit'),

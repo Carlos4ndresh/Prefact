@@ -475,42 +475,63 @@ class MacroproyectoCreateAutoView(LoginRequiredMixin,CreateView):
 class MacroproyectoEtapasAutoView(LoginRequiredMixin,TemplateView):
     template_name = 'macroproyecto/macroproyecto_auto_etapas.html'
 
-    # def proyectos(self):
-    #     self.macroproyecto = get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
-    #     return models.Proyecto.objects.filter(macroproyecto=self.macroproyecto)
-    
     def macroproyecto(self):
         return get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
         context = super(MacroproyectoEtapasAutoView, self).get_context_data(**kwargs)
         proyectos = models.Proyecto.objects.filter(macroproyecto=self.macroproyecto())
+        etapaAuto_formset = formset_factory(MacroEtapaAutoForm,extra=proyectos.count(),max_num=proyectos.count(),can_delete=False,can_order=False)
         if self.request.POST:
-            pass
+            context['etapaslist'] = etapaAuto_formset(self.request.POST)
         else:
-            etapaAuto_formset = formset_factory(MacroEtapaAutoForm,extra=proyectos.count(),max_num=proyectos.count())
-            print('countproy:'+str(proyectos.count()))
             context['etapaslist'] = etapaAuto_formset(initial=[
                 { 'nombreProyecto': x.nombreProyecto, 
                  'idProyecto': x.pk } for x in proyectos
                 ],prefix='etapalist')  
-            print(context['etapaslist'])          
         return context
    
-    def form_valid(self,form):
+    def post(self, request, *args, **kwargs):
         context = self.get_context_data()
-        pass
+        etapasList = context['etapaslist']
+        if etapasList.is_valid():
+            for form in etapasList:
+                numeroEtapas = form.cleaned_data['numeroEtapas']
+                proyecto = models.Proyecto.get(pk=form.cleaned_data['idProyecto'])
+                for i in range(numeroEtapas):
+                    etapa = models.Etapa(
+                            nombreEtapa=proyecto.macroproyecto.nombreMacroproyecto+"Etapa "+str(i+1),
+                            descripcionEtapa=proyecto.macroproyecto.descripcionMacroproyecto+"Descripción Etapa "+str(i+1),
+                            proyectoEtapa=proyecto)
+                    etapa.save()
+        else:
+            return self.render_to_response(self.get_context_data(etapaslist=etapasList))
+        return redirect('proyecto:createAutoMacro3',pk=self.macroproyecto().pk)
     
     def get_success_url(self):
-        return reverse("proyecto:createAutoMacro2")
+        return redirect("proyecto:createAutoMacro3",pk=self.macroproyecto().pk)
 
-    def form_invalid(self, form, lote_form,proyecto_form):
+    def form_invalid(self, etapaslist):
         return self.render_to_response(
-                 self.get_context_data(form=form,
-                                        lote_form=lote_form,
-                                        proyecto_form=proyecto_form,
+                 self.get_context_data(etapaslist=etapaslist,
                                        )
         )
+
+class MacroproyectoSubEtapasAutoView(LoginRequiredMixin,TemplateView):
+    template_name = 'macroproyecto/macroproyecto_auto_subetapas.html'
+
+    def macroproyecto(self):
+        return get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
+    
+    def get_context_data(self, **kwargs):
+        context = super(MacroproyectoSubEtapasAutoView, self).get_context_data(**kwargs)
+        etapas = models.Etapa.objects.filter(proyectoEtapa__macroproyecto=self.macroproyecto())
+        if self.request.POST:
+            pass
+        else:
+            pass
+
+        return context
 
 class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, CreateView):
     template_name = 'macroproyecto/macroproyecto_create.html'
