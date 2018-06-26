@@ -1,0 +1,80 @@
+{% extends "plantilla.html" %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+{% block tituloPagina %}
+    <title>SubEtapas por proyecto</title>
+{% endblock tituloPagina %}
+
+{% block body_block %}
+<h3>Crear SubEtapas por cada etapa</h3>
+<div class="container-fluid">
+    <div class="well">
+        <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin rhoncus quis ligula et varius. Ut sed sollicitudin sapien. Phasellus molestie sodales purus. Nunc eget consectetur diam, vel venenatis turpis. Mauris nulla ligula, finibus ac auctor ut, tempus ac diam. Duis congue hendrerit metus, et efficitur arcu faucibus vitae. Suspendisse aliquet purus nibh, quis consectetur ante luctus in. Proin ac varius elit, non facilisis enim. Proin vel auctor orci, ut tempus ex. Donec leo nisi, vulputate vitae commodo nec, interdum eu enim. Praesent condimentum libero posuere, placerat sapien eget, mattis nunc. Morbi dignissim aliquam velit sed facilisis. Phasellus ullamcorper bibendum mi, eu suscipit ante lobortis sit amet. Donec quis magna in augue condimentum suscipit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean volutpat mi eget ex ullamcorper ullamcorper.
+        </p>
+        <p>
+                Vestibulum nec neque quis arcu luctus consectetur. Quisque congue velit id rhoncus eleifend. Praesent volutpat lorem eu feugiat eleifend. Morbi non nisi sed purus tempus tempus eu quis ipsum. Nam sollicitudin pellentesque lectus viverra bibendum. Sed dui libero, congue a tristique nec, dictum quis velit. In maximus lectus in scelerisque faucibus. Ut mollis magna in euismod accumsan. Aenean placerat placerat tortor vitae luctus. Nam lacus purus, ullamcorper convallis tristique a, interdum quis nulla. Nam congue massa ornare justo sodales dignissim at vel lorem. Nulla posuere nisi at metus laoreet suscipit. Sed at molestie urna, in finibus urna.
+        </p>
+    </div>
+</div>
+<form method="POST">
+    {% csrf_token %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel panel-heading">
+                <h3 class="panel-title">Etapas</h3>
+            </div>
+            <div class="panel panel-body">
+                <table class="table">
+                    {% for form in subEtapasList.forms %}
+                        {% if forloop.first %}
+                            <thead>
+                                <tr>
+                                    {% for field in form.visible_fields %}
+                                        <th>{{ field.label|capfirst }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                        {% endif %}                          
+                                <tr class="{% cycle row1 row2 %} formset_row">
+                                    {% for field in form.visible_fields %}
+                                        <td>
+                                            {% if forloop.first %}
+                                                {% for hidden in form.hidden_fields %}
+                                                    {{ hidden }}
+                                                {% endfor %}
+                                            {% endif %}
+                                            {{ field.errors.as_ul }}
+                                            {{ field }}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                   {% endfor %}
+                </table>
+            </div>
+            <div class="panel panel-footer">
+                <div class="button btn-group">
+                    <button class="btn btn-primary" type="submit">
+                            <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span>
+                                    Siguiente
+                    </button>
+                    <button onclick="window.history.back();" class="btn btn-danger" type="button">Cancelar</button> 
+                    <a href="{% url 'proyecto:indexProyecto' %}" class="btn btn-primary">Volver a Macroproyectos</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock body_block %}
+
+{% block js_script %}
+<script src="{% static 'prefact/js/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+    $('.formset_row').formset({
+        addText: 'Añadir',
+        deleteText: 'Quitar',
+        prefix: 'subEtapaList'
+    });
+</script>
+{% endblock js_script %}

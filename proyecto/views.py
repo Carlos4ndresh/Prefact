@@ -8,7 +8,7 @@ from . import models
 from inmueble import models as modelInm
 from .forms import (
                     ProyectoFormSet, EtapaFormSet, SubEtapaFormSet, EtapaForm, SubEtapaForm, 
-                    MacroProyectoAutoForm, MacroEtapaAutoForm,
+                    MacroProyectoAutoForm, MacroEtapaAutoForm, MacroSubEtapaAutoForm
                     )
 from django.views.generic import (TemplateView,ListView,
                                   DetailView,CreateView,
@@ -526,12 +526,50 @@ class MacroproyectoSubEtapasAutoView(LoginRequiredMixin,TemplateView):
     def get_context_data(self, **kwargs):
         context = super(MacroproyectoSubEtapasAutoView, self).get_context_data(**kwargs)
         etapas = models.Etapa.objects.filter(proyectoEtapa__macroproyecto=self.macroproyecto())
+        subEtapa_formset = formset_factory(MacroSubEtapaAutoForm,extra=etapas.count(),max_num=etapas.count(),can_delete=False,can_order=False)
         if self.request.POST:
-            pass
+            context['subEtapasList'] = subEtapa_formset(self.request.POST)
         else:
-            pass
+            context['subEtapasList'] = subEtapa_formset(
+                initial=[
+                    {
+                        'nombreEtapa': e.nombreEtapa,
+                        'idEtapa': e.pk,
+                    } for e in etapas
+                ], prefix='subEtapaList'
+            )
 
         return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        subEtapasList = context['subEtapasList']
+        if subEtapasList.is_valid():
+            for form in subEtapasList:
+                numeroSubEtapas = form.cleaned_data['numeroSubEtapas']
+                etapa = models.Etapa.get(pk=form.cleaned_data['idEtapa'])
+                for i in range(numeroSubEtapas):
+                    subEtapa = models.SubEtapa(
+                        nombreSubEtapa=etapa.proyectoEtapa.macroproyecto.nombreMacroproyecto+"SubEtapa "+str(i+1),
+                        descripcionSubEtapa=etapa.proyectoEtapa.macroproyecto.descripcionMacroproyecto+"Descripción Etapa "+str(i+1),
+                        etapa=etapa
+                    )
+                    subEtapa.save()
+        else:
+            return self.render_to_response(self.get_context_data(subEtapasList=subEtapasList))
+        return redirect('proyecto:createAutoMacro4',pk=self.macroproyecto().pk)        
+
+    def get_success_url(self):
+        return redirect("proyecto:createAutoMacro4",pk=self.macroproyecto().pk)        
+
+    def form_invalid(self, subEtapasList):
+        return self.render_to_response(
+                 self.get_context_data(subEtapasList=subEtapasList,
+                                       )
+        )    
+
+class MacroproyectoInventarioAutoView(LoginRequiredMixin,TemplateView):
+    template_name = ''
 
 class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, CreateView):
     template_name = 'macroproyecto/macroproyecto_create.html'

@@ -43,17 +43,23 @@ class MacroEtapaAutoForm(forms.Form):
     numeroEtapas = forms.IntegerField(label="# Etapas")
     nombreProyecto = forms.CharField(disabled=True,label='Nombre del Proyecto')
     idProyecto = forms.IntegerField(widget=forms.HiddenInput())
-    
-
-    # def __init__(self, *args, **kwargs):
-    #     super(MacroEtapaAutoForm, self).__init__(*args,**kwargs)
-    #     self.fields['proyecto'].widget = Hid
 
     def clean_numeroEtapas(self):
         dato = self.cleaned_data['numeroEtapas']
         if dato > 3:
             raise ValidationError(_('Número de etapas inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
         return dato
+
+class MacroSubEtapaAutoForm(forms.Form):
+    numeroSubEtapas = forms.IntegerField(label="# SubEtapas")
+    nombreEtapa = forms.CharField(disabled=True,label="Nombre de Etapa")
+    idEtapa = forms.IntegerField(widget=forms.HiddenInput())
+
+    def clean_numeroSubEtapas(self):
+        dato = self.cleaned_data['numeroSubEtapas']
+        if dato > 3:
+            raise ValidationError(_('Número de SubEtapas inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
+        return dato    
 
 # class MacroEtapaAutoForm(forms.Form):
 #     numeroProyectos = forms.IntegerField(label="# Proyectos")

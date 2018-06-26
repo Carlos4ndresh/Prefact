@@ -54,7 +54,14 @@
                 </table>
             </div>
             <div class="panel panel-footer">
-
+                <div class="button btn-group">
+                    <button class="btn btn-primary" type="submit">
+                            <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span>
+                                    Siguiente
+                    </button>
+                    <button onclick="window.history.back();" class="btn btn-danger" type="button">Cancelar</button> 
+                    <a href="{% url 'proyecto:indexProyecto' %}" class="btn btn-primary">Volver a Macroproyectos</a>
+                </div>
             </div>
         </div>
     </div>
