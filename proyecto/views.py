@@ -451,8 +451,8 @@ class MacroproyectoCreateAutoView(LoginRequiredMixin,CreateView):
             for x in range(numeroProyectos):
                 metros = (macroproyecto.m2Macroproyecto/numeroProyectos+1)
                 proyecto = models.Proyecto(
-                    nombreProyecto=macroproyecto.nombreMacroproyecto+str(x+1),
-                    descripcionProyecto=macroproyecto.descripcionMacroproyecto+str(x+1),
+                    nombreProyecto=macroproyecto.nombreMacroproyecto+" "+str(x+1),
+                    descripcionProyecto=macroproyecto.descripcionMacroproyecto+" "+str(x+1),
                     m2PorProyecto=metros,
                     macroproyecto=macroproyecto
                     )
@@ -508,7 +508,7 @@ class MacroproyectoEtapasAutoView(LoginRequiredMixin,TemplateView):
                 for i in range(numeroEtapas):
                     etapa = models.Etapa(
                             nombreEtapa=proyecto.macroproyecto.nombreMacroproyecto+" Etapa "+str(etapaCount)+" "+proyecto.nombreProyecto,
-                            descripcionEtapa=proyecto.macroproyecto.descripcionMacroproyecto+" Descripción Etapa "+str(i+1),
+                            descripcionEtapa=proyecto.macroproyecto.descripcionMacroproyecto+" Descripción Etapa "+str(etapaCount)+proyecto.nombreProyecto,
                             proyectoEtapa=proyecto)
                     etapa.save()
         else:
@@ -564,7 +564,7 @@ class MacroproyectoSubEtapasAutoView(LoginRequiredMixin,TemplateView):
                 for i in range(numeroSubEtapas):
                     subEtapa = models.SubEtapa(
                         nombreSubEtapa=" SubEtapa "+str(subEtapaCount)+" "+etapa.nombreEtapa,
-                        descripcionSubEtapa=etapa.proyectoEtapa.macroproyecto.descripcionMacroproyecto+" Descripción Etapa "+str(i+1),
+                        descripcionSubEtapa="Descripción SubEtapa "+str(subEtapaCount)+" Etapa "+etapa.nombreEtapa,
                         etapa=etapa
                     )
                     subEtapa.save()
