@@ -174,14 +174,14 @@ class SubEtapaListView(LoginRequiredMixin,ListView):
     context_object_name = 'subetapa_list'
 
     def proyecto(self):
-        return self.etapa.proyectoEtapa
+        return self.etapa().proyectoEtapa
     
     def etapa(self):
         return get_object_or_404(models.Etapa, pk=self.kwargs['pk'])
 
     def get_queryset(self):
-        self.etapa = get_object_or_404(models.Etapa, pk=self.kwargs['pk'])
-        queryset = models.SubEtapa.objects.filter(etapa=self.etapa)
+        etapa = get_object_or_404(models.Etapa, pk=self.kwargs['pk'])
+        queryset = models.SubEtapa.objects.filter(etapa=etapa)
         return queryset
 
 class InventarioCreateView(LoginRequiredMixin,TemplateView):
@@ -480,10 +480,15 @@ class MacroproyectoEtapasAutoView(LoginRequiredMixin,TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MacroproyectoEtapasAutoView, self).get_context_data(**kwargs)
-        proyectos = models.Proyecto.objects.filter(macroproyecto=self.macroproyecto())
+        proyectos = models.Proyecto.objects.filter(macroproyecto=self.macroproyecto()).order_by('nombreProyecto')
         etapaAuto_formset = formset_factory(MacroEtapaAutoForm,extra=proyectos.count(),max_num=proyectos.count(),can_delete=False,can_order=False)
         if self.request.POST:
-            context['etapaslist'] = etapaAuto_formset(self.request.POST)
+            context['etapaslist'] = etapaAuto_formset(self.request.POST,initial=[
+                {
+                    'nombreProyecto': x.nombreProyecto, 
+                    'idProyecto': x.pk 
+                } for x in proyectos
+            ],prefix='etapalist')
         else:
             context['etapaslist'] = etapaAuto_formset(initial=[
                 { 'nombreProyecto': x.nombreProyecto, 
@@ -495,13 +500,15 @@ class MacroproyectoEtapasAutoView(LoginRequiredMixin,TemplateView):
         context = self.get_context_data()
         etapasList = context['etapaslist']
         if etapasList.is_valid():
+            etapaCount = 0
             for form in etapasList:
+                etapaCount += 1
                 numeroEtapas = form.cleaned_data['numeroEtapas']
-                proyecto = models.Proyecto.get(pk=form.cleaned_data['idProyecto'])
+                proyecto = models.Proyecto.objects.get(pk=form.cleaned_data['idProyecto'])
                 for i in range(numeroEtapas):
                     etapa = models.Etapa(
-                            nombreEtapa=proyecto.macroproyecto.nombreMacroproyecto+"Etapa "+str(i+1),
-                            descripcionEtapa=proyecto.macroproyecto.descripcionMacroproyecto+"Descripción Etapa "+str(i+1),
+                            nombreEtapa=proyecto.macroproyecto.nombreMacroproyecto+" Etapa "+str(etapaCount)+" "+proyecto.nombreProyecto,
+                            descripcionEtapa=proyecto.macroproyecto.descripcionMacroproyecto+" Descripción Etapa "+str(i+1),
                             proyectoEtapa=proyecto)
                     etapa.save()
         else:
@@ -525,10 +532,15 @@ class MacroproyectoSubEtapasAutoView(LoginRequiredMixin,TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super(MacroproyectoSubEtapasAutoView, self).get_context_data(**kwargs)
-        etapas = models.Etapa.objects.filter(proyectoEtapa__macroproyecto=self.macroproyecto())
+        etapas = models.Etapa.objects.filter(proyectoEtapa__macroproyecto=self.macroproyecto()).order_by('nombreEtapa')
         subEtapa_formset = formset_factory(MacroSubEtapaAutoForm,extra=etapas.count(),max_num=etapas.count(),can_delete=False,can_order=False)
         if self.request.POST:
-            context['subEtapasList'] = subEtapa_formset(self.request.POST)
+            context['subEtapasList'] = subEtapa_formset(self.request.POST, prefix='subEtapaList',initial=[
+                {
+                    'nombreEtapa': e.nombreEtapa,
+                    'idEtapa': e.pk,
+                } for e in etapas
+            ])
         else:
             context['subEtapasList'] = subEtapa_formset(
                 initial=[
@@ -538,20 +550,21 @@ class MacroproyectoSubEtapasAutoView(LoginRequiredMixin,TemplateView):
                     } for e in etapas
                 ], prefix='subEtapaList'
             )
-
         return context
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data()
         subEtapasList = context['subEtapasList']
         if subEtapasList.is_valid():
+            subEtapaCount = 0
             for form in subEtapasList:
+                subEtapaCount += 1
                 numeroSubEtapas = form.cleaned_data['numeroSubEtapas']
-                etapa = models.Etapa.get(pk=form.cleaned_data['idEtapa'])
+                etapa = models.Etapa.objects.get(pk=form.cleaned_data['idEtapa'])                
                 for i in range(numeroSubEtapas):
                     subEtapa = models.SubEtapa(
-                        nombreSubEtapa=etapa.proyectoEtapa.macroproyecto.nombreMacroproyecto+"SubEtapa "+str(i+1),
-                        descripcionSubEtapa=etapa.proyectoEtapa.macroproyecto.descripcionMacroproyecto+"Descripción Etapa "+str(i+1),
+                        nombreSubEtapa=" SubEtapa "+str(subEtapaCount)+" "+etapa.nombreEtapa,
+                        descripcionSubEtapa=etapa.proyectoEtapa.macroproyecto.descripcionMacroproyecto+" Descripción Etapa "+str(i+1),
                         etapa=etapa
                     )
                     subEtapa.save()
@@ -569,7 +582,7 @@ class MacroproyectoSubEtapasAutoView(LoginRequiredMixin,TemplateView):
         )    
 
 class MacroproyectoInventarioAutoView(LoginRequiredMixin,TemplateView):
-    template_name = ''
+    template_name = 'macroproyecto/macroproyecto_auto_ventas.html'
 
 class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, CreateView):
     template_name = 'macroproyecto/macroproyecto_create.html'
