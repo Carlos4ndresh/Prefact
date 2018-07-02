@@ -1,0 +1,26 @@
+{% extends "plantilla.html" %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+{% block tituloPagina %}
+    <title>Ventas por proyecto</title>
+{% endblock tituloPagina %}
+
+{% block body_block %}
+<h3>Ingresar información de ventas por etapas</h3>
+<div class="container-fluid">
+    <div class="well">
+        <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin rhoncus quis ligula et varius. Ut sed sollicitudin sapien. Phasellus molestie sodales purus. Nunc eget consectetur diam, vel venenatis turpis. Mauris nulla ligula, finibus ac auctor ut, tempus ac diam. Duis congue hendrerit metus, et efficitur arcu faucibus vitae. Suspendisse aliquet purus nibh, quis consectetur ante luctus in. Proin ac varius elit, non facilisis enim. Proin vel auctor orci, ut tempus ex. Donec leo nisi, vulputate vitae commodo nec, interdum eu enim. Praesent condimentum libero posuere, placerat sapien eget, mattis nunc. Morbi dignissim aliquam velit sed facilisis. Phasellus ullamcorper bibendum mi, eu suscipit ante lobortis sit amet. Donec quis magna in augue condimentum suscipit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean volutpat mi eget ex ullamcorper ullamcorper.
+        </p>
+    </div>
+</div>
+<form method="POST">
+    {% csrf_token %}
+  
+</form>
+{% endblock body_block %}
+
+{% block js_script %}
+
+{% endblock js_script %}

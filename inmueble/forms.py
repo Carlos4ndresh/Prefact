@@ -62,4 +62,24 @@ class TipoInmuebleForm(forms.ModelForm):
         }
 
 
+class TipoInmuebleAutoForm(forms.ModelForm):
+    """Form definition for Inventario."""
+
+    class Meta:
+        """Meta definition for Inventarioform."""
+
+        model = TipoInmueble
+        fields = '__all__'
+
+        labels = {
+            'nombreTipoInmueble': _('Nombre Inmuebles'),
+            'areaTipoInmueble': _('Área de Inmuebles (M2)'),
+            'noUnidadesTipoInmueble': _('# Unidades a Vender'),
+            'valorM2TipoInmueble': _('Valor por M2'),
+            'secundarioTipoInmueble': _('¿Es inmueble secundario?'),
+            'paramInmueble': _('Clase de Inmueble'),
+            'valorSalariosMinTipoInmueble': _('Valor en Salarios Mínimos'),
+            'subEtapa': _('Sub-Etapa'),
+        }
+
 InventarioFormSet = inlineformset_factory(SubEtapa, TipoInmueble, form=TipoInmuebleForm, extra=1, can_delete=True)
