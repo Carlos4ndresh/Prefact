@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from proyecto.forms import MacroproyectoForm, ProyectoForm, VentaForm, VentaFormSet
-from inmueble.forms import CrearLoteForm, InventarioFormSet, TipoInmuebleForm
+from inmueble.forms import CrearLoteForm, InventarioFormSet, TipoInmuebleForm, TipoInmuebleAutoForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from . import models
 from inmueble import models as modelInm
 from .forms import (
                     ProyectoFormSet, EtapaFormSet, SubEtapaFormSet, EtapaForm, SubEtapaForm, 
-                    MacroProyectoAutoForm, MacroEtapaAutoForm, MacroSubEtapaAutoForm
+                    MacroProyectoAutoForm, MacroEtapaAutoForm, MacroSubEtapaAutoForm, 
                     )
 from django.views.generic import (TemplateView,ListView,
                                   DetailView,CreateView,
@@ -17,7 +17,7 @@ from django.views.generic.edit import FormMixin
 from django.db import transaction
 from django.contrib.auth.mixins import LoginRequiredMixin  
 from django.core.exceptions import ValidationError
-from django.forms import formset_factory,forms
+from django.forms import formset_factory,forms, inlineformset_factory, modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -583,6 +583,51 @@ class MacroproyectoSubEtapasAutoView(LoginRequiredMixin,TemplateView):
 
 class MacroproyectoInventarioAutoView(LoginRequiredMixin,TemplateView):
     template_name = 'macroproyecto/macroproyecto_auto_ventas.html'
+
+    def macroproyecto(self):
+        return get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super(MacroproyectoInventarioAutoView, self).get_context_data(**kwargs)
+        subEtapas = models.SubEtapa.objects.filter(etapa__proyectoEtapa__macroproyecto=self.macroproyecto()).order_by('nombreSubEtapa')
+        macroproyecto = self.macroproyecto()
+        InventarioAutoFormset = modelformset_factory(modelInm.TipoInmueble, form=TipoInmuebleAutoForm, can_delete=True,extra=1)
+        if self.request.POST:
+            # context['inventarioList'] = InventarioAutoFormset(self.request.POST,prefix='inventario')
+            # context['form'] = TipoInmuebleAutoForm(self.request.POST)   
+            inventarioList = InventarioAutoFormset(self.request.POST,prefix='inventario') 
+            for form in inventarioList:
+                form.fields['subEtapa'].queryset = subEtapas
+            context['inventarioList'] = inventarioList
+        else:
+            # context['inventarioList'] = InventarioAutoFormset(prefix='inventario')
+            # context['form'] = TipoInmuebleAutoForm()
+            inventarioList = InventarioAutoFormset(queryset=modelInm.TipoInmueble.objects.none(), prefix='inventario') 
+            for form in inventarioList:
+                form.fields['subEtapa'].queryset = subEtapas
+            context['inventarioList'] = inventarioList
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        inventarioList = context['inventarioList']
+        if inventarioList.is_valid():
+            inventarioList.save()
+        else:
+            return self.render_to_response(self.get_context_data(inventarioList=inventarioList))
+        return redirect('proyecto:createAutoMacro5',pk=self.macroproyecto().pk)
+
+    def get_success_url(self):
+        return redirect("proyecto:createAutoMacro5",pk=self.macroproyecto().pk)        
+
+    def form_invalid(self, inventarioList):
+        return self.render_to_response(
+                 self.get_context_data(inventarioList=inventarioList,
+                                       )
+        )   
+
+class MacroproyectoIncrementosAutoView(LoginRequiredMixin,TemplateView):
+    template_name = 'macroproyecto/macroproyecto_auto_incrementos.html'
 
 class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, CreateView):
     template_name = 'macroproyecto/macroproyecto_create.html'

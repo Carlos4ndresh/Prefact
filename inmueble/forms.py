@@ -1,7 +1,7 @@
 from django import forms
 from inmueble.models import Lote, TipoInmueble
 from proyecto.models import SubEtapa
-from django.forms import BaseInlineFormSet, inlineformset_factory
+from django.forms import BaseInlineFormSet, inlineformset_factory, modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -65,6 +65,10 @@ class TipoInmuebleForm(forms.ModelForm):
 class TipoInmuebleAutoForm(forms.ModelForm):
     """Form definition for Inventario."""
 
+    # def __init__(self, macroproyecto, *args, **kwargs):
+    #     super(TipoInmuebleAutoForm,self).__init__(*args,**kwargs)
+    #     self.fields['subEtapa'].queryset = SubEtapa.objects.filter(etapa__proyectoEtapa__macroproyecto=macroproyecto)
+
     class Meta:
         """Meta definition for Inventarioform."""
 
@@ -79,7 +83,7 @@ class TipoInmuebleAutoForm(forms.ModelForm):
             'secundarioTipoInmueble': _('¿Es inmueble secundario?'),
             'paramInmueble': _('Clase de Inmueble'),
             'valorSalariosMinTipoInmueble': _('Valor en Salarios Mínimos'),
-            'subEtapa': _('Sub-Etapa'),
         }
-
+# InventarioAutoFormset = inlineformset_factory(SubEtapa,TipoInmueble, form=TipoInmuebleAutoForm, can_delete=True)
+# InventarioAutoFormset = modelformset_factory(TipoInmueble, form=TipoInmuebleAutoForm, can_delete=True,extra=1)
 InventarioFormSet = inlineformset_factory(SubEtapa, TipoInmueble, form=TipoInmuebleForm, extra=1, can_delete=True)

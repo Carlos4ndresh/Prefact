@@ -6,8 +6,8 @@ from django.core.urlresolvers import reverse
 ''' Clases de Etapas de prefactibilidad '''
 
 class Macroproyecto(models.Model):
-    nombreMacroproyecto = models.CharField(max_length=45, blank=False)
-    descripcionMacroproyecto = models.CharField(max_length=255, blank=True, null=True)
+    nombreMacroproyecto = models.CharField(max_length=255, blank=False)
+    descripcionMacroproyecto = models.CharField(max_length=512, blank=True, null=True)
     m2Macroproyecto = models.IntegerField()
     lote = models.OneToOneField(inmueble_models.Lote,on_delete=models.PROTECT,primary_key=True,related_name='macroproyecto')
 
@@ -34,7 +34,7 @@ class Macroproyecto(models.Model):
 
 class Proyecto(models.Model):
     nombreProyecto = models.CharField(max_length=255, blank=False, unique=False) 
-    descripcionProyecto = models.CharField(max_length=255, blank=True, null=True)
+    descripcionProyecto = models.CharField(max_length=512, blank=True, null=True)
     m2PorProyecto = models.IntegerField()
     macroproyecto = models.ForeignKey(Macroproyecto, related_name='proyectos', on_delete=models.PROTECT)
 
@@ -71,8 +71,8 @@ class Venta(models.Model):
         b=self.velocidadVentas) 
 
 class Etapa(models.Model):
-    nombreEtapa = models.CharField(max_length=45, blank=False)
-    descripcionEtapa = models.CharField(max_length=255, blank=True, null=True)
+    nombreEtapa = models.CharField(max_length=255, blank=False)
+    descripcionEtapa = models.CharField(max_length=512, blank=True, null=True)
     ''' Campos legacy no se tiene claro todavía si son necesarios '''
     numeroTipoInmuebleEtapa = models.IntegerField(blank=True, null=True)
     numeroTipoInmueble2Etapa = models.IntegerField(blank=True, null=True)
@@ -85,8 +85,8 @@ class Etapa(models.Model):
         pass 
 
 class SubEtapa(models.Model):
-    nombreSubEtapa = models.CharField(max_length=45, blank=False)
-    descripcionSubEtapa = models.CharField(max_length=255, blank=True, null=True)
+    nombreSubEtapa = models.CharField(max_length=255, blank=False)
+    descripcionSubEtapa = models.CharField(max_length=512, blank=True, null=True)
     etapa = models.ForeignKey(Etapa, related_name='subetapa', on_delete=models.PROTECT)
 
     def __str__(self):

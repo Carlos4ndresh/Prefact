@@ -17,10 +17,61 @@
 </div>
 <form method="POST">
     {% csrf_token %}
-  
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel panel-heading">
+                <h3 class="panel-title">Inventario de Inmuebles por Sub-Etapa</h3>
+            </div>
+            <div class="panel panel-body">
+                    <table class="table">
+                            {{ inventarioList.management_form }}
+                            {% for form in inventarioList.forms %}
+                                {% if forloop.first %}
+                                    <thead>
+                                        <tr>
+                                            {% for field in form.visible_fields %}
+                                                <th>{{ field.label|capfirst }}</th>
+                                            {% endfor %}
+                                        </tr>
+                                    </thead>
+                                {% endif %}                          
+                                        <tr class="{% cycle row1 row2 %} formset_row">
+                                            {% for field in form.visible_fields %}
+                                                <td>
+                                                    {% if forloop.first %}
+                                                        {% for hidden in form.hidden_fields %}
+                                                            {{ hidden }}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                    {{ field.errors.as_ul }}
+                                                    {{ field }}
+                                                </td>
+                                            {% endfor %}
+                                        </tr>
+                           {% endfor %}
+                    </table>
+            </div>
+            <div class="panel panel-footer">
+                <div class="button btn-group">
+                    <button class="btn btn-primary" type="submit">
+                        <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span>
+                                            Siguiente
+                    </button>
+                    <a href="{% url 'proyecto:indexProyecto' %}" class="btn btn-danger">Cancelar</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
 {% endblock body_block %}
 
 {% block js_script %}
-
+<script src="{% static 'prefact/js/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+    $('.formset_row').formset({
+        addText: 'Añadir',
+        deleteText: 'Quitar',
+        prefix: 'inventario'
+    });
+</script>
 {% endblock js_script %}
