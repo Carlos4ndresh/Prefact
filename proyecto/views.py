@@ -20,12 +20,6 @@ from django.core.exceptions import ValidationError
 from django.forms import formset_factory,forms, inlineformset_factory, modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 
-
-
-
-
-
-
 # Create your views here.
 
 
@@ -364,76 +358,18 @@ class MacroproyectoCreateAutoView(LoginRequiredMixin,CreateView):
     form_class = MacroproyectoForm
     lote_form = CrearLoteForm
     proyecto_form = MacroProyectoAutoForm
-    # venta_form = VentaForm
-    # inventario_form = TipoInmuebleForm
 
     def get_context_data(self, **kwargs):
         context = super(MacroproyectoCreateAutoView, self).get_context_data(**kwargs)
         context['lote_form'] = self.lote_form
         context['proyecto_form'] = self.proyecto_form
-        # context['venta_form'] = self.venta_form
-        # context['inventario_form'] = self.inventario_form
 
         if self.request.POST:
             context['lote_form'] = CrearLoteForm(self.request.POST)
             context['proyecto_form'] = MacroProyectoAutoForm(self.request.POST)
-            # context['venta_form'] = VentaForm(self.request.POST)
-            # context['inventario_form'] = TipoInmuebleForm(self.request.POST)
 
         return context
     
-    # def form_valid(self, form):
-    #     context = self.get_context_data()
-    #     lote_form =  context['lote_form']
-    #     etapas_form =  context['etapa_form']
-    #     venta_form =  context['venta_form']
-    #     inventario_form =  context['inventario_form']
-
-    #     if lote_form.is_valid() and etapas_form.is_valid() and venta_form.is_valid() and inventario_form.is_valid():
-    #         lote = lote_form.save(commit=False)
-    #         macroproyecto = form.save(commit=False)
-    #         lote.nombreLote = macroproyecto.nombreMacroproyecto
-    #         lote.areaBrutaLote = macroproyecto.m2Macroproyecto
-    #         lote.save()
-    #         macroproyecto.lote = lote
-    #         macroproyecto.save()
-            
-    #         numeroProyectos = etapas_form.cleaned_data['numeroProyectos']
-    #         numeroEtapas = etapas_form.cleaned_data['numeroEtapas']
-    #         numeroSubEtapas = etapas_form.cleaned_data['numeroSubEtapas']
-    #         for x in range(numeroProyectos):
-    #             metros = (macroproyecto.m2Macroproyecto/numeroProyectos+1)
-    #             proyecto = models.Proyecto(
-    #                 nombreProyecto=macroproyecto.nombreMacroproyecto+str(x+1),
-    #                 descripcionProyecto=macroproyecto.descripcionMacroproyecto+str(x+1),
-    #                 m2PorProyecto=metros,
-    #                 macroproyecto=macroproyecto
-    #                 )
-    #             proyecto.save()
-    #             for i in range(numeroEtapas):
-    #                 etapa = models.Etapa(
-    #                         nombreEtapa=macroproyecto.nombreMacroproyecto+str(x+1)+str(i+1),
-    #                         descripcionEtapa=macroproyecto.descripcionMacroproyecto+str(x+1)+str(i+1),
-    #                         proyectoEtapa=proyecto)
-    #                 etapa.save()
-    #                 for j in range(numeroSubEtapas):
-    #                     subetapa = models.SubEtapa(
-    #                             nombreSubEtapa=macroproyecto.nombreMacroproyecto+str(x+1)+str(i+1)+str(j+1),
-    #                             descripcionSubEtapa=macroproyecto.descripcionMacroproyecto+str(x+1)+str(i+1)+str(j+1),
-    #                             etapa=etapa
-    #                         )
-    #                     subetapa.save()
-    #                     venta = venta_form.save(commit=False)
-    #                     venta.pk = None
-    #                     venta.subetapa = subetapa
-    #                     venta.save()
-    #                     inventario = inventario_form.save(commit=False)
-    #                     inventario.pk = None
-    #                     inventario.subEtapa = subetapa
-    #                     inventario.save()
-    #     else:
-    #         return self.render_to_response(self.get_context_data(form=form,lote_form=lote_form,etapas_form=etapas_form,venta_form=venta_form,inventario_form=inventario_form))
-    #     return super(MacroproyectoCreateAutoView, self).form_valid(form)
     def form_valid(self,form):
         context = self.get_context_data()
         lote_form = context['lote_form']
