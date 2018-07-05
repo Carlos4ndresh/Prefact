@@ -61,29 +61,6 @@ class MacroSubEtapaAutoForm(forms.Form):
             raise ValidationError(_('Número de SubEtapas inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
         return dato    
 
-# class MacroEtapaAutoForm(forms.Form):
-#     numeroProyectos = forms.IntegerField(label="# Proyectos")
-#     numeroEtapas = forms.IntegerField(label="# Etapas")
-#     numeroSubEtapas = forms.IntegerField(label="# SubEtapas")
-
-#     def clean_numeroProyectos(self):
-#         dato = self.cleaned_data['numeroProyectos']
-#         if dato > 3:
-#             raise ValidationError(_('Número de proyectos inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
-#         return dato
-    
-#     def clean_numeroEtapas(self):
-#         dato = self.cleaned_data['numeroEtapas']
-#         if dato > 3:
-#             raise ValidationError(_('Número de etapas inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
-#         return dato
-    
-#     def clean_numeroSubEtapas(self):
-#         dato = self.cleaned_data['numeroSubEtapas']
-#         if dato > 3:
-#             raise ValidationError(_('Número de SubEtapas inválido, máximo permitido es 3'),code='invalid',params={'Valor':'3'})
-#         return dato
-    
 
 class ProyectoForm(forms.ModelForm):
     """Form definition for Proyecto."""
@@ -135,6 +112,32 @@ class VentaForm(forms.ModelForm):
         }
 
 VentaFormSet = inlineformset_factory(SubEtapa, Venta, form=VentaForm, extra=1, can_delete=True)        
+
+class VentaAutoForm(forms.ModelForm):
+    """Form definition for Venta."""
+
+    class Meta:
+        """Meta definition for Ventaform."""
+
+        model = Venta
+        exclude = (
+            'volumenTotalVenta',
+            'volumenInicialesVenta',
+            'reajusteVenta',
+            )
+        labels = {
+            'subetapa': _('Sub-Etapa'),
+            'velocidadVentas': _('Velocidad (Tasa) de Ventas'),
+            'porcentajeTopeRemanenteVentas': _('% Máximo (tope) de Remanente de Ventas'),
+            'velocidadUltimasVentas': _('Velocidad (Tasa) de Últimas Ventas'),
+            'porcentajeTopeInicialVentas': _('% Máximo (tope) de Ventas iniciales '),
+            'porcentajeVelocidadInicialVentas': _('% Velocidad (Tasa) de Ventas iniciales '),
+            'fechaInicioVentas': _('Fecha de Inicio de Ventas'),
+            'numeroDeIncrementos': _('Cantidad de Incrementos'),
+            'porcenReajusteIncremento': _('% de Reajuste en cada incremento'),
+            'tipoIncremento': _('Tipo de Incremento'),
+            'porcenTopeReajusteIncremento': _('% Tope de Reajuste de Incrementos'),
+        }
 
 class EtapaForm(forms.ModelForm):
     """Form definition for Etapa."""

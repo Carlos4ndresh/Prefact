@@ -8,7 +8,7 @@ from . import models
 from inmueble import models as modelInm
 from .forms import (
                     ProyectoFormSet, EtapaFormSet, SubEtapaFormSet, EtapaForm, SubEtapaForm, 
-                    MacroProyectoAutoForm, MacroEtapaAutoForm, MacroSubEtapaAutoForm, 
+                    MacroProyectoAutoForm, MacroEtapaAutoForm, MacroSubEtapaAutoForm, VentaAutoForm
                     )
 from django.views.generic import (TemplateView,ListView,
                                   DetailView,CreateView,
@@ -443,7 +443,7 @@ class MacroproyectoEtapasAutoView(LoginRequiredMixin,TemplateView):
                 proyecto = models.Proyecto.objects.get(pk=form.cleaned_data['idProyecto'])
                 for i in range(numeroEtapas):
                     etapa = models.Etapa(
-                            nombreEtapa=proyecto.macroproyecto.nombreMacroproyecto+" Etapa "+str(etapaCount)+" "+proyecto.nombreProyecto,
+                            nombreEtapa=proyecto.macroproyecto.nombreMacroproyecto+" Etapa "+str(etapaCount),
                             descripcionEtapa=proyecto.macroproyecto.descripcionMacroproyecto+" Descripción Etapa "+str(etapaCount)+proyecto.nombreProyecto,
                             proyectoEtapa=proyecto)
                     etapa.save()
@@ -471,6 +471,10 @@ class MacroproyectoSubEtapasAutoView(LoginRequiredMixin,TemplateView):
         etapas = models.Etapa.objects.filter(proyectoEtapa__macroproyecto=self.macroproyecto()).order_by('nombreEtapa')
         subEtapa_formset = formset_factory(MacroSubEtapaAutoForm,extra=etapas.count(),max_num=etapas.count(),can_delete=False,can_order=False)
         if self.request.POST:
+            '''
+                Aquí se asignan valores iniciales al formulario de creaciòn de subetapas, para así relacionar cada etapa
+                con su respectivo nùmero de subetapas, està pendiente resolver el nombrado de estas
+            '''
             context['subEtapasList'] = subEtapa_formset(self.request.POST, prefix='subEtapaList',initial=[
                 {
                     'nombreEtapa': e.nombreEtapa,
@@ -526,18 +530,13 @@ class MacroproyectoInventarioAutoView(LoginRequiredMixin,TemplateView):
     def get_context_data(self, **kwargs):
         context = super(MacroproyectoInventarioAutoView, self).get_context_data(**kwargs)
         subEtapas = models.SubEtapa.objects.filter(etapa__proyectoEtapa__macroproyecto=self.macroproyecto()).order_by('nombreSubEtapa')
-        macroproyecto = self.macroproyecto()
         InventarioAutoFormset = modelformset_factory(modelInm.TipoInmueble, form=TipoInmuebleAutoForm, can_delete=True,extra=1)
         if self.request.POST:
-            # context['inventarioList'] = InventarioAutoFormset(self.request.POST,prefix='inventario')
-            # context['form'] = TipoInmuebleAutoForm(self.request.POST)   
             inventarioList = InventarioAutoFormset(self.request.POST,prefix='inventario') 
             for form in inventarioList:
                 form.fields['subEtapa'].queryset = subEtapas
             context['inventarioList'] = inventarioList
         else:
-            # context['inventarioList'] = InventarioAutoFormset(prefix='inventario')
-            # context['form'] = TipoInmuebleAutoForm()
             inventarioList = InventarioAutoFormset(queryset=modelInm.TipoInmueble.objects.none(), prefix='inventario') 
             for form in inventarioList:
                 form.fields['subEtapa'].queryset = subEtapas
@@ -564,6 +563,47 @@ class MacroproyectoInventarioAutoView(LoginRequiredMixin,TemplateView):
 
 class MacroproyectoIncrementosAutoView(LoginRequiredMixin,TemplateView):
     template_name = 'macroproyecto/macroproyecto_auto_incrementos.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MacroproyectoIncrementosAutoView, self).get_context_data(**kwargs)
+        IncrementoFormSet = modelformset_factory(models.Venta, form=VentaAutoForm, can_delete=True,extra=1)
+        if self.request.POST:
+            incrementoList = IncrementoFormSet(self.request.POST, prefix='incrementolist')
+            for form in incrementoList:
+                form.fields['subetapa'].queryset = self.subEtapas()
+            context['incrementoList'] = incrementoList
+        else:
+            incrementoList = IncrementoFormSet(queryset=models.Venta.objects.none(), prefix='incrementolist')
+            for form in incrementoList:
+                form.fields['subetapa'].queryset = self.subEtapas()
+            context['incrementoList'] = incrementoList
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        incrementoList = context['incrementoList']
+        if incrementoList.is_valid():
+            incrementoList.save()
+        else:
+            return self.render_to_response(self.get_context_data(incrementoList=incrementoList))
+        return redirect('proyecto:macro_edit',pk=self.macroproyecto().pk)
+
+    def get_success_url(self):
+        return redirect("proyecto:macro_edit",pk=self.macroproyecto().pk)        
+
+    def form_invalid(self, incrementoList):
+        return self.render_to_response(
+                 self.get_context_data(incrementoList=incrementoList,
+                                       )
+        )  
+    
+    def macroproyecto(self):
+        return get_object_or_404(models.Macroproyecto, pk=self.kwargs['pk'])
+
+    def subEtapas(self):
+        return  models.SubEtapa.objects.filter(etapa__proyectoEtapa__macroproyecto=self.macroproyecto()).order_by('nombreSubEtapa')
+
+    
 
 class MacroproyectoCreateView(LoginRequiredMixin,SuccessMessageMixin, CreateView):
     template_name = 'macroproyecto/macroproyecto_create.html'
