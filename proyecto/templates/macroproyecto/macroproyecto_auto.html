@@ -9,13 +9,20 @@
 {% block body_block %}
 <h3>Crear un nuevo Macroproyecto</h3>
 <div class="container-fluid">
-    <div class="well">
-        <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin rhoncus quis ligula et varius. Ut sed sollicitudin sapien. Phasellus molestie sodales purus. Nunc eget consectetur diam, vel venenatis turpis. Mauris nulla ligula, finibus ac auctor ut, tempus ac diam. Duis congue hendrerit metus, et efficitur arcu faucibus vitae. Suspendisse aliquet purus nibh, quis consectetur ante luctus in. Proin ac varius elit, non facilisis enim. Proin vel auctor orci, ut tempus ex. Donec leo nisi, vulputate vitae commodo nec, interdum eu enim. Praesent condimentum libero posuere, placerat sapien eget, mattis nunc. Morbi dignissim aliquam velit sed facilisis. Phasellus ullamcorper bibendum mi, eu suscipit ante lobortis sit amet. Donec quis magna in augue condimentum suscipit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean volutpat mi eget ex ullamcorper ullamcorper.
+    <div class="well well-sm">
+        <p class="lead">
+                Generarás aquí todos los componentes iniciales de un Macro-proyecto a ser evaluado, podrá ser lento en alguna parte, 
+                no desesperes.
         </p>
-        <p>
-                Vestibulum nec neque quis arcu luctus consectetur. Quisque congue velit id rhoncus eleifend. Praesent volutpat lorem eu feugiat eleifend. Morbi non nisi sed purus tempus tempus eu quis ipsum. Nam sollicitudin pellentesque lectus viverra bibendum. Sed dui libero, congue a tristique nec, dictum quis velit. In maximus lectus in scelerisque faucibus. Ut mollis magna in euismod accumsan. Aenean placerat placerat tortor vitae luctus. Nam lacus purus, ullamcorper convallis tristique a, interdum quis nulla. Nam congue massa ornare justo sodales dignissim at vel lorem. Nulla posuere nisi at metus laoreet suscipit. Sed at molestie urna, in finibus urna.
+        <p class="lead">
+            Ah!, otra cosa, apenas des click en <mark>"Siguiente"</mark>, toda la información será generada y guardada; no hay vuelta atrás.
+            Así que asegúrate que toda la información sea correcta. 
         </p>
+        <p class="lead">
+            Esto lo hacemos con el fin de que en caso de problemas puedas editar la 
+            información y no perder tu trabajo :).
+        </p>
+        {% bootstrap_messages %}
     </div>
 </div>
 <form method="POST">

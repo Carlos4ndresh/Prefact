@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from proyecto.forms import MacroproyectoForm, ProyectoForm, VentaForm, VentaFormSet
 from inmueble.forms import CrearLoteForm, InventarioFormSet, TipoInmuebleForm, TipoInmuebleAutoForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
 from . import models
 from inmueble import models as modelInm
 from .forms import (
@@ -377,22 +379,27 @@ class MacroproyectoCreateAutoView(LoginRequiredMixin,CreateView):
         if form.is_valid() and lote_form.is_valid() and proyecto_form.is_valid():
             lote = lote_form.save(commit=False)
             macroproyecto = form.save(commit=False)
-            lote.nombreLote = macroproyecto.nombreMacroproyecto
-            lote.areaBrutaLote = macroproyecto.m2Macroproyecto
-            lote.save()
-            macroproyecto.lote = lote
-            macroproyecto.save()
-            
-            numeroProyectos = proyecto_form.cleaned_data['numeroProyectos']  
-            for x in range(numeroProyectos):
-                metros = (macroproyecto.m2Macroproyecto/numeroProyectos+1)
-                proyecto = models.Proyecto(
-                    nombreProyecto=macroproyecto.nombreMacroproyecto+" "+str(x+1),
-                    descripcionProyecto=macroproyecto.descripcionMacroproyecto+" "+str(x+1),
-                    m2PorProyecto=metros,
-                    macroproyecto=macroproyecto
-                    )
-                proyecto.save()
+            try:
+                lote.nombreLote = macroproyecto.nombreMacroproyecto
+                lote.areaBrutaLote = macroproyecto.m2Macroproyecto
+                lote.save()
+                macroproyecto.lote = lote
+                macroproyecto.save()
+                
+                numeroProyectos = proyecto_form.cleaned_data['numeroProyectos']  
+                for x in range(numeroProyectos):
+                    metros = (macroproyecto.m2Macroproyecto/numeroProyectos+1)
+                    proyecto = models.Proyecto(
+                        nombreProyecto=macroproyecto.nombreMacroproyecto+" "+str(x+1),
+                        descripcionProyecto=macroproyecto.descripcionMacroproyecto+" "+str(x+1),
+                        m2PorProyecto=metros,
+                        macroproyecto=macroproyecto
+                        )
+                    proyecto.save()
+                    messages.success(self.request,"Macroproyecto {} creado".format(macroproyecto.nombreMacroproyecto))
+            except IntegrityError as excepcion:
+                messages.error(self.request,"Error. Ya hay un macroproyecto llamado así {}, por favor ingrese otro nombre. Error: {}".format(macroproyecto.nombreMacroproyecto,excepcion))
+                return self.render_to_response(self.get_context_data(form=form,lote_form=lote_form,proyecto_form=proyecto_form))            
         else:
             return self.render_to_response(self.get_context_data(form=form,lote_form=lote_form,proyecto_form=proyecto_form))
         return super(MacroproyectoCreateAutoView, self).form_valid(form) 
@@ -586,10 +593,10 @@ class MacroproyectoIncrementosAutoView(LoginRequiredMixin,TemplateView):
             incrementoList.save()
         else:
             return self.render_to_response(self.get_context_data(incrementoList=incrementoList))
-        return redirect('proyecto:macro_edit',pk=self.macroproyecto().pk)
+        return redirect('proyecto:prefactibilidad_view',pk=self.macroproyecto().pk)
 
     def get_success_url(self):
-        return redirect("proyecto:macro_edit",pk=self.macroproyecto().pk)        
+        return redirect("proyecto:prefactibilidad_view",pk=self.macroproyecto().pk)        
 
     def form_invalid(self, incrementoList):
         return self.render_to_response(
@@ -703,9 +710,6 @@ class MacroproyectoEditView(LoginRequiredMixin,UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(MacroproyectoEditView, self).get_context_data(**kwargs)
-        # print(context)
-        # context['lote_form'] = self.second_form_class
-        # context['lote_form'] = CrearLoteForm(instance=context['macroproyecto'].lote)
 
         if self.request.POST:
 
