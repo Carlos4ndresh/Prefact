@@ -1,4 +1,4 @@
-FROM python:latest
+FROM python:3.6
 # FROM alpine
 
 # RUN apk add --update netcat python3 py3-pip gcc python3-dev py3-cffi    file git curl autoconf automake py3-cryptography linux-headers musl-dev libffi-dev openssl-dev build-base
