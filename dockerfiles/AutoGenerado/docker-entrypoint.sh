@@ -1,7 +1,8 @@
 #!/bin/bash
 sleep 20;
 
-git clone https://github.com/Carlos4ndresh/Prefact.git /srv/Prefact/Prefact
+# git clone https://github.com/Carlos4ndresh/Prefact.git /srv/Prefact/Prefact
+git clone --single-branch -b AutoGeneradoProyectos https://github.com/Carlos4ndresh/Prefact.git /srv/Prefact/Prefact
 
 pip install -r /srv/Prefact/Prefact/requirements.txt
 
