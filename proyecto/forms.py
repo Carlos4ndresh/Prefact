@@ -149,11 +149,12 @@ class EtapaForm(forms.ModelForm):
         exclude = (
                 'proyectoEtapa',
                 'numeroTipoInmueble2Etapa',
+                'numeroTipoInmuebleEtapa',
                 )
         labels = {
             'nombreEtapa': _('Nombre'),
             'descripcionEtapa': _('Descripción'),
-            'numeroTipoInmuebleEtapa': _('Número Inmuebles'),
+            # 'numeroTipoInmuebleEtapa': _('Número Inmuebles'),
         }
         widgets = {
             'descripcionEtapa' : forms.Textarea(),

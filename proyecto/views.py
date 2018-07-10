@@ -537,7 +537,7 @@ class MacroproyectoInventarioAutoView(LoginRequiredMixin,TemplateView):
     def get_context_data(self, **kwargs):
         context = super(MacroproyectoInventarioAutoView, self).get_context_data(**kwargs)
         subEtapas = models.SubEtapa.objects.filter(etapa__proyectoEtapa__macroproyecto=self.macroproyecto()).order_by('nombreSubEtapa')
-        InventarioAutoFormset = modelformset_factory(modelInm.TipoInmueble, form=TipoInmuebleAutoForm, can_delete=True,extra=1)
+        InventarioAutoFormset = modelformset_factory(modelInm.TipoInmueble, form=TipoInmuebleAutoForm, can_delete=True,extra=subEtapas.count())
         if self.request.POST:
             inventarioList = InventarioAutoFormset(self.request.POST,prefix='inventario') 
             for form in inventarioList:
