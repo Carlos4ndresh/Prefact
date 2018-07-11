@@ -538,13 +538,17 @@ class MacroproyectoInventarioAutoView(LoginRequiredMixin,TemplateView):
         context = super(MacroproyectoInventarioAutoView, self).get_context_data(**kwargs)
         subEtapas = models.SubEtapa.objects.filter(etapa__proyectoEtapa__macroproyecto=self.macroproyecto()).order_by('nombreSubEtapa')
         InventarioAutoFormset = modelformset_factory(modelInm.TipoInmueble, form=TipoInmuebleAutoForm, can_delete=True,extra=subEtapas.count())
-        if self.request.POST:
+        if self.request.POST:            
             inventarioList = InventarioAutoFormset(self.request.POST,prefix='inventario') 
             for form in inventarioList:
                 form.fields['subEtapa'].queryset = subEtapas
             context['inventarioList'] = inventarioList
         else:
-            inventarioList = InventarioAutoFormset(queryset=modelInm.TipoInmueble.objects.none(), prefix='inventario') 
+            inventarioList = InventarioAutoFormset(queryset=modelInm.TipoInmueble.objects.none(), prefix='inventario',initial=[
+                {
+                    'subEtapa': s
+                } for s in subEtapas
+            ]) 
             for form in inventarioList:
                 form.fields['subEtapa'].queryset = subEtapas
             context['inventarioList'] = inventarioList
@@ -573,14 +577,19 @@ class MacroproyectoIncrementosAutoView(LoginRequiredMixin,TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MacroproyectoIncrementosAutoView, self).get_context_data(**kwargs)
-        IncrementoFormSet = modelformset_factory(models.Venta, form=VentaAutoForm, can_delete=True,extra=1)
+        subEtapas = models.SubEtapa.objects.filter(etapa__proyectoEtapa__macroproyecto=self.macroproyecto()).order_by('nombreSubEtapa')
+        IncrementoFormSet = modelformset_factory(models.Venta, form=VentaAutoForm, can_delete=True,extra=subEtapas.count())
         if self.request.POST:
             incrementoList = IncrementoFormSet(self.request.POST, prefix='incrementolist')
             for form in incrementoList:
                 form.fields['subetapa'].queryset = self.subEtapas()
             context['incrementoList'] = incrementoList
         else:
-            incrementoList = IncrementoFormSet(queryset=models.Venta.objects.none(), prefix='incrementolist')
+            incrementoList = IncrementoFormSet(queryset=models.Venta.objects.none(), prefix='incrementolist',initial=[
+                {
+                    'subetapa': s
+                } for s in subEtapas
+            ])
             for form in incrementoList:
                 form.fields['subetapa'].queryset = self.subEtapas()
             context['incrementoList'] = incrementoList
