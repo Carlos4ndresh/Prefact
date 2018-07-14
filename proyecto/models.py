@@ -44,6 +44,8 @@ class Proyecto(models.Model):
     
 
 class Venta(models.Model):
+    subetapa = models.ForeignKey('SubEtapa', related_name='ventas', on_delete=models.PROTECT,default=999999999)
+    
     velocidadVentas = models.IntegerField(blank=False)
     porcentajeTopeRemanenteVentas = models.DecimalField(max_digits=5,decimal_places=2)
     velocidadUltimasVentas = models.IntegerField()
@@ -53,8 +55,6 @@ class Venta(models.Model):
     volumenTotalVenta = models.DecimalField(max_digits=20,decimal_places=4,blank=True, null=True)
     reajusteVenta = models.DecimalField(max_digits=20,decimal_places=4,blank=True, null=True)
     volumenInicialesVenta = models.DecimalField(max_digits=20,decimal_places=4,blank=True, null=True)
-
-    subetapa = models.ForeignKey('SubEtapa', related_name='ventas', on_delete=models.PROTECT,default=999999999)
 
     ## Datos de incrementos
 

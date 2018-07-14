@@ -450,7 +450,7 @@ class MacroproyectoEtapasAutoView(LoginRequiredMixin,TemplateView):
                 proyecto = models.Proyecto.objects.get(pk=form.cleaned_data['idProyecto'])
                 for i in range(numeroEtapas):
                     etapa = models.Etapa(
-                            nombreEtapa=proyecto.macroproyecto.nombreMacroproyecto+" Etapa "+str(etapaCount),
+                            nombreEtapa="Etapa "+str(etapaCount),
                             descripcionEtapa=proyecto.macroproyecto.descripcionMacroproyecto+" Descripción Etapa "+str(etapaCount)+proyecto.nombreProyecto,
                             proyectoEtapa=proyecto)
                     etapa.save()
@@ -510,7 +510,7 @@ class MacroproyectoSubEtapasAutoView(LoginRequiredMixin,TemplateView):
                 etapa = models.Etapa.objects.get(pk=form.cleaned_data['idEtapa'])                
                 for i in range(numeroSubEtapas):
                     subEtapa = models.SubEtapa(
-                        nombreSubEtapa=" SubEtapa "+str(subEtapaCount)+" "+etapa.nombreEtapa,
+                        nombreSubEtapa=" SubEtapa "+str(subEtapaCount),
                         descripcionSubEtapa="Descripción SubEtapa "+str(subEtapaCount)+" Etapa "+etapa.nombreEtapa,
                         etapa=etapa
                     )

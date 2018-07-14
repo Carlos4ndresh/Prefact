@@ -46,6 +46,8 @@ class PagoLote(models.Model):
 
 class TipoInmueble(models.Model):
     ## also known as inventario de inmuebles
+    subEtapa = models.ForeignKey('proyecto.SubEtapa', related_name='tipoInmueble', on_delete=models.PROTECT)
+    
     nombreTipoInmueble = models.CharField(max_length=45)
     areaTipoInmueble = models.IntegerField()
     noUnidadesTipoInmueble = models.IntegerField()
@@ -54,7 +56,6 @@ class TipoInmueble(models.Model):
     paramInmueble = models.ForeignKey('ParametroInmueble', related_name='tipoInmueble', on_delete=models.PROTECT)
     valorSalariosMinTipoInmueble = models.DecimalField(max_digits=16,decimal_places=2, blank=True, null=True)
     # etapa = models.ForeignKey('proyecto.Etapa', related_name='tipoInmueble', on_delete=models.PROTECT)
-    subEtapa = models.ForeignKey('proyecto.SubEtapa', related_name='tipoInmueble', on_delete=models.PROTECT)
 
     def __str__(self):
         return "Tipo Inmueble {a}".format(a=self.nombreTipoInmueble)
